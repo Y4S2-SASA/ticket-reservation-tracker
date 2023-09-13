@@ -1,4 +1,6 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 
 namespace TRT.API.Controllers
 {
@@ -12,10 +14,12 @@ namespace TRT.API.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMediator _mediator;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IMediator mediator)
         {
             _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -28,6 +32,14 @@ namespace TRT.API.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost(Name = "SaveUser")]
+        public async Task<IActionResult> SaveUser([FromBody] SaveUserCommand command)
+        {
+            var response = await _mediator.Send(command);
+
+            return Ok(response);
         }
     }
 }
