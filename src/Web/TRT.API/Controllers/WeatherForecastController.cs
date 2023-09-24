@@ -34,12 +34,6 @@ namespace TRT.API.Controllers
             .ToArray();
         }
 
-        [HttpPost(Name = "SaveUser")]
-        public async Task<IActionResult> SaveUser([FromBody] SaveUserCommand command)
-        {
-            var response = await _mediator.Send(command);
-
-            return Ok(response);
-        }
+        
     }
 }
