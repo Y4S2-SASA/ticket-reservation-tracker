@@ -65,7 +65,8 @@ namespace Microsoft.Extensions.DependencyInjection
                        ValidIssuer = configuration["Tokens:Issuer"],
                        ValidAudiences = new List<string>
                        {
-                          "webapp"
+                          "webapp",
+                          "mobileapp"
                        },
 
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Tokens:Key"])),

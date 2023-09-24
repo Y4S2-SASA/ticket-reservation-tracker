@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using TRT.Domain.Enums;
 
 namespace TRT.Domain.Entities
 {
@@ -9,6 +10,8 @@ namespace TRT.Domain.Entities
         public string Name { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public bool IsActive { get; set; }
+        public Role Role { get; set; }
         public string PasswordHash { get; set; }
 
     }
