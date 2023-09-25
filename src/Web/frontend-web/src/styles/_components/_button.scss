@@ -1,0 +1,23 @@
+.tm-button {
+    width: 100%;
+    height: 46px;
+    background-color: #7E5AE9;
+    border: none;
+    border-radius: 46px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    hr {
+      flex: 1;
+      border-top: 1px solid #000;
+    }
+  
+    span {
+      padding: 0 10px;
+    }
+  
+    &:hover {
+        color:red;
+    }
+  }
