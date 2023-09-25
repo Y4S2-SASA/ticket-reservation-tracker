@@ -1,0 +1,104 @@
+.signin-container {
+  min-width: 100%;
+  font-family: "Montserrat";
+}
+
+.left-side {
+  background: url('#{$assets-path}backgrounds/bg.png');
+  background-size: cover;
+  // background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.right-side {
+  background: url('#{$assets-path}backgrounds/welcome.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.left-content {
+  width: 100%;
+  text-align: center;
+  // margin-left: 300px;
+  padding: 20px;
+}
+
+.signin-form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.logo {
+  max-width: 300px;
+  margin-bottom: 50px;
+}
+
+.form-field {
+  border-radius: 140px;
+}
+
+.right-content {
+  padding: 10px;
+  .welcome-head1 {
+    color: $light-purple;
+    font-size: 30px;
+    font-weight: bolder;
+  }
+  .welcome-head2 {
+    color: $black;
+    font-size: 50px;
+    font-weight: bolder;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .welcome-msg {
+    color: $black;
+    font-size: 16px;
+    font-weight: 200;
+    text-align: justify;
+  }
+  .icon-row {
+    text-align: center;
+  
+    .signup-text {
+      margin-top: 40px;
+      span {
+        color: $white;
+      }
+      
+  
+      a {
+        color: #007bff;
+        text-decoration: none;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    img {
+      max-width: 40px;
+    }
+  }
+  
+}
+
+@media only screen and (max-width: 768px) {
+  .left-content {
+    margin-left: 0 !important;
+  }
+  .right-side {
+    display: none;
+  }
+}
