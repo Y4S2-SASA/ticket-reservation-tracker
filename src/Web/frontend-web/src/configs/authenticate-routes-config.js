@@ -5,13 +5,17 @@ export default function AuthenticateRoutesConfig({
   component: Component,
   ...rest
 }) {
-  const isAuthenticated = localStorage.getItem('auth')
-  console.log(isAuthenticated)
+  const authentication = JSON.parse(localStorage.getItem('auth'))
+
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+        authentication?.authSuccess ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
       }
     />
   )
