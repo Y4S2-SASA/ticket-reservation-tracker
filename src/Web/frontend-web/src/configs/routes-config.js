@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import AuthenticateRoutesConfig from './AuthenticateRoutesConfig'
+import AuthenticateRoutesConfig from './authenticate-routes-config'
 import SignIn from '../modules/auth/Signin'
 import Dashboard from '../modules/landing/Dashboard'
 

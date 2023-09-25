@@ -5,7 +5,7 @@ export default function AuthenticateRoutesConfig({
   component: Component,
   ...rest
 }) {
-  const isAuthenticated = localStorage.getItem('jwtToken')
+  const isAuthenticated = localStorage.getItem('auth')
   console.log(isAuthenticated)
   return (
     <Route
