@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TicketReservationApp</string>
+    <string name="logotxt">LOGO</string>
+    <string name="intro_txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="remember_me_txt">Remember me</string>
+    <string name="forgot_pw_txt">Forgot Password</string>
+    <string name="or_txt">or</string>
+    <string name="dont_have_an_account_txt">"Don't have an account?"</string>
+    <string name="sign_up_txt">Sign Up</string>
+    <string name="sign_in_btn">SIGN IN</string>
+</resources>
