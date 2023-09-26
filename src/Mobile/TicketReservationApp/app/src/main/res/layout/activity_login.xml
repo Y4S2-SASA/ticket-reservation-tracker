@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:context=".MainActivity"
+        tools:context=".LoginActivity"
         tools:layout_editor_absoluteX="64dp">
 
         <TextView
@@ -24,7 +24,7 @@
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="52dp"
             android:text="@string/sign_up_txt"
-            android:textColor="#72C9F8"
+            android:textColor="@color/light_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -82,7 +82,7 @@
             android:layout_marginStart="100dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="23dp"
-            android:backgroundTint="#7E5AE9"
+            android:backgroundTint="@color/light_purple"
             android:text="@string/sign_in_btn"
             app:layout_constraintBottom_toTopOf="@+id/orTxt"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
             android:layout_marginEnd="81dp"
             android:layout_marginBottom="37dp"
             android:text="@string/forgot_pw_txt"
-            android:textColor="#72C9F8"
+            android:textColor="@color/light_blue"
             app:layout_constraintBottom_toTopOf="@+id/signInBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordField" />
