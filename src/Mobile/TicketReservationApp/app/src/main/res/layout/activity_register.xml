@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="413dp"
+        android:layout_height="41dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/first_name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/lastNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/nicField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/nic_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/emailField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/email_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/regUsernameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/destinationField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/mobile_no_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/nicField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/regUsernameField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/username_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/regPasswordField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/regPasswordField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/password_hint"
+        android:inputType="text|textPassword"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/signUpBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/lastNameField"
+        android:layout_width="298dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/last_name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/destinationField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="158dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="24dp"
+        android:text="REGISTER"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signUpBtn"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_purple"
+        android:text="@string/sign_up_btn"
+        app:layout_constraintBottom_toTopOf="@+id/alreadyHaveAccTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/regGoogle"
+        android:layout_width="31dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/google" />
+
+    <ImageView
+        android:id="@+id/regTwitter"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/twitter" />
+
+    <ImageView
+        android:id="@+id/regFacebook"
+        android:layout_width="40dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/regGoogle"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toEndOf="@+id/regTwitter"
+        app:srcCompat="@drawable/facebook" />
+
+    <TextView
+        android:id="@+id/signInTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/sign_in_txt"
+        android:textColor="@color/light_blue"
+        app:layout_constraintBottom_toTopOf="@+id/regGoogle"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/alreadyHaveAccTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/already_have_an_account_txt"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/regTwitter"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
