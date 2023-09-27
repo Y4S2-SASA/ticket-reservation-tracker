@@ -6,25 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ReservationSummaryActivity">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".CreateReservationActivity"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="332dp">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="413dp"
+        android:layout_height="41dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:id="@+id/rememberMeCheckBox2"
+            android:id="@+id/reservationConfirmationCheckBox"
             android:layout_width="351dp"
             android:layout_height="78dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="7dp"
-            android:text="I understand that this reservation can only be edited or canceled 5 days prior to the reserved date."
+            android:text="@string/reservation_confirmation_txt"
             android:textColor="@color/light_purple"
-            app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
+            app:layout_constraintBottom_toTopOf="@+id/backBtn"
             app:layout_constraintEnd_toStartOf="@+id/forgotPwText"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,14 +63,14 @@
             app:layout_constraintEnd_toStartOf="@+id/view12" />
 
         <Button
-            android:id="@+id/viewSummaryBtn"
+            android:id="@+id/backBtn"
             android:layout_width="208dp"
             android:layout_height="48dp"
             android:layout_marginStart="100dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="11dp"
             android:backgroundTint="@color/light_purple"
-            android:text="@string/view_summary_btn"
+            android:text="@string/confirm_reservation_btn"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -91,7 +91,7 @@
             android:paddingLeft="25dp"
             android:text="Fort Station"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/rememberMeCheckBox2"
+            app:layout_constraintBottom_toTopOf="@+id/reservationConfirmationCheckBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
@@ -179,19 +179,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/passengersField" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            style="@style/BottomNavigationViewStyle"
-            android:layout_width="412dp"
-            android:layout_height="70dp"
-            app:itemBackground="@color/light_purple"
-            app:itemTextColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/menu_navigation" />
-
-
         <TextView
             android:id="@+id/resID"
             android:layout_width="77dp"
@@ -205,13 +192,13 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/viewReservationTitle"
             android:layout_width="251dp"
             android:layout_height="27dp"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
-            android:text="RESERVATION SUMMARY"
+            android:text="@string/reservation_summary_txt"
             android:textColor="@color/dark_purple"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -295,16 +282,16 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="413dp"
-        android:layout_height="41dp"
-        android:background="?attr/colorPrimary"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationViewStyle"
+        android:layout_width="412dp"
+        android:layout_height="70dp"
+        app:itemBackground="@color/light_purple"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:menu="@menu/menu_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

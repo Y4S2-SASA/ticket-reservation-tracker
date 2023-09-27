@@ -8,15 +8,6 @@
     android:background="@drawable/bg"
     tools:context=".LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:context=".LoginActivity"
-        tools:layout_editor_absoluteX="64dp">
-
         <TextView
             android:id="@+id/signUpTxt"
             android:layout_width="wrap_content"
@@ -214,7 +205,5 @@
             app:layout_constraintBottom_toTopOf="@+id/dontHaveAnAccTxt"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/twitter" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

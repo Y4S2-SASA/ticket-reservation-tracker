@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".CreateReservationActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".CreateReservationActivity"
-        tools:layout_editor_absoluteX="-110dp"
-        tools:layout_editor_absoluteY="-16dp">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="413dp"
+        android:layout_height="41dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/trainDetailsTxt"
@@ -48,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
-            android:id="@+id/viewSummaryBtn"
+            android:id="@+id/backBtn"
             android:layout_width="208dp"
             android:layout_height="48dp"
             android:layout_marginStart="100dp"
@@ -75,7 +76,7 @@
             android:inputType="text"
             android:paddingLeft="25dp"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
+            app:layout_constraintBottom_toTopOf="@+id/backBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -160,21 +161,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/passengersField" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            style="@style/BottomNavigationViewStyle"
-            android:layout_width="412dp"
-            android:layout_height="70dp"
-            app:itemBackground="@color/light_purple"
-            app:itemTextColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/menu_navigation" />
-
-
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/viewReservationTitle"
             android:layout_width="216dp"
             android:layout_height="27dp"
             android:layout_marginStart="28dp"
@@ -270,17 +258,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="413dp"
-        android:layout_height="41dp"
-        android:background="?attr/colorPrimary"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationViewStyle"
+        android:layout_width="412dp"
+        android:layout_height="70dp"
+        app:itemBackground="@color/light_purple"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:menu="@menu/menu_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
