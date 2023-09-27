@@ -32,8 +32,9 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
         {
             try
             {
+               
                 var user = (await _userQueryRepository.Query(x=>x.UserName.ToLower() == request.UserName.ToLower() && 
-                           x.IsActive == true)).FirstOrDefault();
+                            x.Status == Domain.Enums.Status.Activated)).FirstOrDefault();
 
                 if (user is null)
                 {
@@ -77,14 +78,12 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             var claims = new[]
             {
                         new Claim(JwtRegisteredClaimNames.Sub, user.NIC.ToString()),
-                        new Claim("name",string.IsNullOrEmpty(user.Name)? "": user.Name),
+                        new Claim("firstName",string.IsNullOrEmpty(user.FistName)? "": user.FistName),
                         new Claim("role",role),
                         new Claim(JwtRegisteredClaimNames.Aud,"webapp"),
                         new Claim(JwtRegisteredClaimNames.Aud,"mobileapp"),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
-
-
 
             var token = new JwtSecurityToken
             (
@@ -97,14 +96,12 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             var tokenString = new JwtSecurityTokenHandler()
                             .WriteToken(token);
 
-            
-
-
+           
 
             return UserAuthenticationResponseDTO.Success
                 (
                     tokenString,
-                    $"{user.Name}",
+                    $"{user.FistName} {user.LastName}",
                     user.NIC,
                     role
                 );

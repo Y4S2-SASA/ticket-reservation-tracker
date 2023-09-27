@@ -26,7 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
 
             services.AddTransient<ITRTContext>(provider => provider.GetRequiredService<TRTContext>());
-           
+            services.AddTransient<TRTContextInitialiser>();
+
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 
