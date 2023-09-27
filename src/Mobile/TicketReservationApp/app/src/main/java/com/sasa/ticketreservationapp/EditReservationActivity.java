@@ -9,12 +9,12 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ReservationSummaryActivity extends AppCompatActivity {
+public class EditReservationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation_summary);
+        setContentView(R.layout.activity_edit_reservation);
 
 
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
@@ -41,4 +41,6 @@ public class ReservationSummaryActivity extends AppCompatActivity {
         });
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
     }
+
+
 }
