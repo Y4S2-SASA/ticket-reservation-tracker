@@ -23,7 +23,7 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsers
            {
                 UserName = user.UserName,
                 Email = user.Email,
-                Name = user.Name,
+               // Name = user.Name,
                 NIC = user.NIC,
            }).ToList();
 

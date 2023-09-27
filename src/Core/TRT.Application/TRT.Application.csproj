@@ -21,8 +21,4 @@
     <ProjectReference Include="..\TRT.Domain\TRT.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Common\" />
-  </ItemGroup>
-
 </Project>

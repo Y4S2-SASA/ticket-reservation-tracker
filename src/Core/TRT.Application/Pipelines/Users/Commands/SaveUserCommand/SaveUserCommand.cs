@@ -31,7 +31,6 @@ namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
             }
             catch (Exception ex)
             {
-
                 return ResultDTO.Failure(new List<string>()
                 {
                    ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE
