@@ -13,13 +13,16 @@
         android:theme="@style/Theme.TicketReservationApp"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateReservationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReservationSummaryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
