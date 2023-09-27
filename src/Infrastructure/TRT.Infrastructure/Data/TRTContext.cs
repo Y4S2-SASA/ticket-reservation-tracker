@@ -22,13 +22,13 @@ namespace TRT.Infrastructure.Data
             return _database.GetCollection<T>(name);
         }
 
-        public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
+        public IMongoCollection<User> Users => _database.GetCollection<User>("User");
 
-        public IMongoCollection<Schedule> Schedules => _database.GetCollection<Schedule>("Schedules");
+        public IMongoCollection<Schedule> Schedules => _database.GetCollection<Schedule>("Schedule");
 
-        public IMongoCollection<Train> Trains => _database.GetCollection<Train>("Trains");
+        public IMongoCollection<Train> Trains => _database.GetCollection<Train>("Train");
 
-        public IMongoCollection<Station> Stations => _database.GetCollection<Station>("Stations");
+        public IMongoCollection<Station> Stations => _database.GetCollection<Station>("Station");
     }
 
 }

@@ -32,6 +32,7 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
         {
             try
             {
+               
                 var user = (await _userQueryRepository.Query(x=>x.UserName.ToLower() == request.UserName.ToLower() && 
                             x.Status == Domain.Enums.Status.Activated)).FirstOrDefault();
 
