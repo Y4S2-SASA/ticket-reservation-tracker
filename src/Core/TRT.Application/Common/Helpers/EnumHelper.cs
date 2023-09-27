@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 
 namespace TRT.Application.Common.Helpers
 {
@@ -7,15 +8,8 @@ namespace TRT.Application.Common.Helpers
         public static string GetEnumDescription(Enum value)
         {
             var fi = value.GetType().GetField(value.ToString());
-
-            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
-
-            if (attributes != null && attributes.Any())
-            {
-                return attributes.First().Description;
-            }
-
-            return value.ToString();
+            var attribute = fi.GetCustomAttribute<DescriptionAttribute>();
+            return attribute?.Description ?? value.ToString();
         }
     }
 }

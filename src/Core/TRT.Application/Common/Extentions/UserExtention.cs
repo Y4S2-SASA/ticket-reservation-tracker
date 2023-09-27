@@ -10,11 +10,13 @@ namespace System
             if (user is null) user = new User();
 
             user.NIC = userDTO.NIC;
-            user.Name = userDTO.Name;
+            user.FistName = userDTO.FistName;
+            user.LastName = userDTO.LastName;
+            user.MobileNumber = userDTO.MobileNumber;
             user.Email = userDTO.Email;
             user.UserName = userDTO.Email;
+            user.Status = TRT.Domain.Enums.Status.Activated;
             user.Role = userDTO.Role;
-            user.IsActive = true;
 
             return user;
         }

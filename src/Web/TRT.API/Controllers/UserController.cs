@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TRT.Application.Pipelines.Users.Commands.DeactiveUserCommand;
-using TRT.Application.Pipelines.Users.Commands.ReactiveUserCommand;
+using TRT.Application.Pipelines.Users.Commands.ChangeUserStatus;
 using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsers;
+using TRT.Domain.Constants;
 
 namespace TRT.API.Controllers
 {
@@ -37,18 +38,11 @@ namespace TRT.API.Controllers
             return Ok(response);
         }
 
-        [HttpPut("deactiveUser")]
-        public async Task<IActionResult> DeactiveUser(string nic)
+        [Authorize(Roles = AuthorizedRoles.BackOffice)]
+        [HttpPut("changeUserStatus")]
+        public async Task<IActionResult> ChangeUserStatus(ChangeUserStatusCommand changeUserStatusCommand)
         {
-            var response = await _mediator.Send(new DeactiveUserCommand(nic));
-
-            return Ok(response);
-        }
-
-        [HttpPut("reactiveUser")]
-        public async Task<IActionResult> ReactiveUser(string nic)
-        {
-            var response = await _mediator.Send(new ReactiveUserCommand(nic));
+            var response = await _mediator.Send(changeUserStatusCommand);
 
             return Ok(response);
         }

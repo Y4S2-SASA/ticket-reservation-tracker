@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 
 namespace TRT.API.Controllers
 {

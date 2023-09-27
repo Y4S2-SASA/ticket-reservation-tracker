@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.Pipelines.Users.Commands.AuthenticationCommand;
 
@@ -17,6 +18,7 @@ namespace TRT.API.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticationCommand authenticationCommand)
         {

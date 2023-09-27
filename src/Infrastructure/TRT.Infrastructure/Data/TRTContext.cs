@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TRT.Application.Common.Interfaces;
 using TRT.Domain.Entities;
@@ -24,6 +23,12 @@ namespace TRT.Infrastructure.Data
         }
 
         public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
+
+        public IMongoCollection<Schedule> Schedules => _database.GetCollection<Schedule>("Schedules");
+
+        public IMongoCollection<Train> Trains => _database.GetCollection<Train>("Trains");
+
+        public IMongoCollection<Station> Stations => _database.GetCollection<Station>("Stations");
     }
 
 }

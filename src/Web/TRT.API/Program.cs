@@ -1,3 +1,5 @@
+using TRT.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +18,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+// Initialise and seed database
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<TRTContextInitialiser>();
+    await initialiser.SeedAsync();
 }
 
 app.UseHttpsRedirection();
