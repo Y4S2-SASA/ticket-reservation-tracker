@@ -2,7 +2,10 @@
 <resources>
     <style name="BottomNavigationViewStyle" parent="Widget.Design.BottomNavigationView">
         <item name="android:layout_height">wrap_content</item>
-        <item name="itemIconSize">50dp</item>
+        <item name="itemIconSize">35dp</item>
         <item name="itemIconTint">@color/white</item>
+    </style>
+    <style name="recyclerView">
+        <item name="android:colorForeground">@color/white</item>
     </style>
 </resources>
