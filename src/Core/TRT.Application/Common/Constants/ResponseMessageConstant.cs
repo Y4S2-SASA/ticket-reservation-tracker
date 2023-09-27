@@ -30,6 +30,9 @@
         public const string USER_DETAILS_DEACTIVE_SUCCESS_RESPONSE_MESSAGE =
                              "{0} deactive has been successfull";
 
+        public const string USER_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
+                             "{0} {1} has been successfull";
+
         public const string USER_DETAILS_REACTIVE_SUCCESS_RESPONSE_MESSAGE =
                             "{0} reactive has been successfull";
 
@@ -37,7 +40,9 @@
                                "User details Not found please try again";
 
         public const string USER_DELETE_SUCCESS_RESPONSE_MEESSAGE =
-                              "User details Not found please try again";
+                              "User details delete has been successfull";
+
+       
         #endregion
     }
 }

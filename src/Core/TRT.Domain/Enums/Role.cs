@@ -9,5 +9,8 @@ namespace TRT.Domain.Enums
 
         [Description("Travel Agent")]
         TravelAgent = 2,
+
+        [Description("Traveler")]
+        Traveler = 3,
     }
 }
