@@ -9,11 +9,13 @@ namespace TRT.Domain.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("DepartureStation")]
-        public string DepartureStation { get; set; }
+        [BsonElement("DepartureStationId")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string DepartureStationId { get; set; }
 
-        [BsonElement("ArrivalStation")]
-        public string ArrivalStation { get; set; }
+        [BsonElement("ArrivalStationId")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ArrivalStationId { get; set; }
 
         [BsonElement("DepartureTime")]
         public DateTime DepartureTime { get; set; }

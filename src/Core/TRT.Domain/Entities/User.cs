@@ -8,7 +8,7 @@ namespace TRT.Domain.Entities
         [BsonId]
         public string NIC { get; set; }
 
-        [BsonElement("FistName")]
+        [BsonElement("FirstName")]
         public string FirstName { get; set; }
 
         [BsonElement("LastName")]
