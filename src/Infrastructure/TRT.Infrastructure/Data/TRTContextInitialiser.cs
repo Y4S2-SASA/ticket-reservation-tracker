@@ -35,7 +35,7 @@ namespace TRT.Infrastructure.Data
                 var backOffice = new User()
                 {
                     NIC = "1111",
-                    FistName = "Super",
+                    FirstName = "Super",
                     LastName = "Admin",
                     UserName = "superadmin",
                     MobileNumber = "0703375581",
@@ -50,7 +50,7 @@ namespace TRT.Infrastructure.Data
                 var travelAgent = new User()
                 {
                     NIC = "2222",
-                    FistName = "Travel",
+                    FirstName = "Travel",
                     LastName = "Agent",
                     UserName = "travelagent",
                     MobileNumber = "0703375580",
@@ -65,7 +65,7 @@ namespace TRT.Infrastructure.Data
                 var traveler = new User()
                 {
                     NIC = "3333",
-                    FistName = "Traveler",
+                    FirstName = "Traveler",
                     LastName = string.Empty,
                     UserName = "traveler",
                     MobileNumber = "0703375580",

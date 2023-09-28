@@ -78,7 +78,7 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             var claims = new[]
             {
                         new Claim(JwtRegisteredClaimNames.Sub, user.NIC.ToString()),
-                        new Claim("firstName",string.IsNullOrEmpty(user.FistName)? "": user.FistName),
+                        new Claim("firstName",string.IsNullOrEmpty(user.FirstName)? "": user.FirstName),
                         new Claim("role",role),
                         new Claim(JwtRegisteredClaimNames.Aud,"webapp"),
                         new Claim(JwtRegisteredClaimNames.Aud,"mobileapp"),
@@ -101,7 +101,7 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             return UserAuthenticationResponseDTO.Success
                 (
                     tokenString,
-                    $"{user.FistName} {user.LastName}",
+                    $"{user.FirstName} {user.LastName}",
                     user.NIC,
                     role
                 );

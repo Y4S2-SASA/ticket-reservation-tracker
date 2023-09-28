@@ -13,6 +13,12 @@ namespace TRT.Infrastructure.Repositories.Query.Base
             this._context = context;
         }
 
+        public async Task<long> CountDocumentsAsync(Expression<Func<T, bool>> filterCriteria)
+        {
+            return await _context.GetCollection<T>(typeof(T).Name)
+                        .CountDocumentsAsync(filterCriteria);
+        }
+
         public async Task<List<T>> GetAll(CancellationToken cancellationToken)
         {
             return await _context.GetCollection<T>(typeof(T).Name).Find(_ => true)
@@ -26,12 +32,24 @@ namespace TRT.Infrastructure.Repositories.Query.Base
                                  .FirstOrDefaultAsync(cancellationToken);
         }
 
+        public async Task<List<T>> GetPaginatedDataAsync(Expression<Func<T, bool>> expression, int pageSize, int currentPage, CancellationToken cancellationToken)
+        {
+            var collection = _context.GetCollection<T>(typeof(T).Name);
+
+            return await collection.Find(expression)
+                                   .Skip(currentPage * pageSize)
+                                   .Limit(pageSize)
+                                   .ToListAsync(cancellationToken);
+        }
+
         public async Task<IQueryable<T>> Query(Expression<Func<T, bool>> expression)
         {
             var collection = _context.GetCollection<T>(typeof(T).Name);
             var cursor = await collection.FindAsync(expression);
 
             return cursor.ToEnumerable().AsQueryable();
-        }
+        } 
+
+      
     }
 }

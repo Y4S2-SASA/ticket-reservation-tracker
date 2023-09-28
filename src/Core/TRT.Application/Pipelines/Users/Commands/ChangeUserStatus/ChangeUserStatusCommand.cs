@@ -55,7 +55,7 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
                    string.Format
                    (
                        ResponseMessageConstant.USER_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE, 
-                       $"{user.FistName} " +
+                       $"{user.FirstName} " +
                        $"{user.LastName}", 
                        EnumHelper.GetEnumDescription(request.Status)
                   )
