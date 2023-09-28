@@ -1,7 +1,15 @@
+// utilities
 @import '_utilities/variables';
+
+// pages
 @import '_pages/signin';
+@import '_pages/layout';
+
+// components
 @import '_components/button';
 @import '_components/loader';
+
+// common styles
 body {
     font-family: "Montserrat";
 }

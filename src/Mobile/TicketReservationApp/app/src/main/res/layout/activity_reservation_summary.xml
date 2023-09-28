@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReservationSummaryActivity">
+
+    <Button
+        android:id="@+id/confirmReservationBtn"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/confirm_reservation_btn"
+        android:textColor="@color/dark_purple"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="@color/dark_purple"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="413dp"
+        android:layout_height="41dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/reservationConfirmationCheckBox"
+        android:layout_width="351dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="7dp"
+        android:text="@string/reservation_confirmation_txt"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/confirmReservationBtn"
+        app:layout_constraintEnd_toStartOf="@+id/forgotPwText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/trainDetailsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="11dp"
+        android:text="@string/train_details_txt"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/priceField"
+        app:layout_constraintEnd_toStartOf="@+id/view12" />
+
+    <View
+        android:id="@+id/view11"
+        android:layout_width="110dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="21dp"
+        android:background="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/trainNoField"
+        app:layout_constraintEnd_toStartOf="@+id/trainDetailsTxt"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view12"
+        android:layout_width="110dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="21dp"
+        android:background="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/priceField"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="126dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/light_purple"
+        android:text="@string/back_btn"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toStartOf="@+id/confirmReservationBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/reservedTimeField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/reserved_time_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="12-11-2023, 10:00:00"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/reservationConfirmationCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/stationNameField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/station_name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="Fort Station"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/reservedTimeField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/priceField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/price_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="Rs.5000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/trainNoField" />
+
+    <EditText
+        android:id="@+id/trainNoField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/train_no_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="T001"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
+        app:layout_constraintEnd_toStartOf="@+id/priceField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+            android:id="@+id/generalDetailsTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/general_details_txt"
+            android:textColor="@color/light_purple"
+            app:layout_constraintBottom_toTopOf="@+id/nameField"
+            app:layout_constraintEnd_toStartOf="@+id/view8" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="26dp"
+            android:background="@color/light_purple"
+            app:layout_constraintBottom_toTopOf="@+id/nameField"
+            app:layout_constraintEnd_toStartOf="@+id/generalDetailsTxt"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/view8"
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="26dp"
+            android:background="@color/light_purple"
+            app:layout_constraintBottom_toTopOf="@+id/nameField"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/orTxt4"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="41dp"
+        android:text="@string/passengers_txt"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/view12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/passengersField" />
+
+        <TextView
+            android:id="@+id/resID"
+            android:layout_width="77dp"
+            android:layout_height="29dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/res_id"
+            android:textColor="@color/dark_purple"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/view8"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/reservationSummaryTxt"
+            android:layout_width="251dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/reservation_summary_txt"
+            android:textColor="@color/dark_purple"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/generalDetailsTxt"
+            app:layout_constraintEnd_toStartOf="@+id/resID"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_edittext_with_border"
+            android:ems="10"
+            android:foregroundTint="#0330065F"
+            android:hint="@string/name_hint"
+            android:inputType="text"
+            android:paddingLeft="25dp"
+            android:text="John Smith"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/destinationField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/passengersField"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/no_of_passengers_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="03"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/trainDetailsTxt"
+        app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/destinationField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_edittext_with_border"
+            android:ems="10"
+            android:foregroundTint="#0330065F"
+            android:hint="@string/destination_hint"
+            android:inputType="text"
+            android:paddingLeft="25dp"
+            android:text="Matara"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/passengersField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationViewStyle"
+        android:layout_width="412dp"
+        android:layout_height="70dp"
+        app:itemBackground="@color/light_purple"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navigation" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,11 +7,29 @@ namespace TRT.Domain.Entities
     {
         [BsonId]
         public string NIC { get; set; }
-        public string Name { get; set; }
+
+        [BsonElement("FistName")]
+        public string FirstName { get; set; }
+
+        [BsonElement("LastName")]
+        public  string LastName { get; set; }
+
+        [BsonElement("UserName")]
         public string UserName { get; set; }
-        public string Email { get; set; }
-        public bool IsActive { get; set; }
+
+        [BsonElement("Email")]
+        public string? Email { get; set; }
+
+        [BsonElement("MobileNumber")]
+        public string? MobileNumber { get; set; }
+
+        [BsonElement("Status")]
+        public Status Status { get; set; }
+
+        [BsonElement("Role")]
         public Role Role { get; set; }
+
+        [BsonElement("PasswordHash")]
         public string PasswordHash { get; set; }
 
     }
