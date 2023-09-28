@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="johnsmith@gmail.com"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/deactivateAccBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/emailTxt"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="265dp"
+        android:layout_marginBottom="3dp"
+        android:text="Email"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/emailField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/mobileNoField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="077 584 9661"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/nicTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/firstNameTxt"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="265dp"
+        android:layout_marginBottom="3dp"
+        android:text="First Name"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/firstNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="413dp"
+        android:layout_height="41dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/deactivateAccBtn"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="95dp"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/white"
+        android:text="DEACTIVATE ACCOUNT"
+        android:textColor="@color/dark_purple"
+        app:layout_constraintBottom_toTopOf="@+id/saveBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/dark_purple"
+        app:strokeWidth="1dp" />
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="95dp"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/light_purple"
+        android:text="SAVE CHANGES"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/mobileNoTxt"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="265dp"
+        android:layout_marginBottom="3dp"
+        android:text="Mobile No"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/mobileNoField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/lastNameTxt"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="3dp"
+        android:text="Last Name"
+        android:textAlignment="textEnd"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/lastNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nicTxt"
+        android:layout_width="106dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="3dp"
+        android:text="NIC"
+        android:textAlignment="textEnd"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/nicField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/resID"
+        android:layout_width="90dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/rounded_acc_status"
+        android:padding="2dp"
+        android:text="ACTIVE"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/firstNameField"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/profileTitle"
+        android:layout_width="251dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="27dp"
+        android:text="WELCOME JOHN SMITH!"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/firstNameTxt"
+        app:layout_constraintEnd_toStartOf="@+id/resID"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/firstNameField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/name_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="John Smith"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/lastNameTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/lastNameField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/destination_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="Smith"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/mobileNoTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/nicField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/destination_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:text="200054615295"
+        android:textColor="#7E7E7E"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/emailTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationViewStyle"
+        android:layout_width="412dp"
+        android:layout_height="70dp"
+        app:itemBackground="@color/light_purple"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navigation" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
