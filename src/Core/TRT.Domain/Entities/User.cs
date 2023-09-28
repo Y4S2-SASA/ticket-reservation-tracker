@@ -9,7 +9,7 @@ namespace TRT.Domain.Entities
         public string NIC { get; set; }
 
         [BsonElement("FistName")]
-        public string FistName { get; set; }
+        public string FirstName { get; set; }
 
         [BsonElement("LastName")]
         public  string LastName { get; set; }

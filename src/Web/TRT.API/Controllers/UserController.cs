@@ -5,6 +5,7 @@ using TRT.Application.Pipelines.Users.Commands.ChangeUserStatus;
 using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsers;
+using TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter;
 using TRT.Domain.Constants;
 
 namespace TRT.API.Controllers
@@ -51,6 +52,14 @@ namespace TRT.API.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var response = await _mediator.Send(new GetAllUsersQuery());
+
+            return Ok(response);
+        }
+
+        [HttpPost("getAllUsersByFilter")]
+        public async Task<IActionResult> GetAllUsersByFilter(GetAllUsersByFilterQuery getUsersByFilterQuery)
+        {
+            var response = await _mediator.Send(getUsersByFilterQuery);
 
             return Ok(response);
         }
