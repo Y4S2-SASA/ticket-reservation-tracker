@@ -30,10 +30,23 @@
     <string name="reserved_time_hint">Reserved Time</string>
     <string name="train_no_hint">Train No</string>
     <string name="station_name_hint">Station Name</string>
-    <string name="platform_no_hint">Platform No</string>
+    <string name="price_hint">Price</string>
     <string name="view_summary_btn">VIEW SUMMARY</string>
     <string name="train_details_txt">Train Details</string>
     <string name="passengers_txt">Passengers(s)</string>
+    <string name="title_activity_reservation_summary">ReservationSummaryActivity</string>
 
+    <string name="reservation_summary_txt">RESERVATION SUMMARY</string>
+    <string name="reservation_confirmation_txt">I understand that this reservation can only be edited or canceled 5 days prior to the reserved date.</string>
+    <string name="confirm_reservation_btn">CONFIRM RESERVATION</string>
 
+    <string name="view_reservation_title">VIEW RESERVATION</string>
+    <string name="cancel_booking_btn">CANCEL BOOKING</string>
+    <string name="back_btn">BACK</string>
+
+    <string name="update_booking_btn">SAVE CHANGES</string>
+    <string name="edit_reservation_title">EDIT RESERVATION</string>
+
+    <string name="create_reservation_btn">CREATE RESERVATION</string>
+    <string name="current_bookings_title">CURRENT BOOKINGS</string>
 </resources>
