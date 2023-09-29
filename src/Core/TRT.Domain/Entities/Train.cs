@@ -9,8 +9,10 @@ namespace TRT.Domain.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("TrainNumber")]
-        public string TrainNumber { get; set; }
+        [BsonElement("TrainName")]
+        public string TrainName { get; set; }
+
+
 
         [BsonElement("Schedules")]
         public List<Schedule> Schedules { get; set; }

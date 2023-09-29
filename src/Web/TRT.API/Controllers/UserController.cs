@@ -26,42 +26,67 @@ namespace TRT.API.Controllers
         [HttpPost("saveUser")]
         public async Task<IActionResult> SaveUser([FromBody] SaveUserCommand saveUserCommand)
         {
-            var response = await _mediator.Send(saveUserCommand);
+            try
+            {
+                var response = await _mediator.Send(saveUserCommand);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
 
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand updateUserCommand)
         {
-            var response = await _mediator.Send(updateUserCommand);
+            
+            try
+            {
+                var response = await _mediator.Send(updateUserCommand);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
 
         [Authorize(Roles = AuthorizedRoles.BackOffice)]
         [HttpPut("changeUserStatus")]
         public async Task<IActionResult> ChangeUserStatus(ChangeUserStatusCommand changeUserStatusCommand)
         {
-            var response = await _mediator.Send(changeUserStatusCommand);
+            try
+            {
+                var response = await _mediator.Send(changeUserStatusCommand);
 
-            return Ok(response);
-        }
-
-        [HttpGet("getAllUsers")]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var response = await _mediator.Send(new GetAllUsersQuery());
-
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
 
         [HttpPost("getAllUsersByFilter")]
         public async Task<IActionResult> GetAllUsersByFilter(GetAllUsersByFilterQuery getUsersByFilterQuery)
         {
-            var response = await _mediator.Send(getUsersByFilterQuery);
+            try
+            {
+                var response = await _mediator.Send(getUsersByFilterQuery);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
     }
 }

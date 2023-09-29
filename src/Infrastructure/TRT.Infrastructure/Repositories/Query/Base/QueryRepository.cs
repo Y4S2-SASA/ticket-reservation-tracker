@@ -32,7 +32,13 @@ namespace TRT.Infrastructure.Repositories.Query.Base
                                  .FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<List<T>> GetPaginatedDataAsync(Expression<Func<T, bool>> expression, int pageSize, int currentPage, CancellationToken cancellationToken)
+        public async Task<List<T>> GetPaginatedDataAsync
+        (
+            Expression<Func<T, bool>> expression, 
+            int pageSize, 
+            int currentPage, 
+            CancellationToken cancellationToken
+        )
         {
             var collection = _context.GetCollection<T>(typeof(T).Name);
 

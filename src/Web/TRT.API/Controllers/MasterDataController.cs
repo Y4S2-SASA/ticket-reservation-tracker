@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
 using TRT.Application.Pipelines.Users.Queries.GetUserMasterData;
 
 namespace TRT.API.Controllers
@@ -20,9 +21,36 @@ namespace TRT.API.Controllers
         [HttpGet("getUserMasterData")]
         public async Task<IActionResult> GetUserMasterData()
         {
-            var response = await _mediator.Send(new GetUserMasterDataQuery());
+            try
+            {
+                var response = await _mediator.Send(new GetUserMasterDataQuery());
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
 
-            return Ok(response);
+        [HttpPost("getStationsMasterData")]
+        public async Task<IActionResult> GetStationsMasterData
+        (
+            GetStationsMasterDataQuery getStationsMasterDataQuery
+        )
+        {
+           
+            try
+            {
+                var response = await _mediator.Send(getStationsMasterDataQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
     }
 }

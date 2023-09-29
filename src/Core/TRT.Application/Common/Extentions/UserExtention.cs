@@ -29,12 +29,12 @@ namespace System
             userDetailDTO.NIC = user.NIC;
             userDetailDTO.FullName = $"{user.FirstName} {user.LastName}";
             userDetailDTO.FirstName = user.FirstName;
-            userDetailDTO.LastName = userDetailDTO.LastName;
-            userDetailDTO.MobileNumber = user.MobileNumber;
+            userDetailDTO.LastName = user.LastName;
+            userDetailDTO.MobileNumber = user.MobileNumber ?? string.Empty;
             userDetailDTO.Role = EnumHelper.GetEnumDescription(user.Role);
             userDetailDTO.UserName = user.UserName;
-            userDetailDTO.Email = user.Email;
-            
+            userDetailDTO.Email = user.Email ?? string.Empty;
+
             return userDetailDTO;
         }
     }

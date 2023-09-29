@@ -13,6 +13,7 @@ namespace TRT.Domain.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string DepartureStationId { get; set; }
 
+
         [BsonElement("ArrivalStationId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public string ArrivalStationId { get; set; }
