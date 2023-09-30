@@ -6,10 +6,8 @@ using TRT.Domain.Repositories.Command;
 
 namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
 {
-    public record SaveUserCommand : IRequest<ResultDTO>
-    {
-        public UserDTO  UserData { get; set; }
-    }
+    public record SaveUserCommand(UserDTO UserData) : IRequest<ResultDTO>;
+    
 
     public class SaveUserCommandHandler : IRequestHandler<SaveUserCommand, ResultDTO>
     {

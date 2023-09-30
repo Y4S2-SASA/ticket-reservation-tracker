@@ -9,10 +9,10 @@ namespace TRT.API.Controllers
     [ApiController]
     public class MasterDataController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<MasterDataController> _logger;
         private readonly IMediator _mediator;
 
-        public MasterDataController(ILogger<UserController> logger, IMediator mediator)
+        public MasterDataController(ILogger<MasterDataController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;

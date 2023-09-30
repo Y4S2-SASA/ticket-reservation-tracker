@@ -11,7 +11,7 @@ namespace System
             if (user is null) user = new User();
 
             user.NIC = userDTO.NIC;
-            user.FirstName = userDTO.FistName;
+            user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.MobileNumber = userDTO.MobileNumber;
             user.Email = userDTO.Email;

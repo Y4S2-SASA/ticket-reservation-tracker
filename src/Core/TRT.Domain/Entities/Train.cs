@@ -1,10 +1,16 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using TRT.Domain.Enums;
 
 namespace TRT.Domain.Entities
 {
     public class Train
     {
+        public Train()
+        {
+            PassengerClasses = new List<PassengerClass>();
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
@@ -12,12 +18,16 @@ namespace TRT.Domain.Entities
         [BsonElement("TrainName")]
         public string TrainName { get; set; }
 
+        [BsonElement("SeatCapacity")]
+        public int SeatCapacity  { get; set; }
 
+        [BsonElement("AvailableDays")]
+        public AvailableDays AvailableDays { get; set; }
 
-        [BsonElement("Schedules")]
-        public List<Schedule> Schedules { get; set; }
+        [BsonElement("PassengerClasses")]
+        public List<PassengerClass> PassengerClasses { get; set; }
 
-        [BsonElement("IsActive")]
-        public bool IsActive { get; set; }
+        [BsonElement("Status")]
+        public Status Status { get; set; }
     }
 }

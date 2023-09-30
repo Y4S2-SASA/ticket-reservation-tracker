@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TRT.Application.DTOs.UserDTOs;
 using TRT.Application.Pipelines.Users.Commands.ChangeUserStatus;
 using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
@@ -24,11 +25,11 @@ namespace TRT.API.Controllers
         }
 
         [HttpPost("saveUser")]
-        public async Task<IActionResult> SaveUser([FromBody] SaveUserCommand saveUserCommand)
+        public async Task<IActionResult> SaveUser([FromBody] UserDTO userDTO)
         {
             try
             {
-                var response = await _mediator.Send(saveUserCommand);
+                var response = await _mediator.Send(new SaveUserCommand(userDTO));
 
                 return Ok(response);
             }
@@ -40,12 +41,12 @@ namespace TRT.API.Controllers
         }
 
         [HttpPut("updateUser")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand updateUserCommand)
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
         {
             
             try
             {
-                var response = await _mediator.Send(updateUserCommand);
+                var response = await _mediator.Send(new UpdateUserCommand(userDTO));
 
                 return Ok(response);
             }
