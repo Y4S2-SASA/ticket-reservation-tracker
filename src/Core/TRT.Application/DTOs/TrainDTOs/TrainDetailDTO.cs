@@ -2,9 +2,9 @@
 
 namespace TRT.Application.DTOs.TrainDTOs
 {
-    public class TrainDTO
+    public class TrainDetailDTO
     {
-        public TrainDTO()
+        public TrainDetailDTO()
         {
             PassengerClasses = new List<PassengerClass>();
         }
@@ -13,6 +13,9 @@ namespace TRT.Application.DTOs.TrainDTOs
         public int SeatCapacity { get; set; }
         public AvailableDays AvailableDays { get; set; }
         public List<PassengerClass> PassengerClasses { get; set; }
-      
+        public Status Status { get; set; }
+
+        public string TrainAvailableDays { get; set; }
+        public string PassengerClassNames { get; set; }
     }
 }

@@ -7,6 +7,8 @@ using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsers;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter;
+using TRT.Application.Pipelines.Users.Queries.GetUserById;
+using TRT.Application.Pipelines.Users.Queries.ValidateUserNIC;
 using TRT.Domain.Constants;
 
 namespace TRT.API.Controllers
@@ -80,6 +82,38 @@ namespace TRT.API.Controllers
             try
             {
                 var response = await _mediator.Send(getUsersByFilterQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("getUserById/{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetUserByIdQuery(id));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("validateUserNIC")]
+        public async Task<IActionResult> ValidateUserNIC(ValidateUserNICQuery validateUserNICQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(validateUserNICQuery);
 
                 return Ok(response);
             }

@@ -38,6 +38,7 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                 if(train is null)
                 {
                     train = request.TrainDTO.ToEntity();
+                    train.Status = TRT.Domain.Enums.Status.Pending;
                     await _trainCommandRepository.AddAsync(train, cancellationToken);
 
                     return ResultDTO.Success(ResponseMessageConstant.TRAIN_SAVE_SUCCESS_RESPONSE_MESSAGE);

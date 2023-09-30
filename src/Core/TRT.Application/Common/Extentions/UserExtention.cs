@@ -22,7 +22,7 @@ namespace System
             return user;
         }
 
-        public static UserDetailDTO ToDto(this User user, UserDetailDTO? userDetailDTO = null)
+        public static UserDetailDTO ToDetailDto(this User user, UserDetailDTO? userDetailDTO = null)
         {
             if (userDetailDTO is null) userDetailDTO = new UserDetailDTO();
 
@@ -34,8 +34,23 @@ namespace System
             userDetailDTO.Role = EnumHelper.GetEnumDescription(user.Role);
             userDetailDTO.UserName = user.UserName;
             userDetailDTO.Email = user.Email ?? string.Empty;
-
+            userDetailDTO.Status = EnumHelper.GetEnumDescription(user.Status);
             return userDetailDTO;
+        }
+
+        public static UserDTO ToDto(this User user, UserDTO? userDTO = null)
+        {
+            if (userDTO is null) userDTO = new UserDTO();
+
+            userDTO.NIC = user.NIC;
+            userDTO.FirstName = user.FirstName;
+            userDTO.LastName = user.LastName;
+            userDTO.MobileNumber = user.MobileNumber;
+            userDTO.Email = user.Email;
+            userDTO.UserName = user.Email;
+            userDTO.Role = user.Role;
+
+            return userDTO;
         }
     }
 }

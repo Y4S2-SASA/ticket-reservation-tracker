@@ -68,7 +68,7 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
                                     );
 
                 var listOfUsers = availableData.OrderByDescending(x => x.FirstName)
-                                  .Select(x => x.ToDto())
+                                  .Select(x => x.ToDetailDto())
                                   .ToList();
 
                 return new PaginatedListDTO<UserDetailDTO>

@@ -13,7 +13,7 @@ namespace System
             train.AvailableDays = trainDTO.AvailableDays;
             train.SeatCapacity = trainDTO.SeatCapacity;
             train.PassengerClasses = trainDTO.PassengerClasses;
-            train.Status = train.Status;
+           
 
             return train;
         }
