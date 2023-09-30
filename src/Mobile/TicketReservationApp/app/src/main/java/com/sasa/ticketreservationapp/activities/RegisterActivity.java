@@ -1,7 +1,8 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.activities;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.util.Log;
+
+import com.sasa.ticketreservationapp.R;
+import com.sasa.ticketreservationapp.config.ApiClient;
+import com.sasa.ticketreservationapp.config.ApiInterface;
+import com.sasa.ticketreservationapp.models.UserModel;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText firstNameField, lastNameField, nicField, emailField, mobileNumberField, regUsernameField, regPasswordField;

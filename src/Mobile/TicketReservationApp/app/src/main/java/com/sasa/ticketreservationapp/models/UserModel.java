@@ -1,4 +1,6 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.models;
+
+import android.widget.EditText;
 
 public class UserModel {
 

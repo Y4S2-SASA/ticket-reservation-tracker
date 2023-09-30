@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.config;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

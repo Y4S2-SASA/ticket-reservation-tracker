@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sasa.ticketreservationapp.R;
 
 public class EditReservationActivity extends AppCompatActivity {
 

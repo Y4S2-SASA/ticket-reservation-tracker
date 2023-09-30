@@ -1,5 +1,5 @@
 
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.models;
 
 
 

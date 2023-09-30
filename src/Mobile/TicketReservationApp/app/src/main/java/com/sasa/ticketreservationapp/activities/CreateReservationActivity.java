@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sasa.ticketreservationapp.R;
 
 public class CreateReservationActivity extends AppCompatActivity {
 
