@@ -2,6 +2,7 @@
 using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.UserDTOs;
+using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Command;
 
 namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
@@ -21,6 +22,7 @@ namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
             try
             {
                 var user = request.UserData.ToEntity();
+                user.Status = Status.Activated;
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserData.Password);
 
                 await userCommandRepository.AddAsync(user, cancellationToken);

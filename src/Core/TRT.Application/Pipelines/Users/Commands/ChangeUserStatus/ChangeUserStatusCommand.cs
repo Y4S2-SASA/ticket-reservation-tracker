@@ -48,7 +48,7 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
 
                 user.Status = request.Status;
 
-                await _userCommandRepository.UpdateAsync(user, cancellationToken);
+                await _userCommandRepository.UpdateUserAsync(user, cancellationToken);
 
                 return ResultDTO.Success
                 (

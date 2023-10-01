@@ -27,12 +27,12 @@ namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
 
                 user = request.UserDetail.ToEntity(user);
 
-                await _userCommandRepository.UpdateAsync(user, cancellationToken);
+                await _userCommandRepository.UpdateUserAsync(user, cancellationToken);
 
                 return ResultDTO.Success(ResponseMessageConstant.USER_DETAILS_UPDATE_SUCCESS_RESPONSE_MESSAGE);
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return ResultDTO.Failure(new List<string>()
                 {
