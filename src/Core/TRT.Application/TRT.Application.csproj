@@ -21,4 +21,8 @@
     <ProjectReference Include="..\TRT.Domain\TRT.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pipelines\Stations\Commands\" />
+  </ItemGroup>
+
 </Project>

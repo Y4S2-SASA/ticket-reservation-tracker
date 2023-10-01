@@ -7,11 +7,8 @@ using TRT.Domain.Repositories.Query;
 
 namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
 {
-    public record UpdateUserCommand : IRequest<ResultDTO>
-    {
-        public UserDTO UserDetail { get; set; }
-    }
-
+    public record UpdateUserCommand(UserDTO UserDetail) : IRequest<ResultDTO>;
+   
     public class UserUpdateCommandHandler : IRequestHandler<UpdateUserCommand, ResultDTO>
     {
         private readonly IUserCommandRepository _userCommandRepository;
