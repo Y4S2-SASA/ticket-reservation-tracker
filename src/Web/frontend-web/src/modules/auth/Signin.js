@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const defaultValues = {
-  username: 'avd@gmail.com',
+  username: 'superadmin',
   password: '123',
 }
 
@@ -57,11 +57,12 @@ export default function SignIn() {
           history.push('/dashboard')
           toast.success(response?.message)
         } else {
-          toast.error(response?.message)
+          toast.error(response?.message || 'Error occured. Try again!')
         }
       }
     } catch (e) {
       console.log('error', e)
+      toast.error('Error occured. Try again!')
       setSubmitting(false)
     } finally {
       setSubmitting(false)
