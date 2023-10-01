@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
+using TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData;
+using TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName;
 using TRT.Application.Pipelines.Users.Queries.GetUserMasterData;
 
 namespace TRT.API.Controllers
@@ -52,5 +54,38 @@ namespace TRT.API.Controllers
                 throw;
             }
         }
+
+        [HttpGet("getTrainDetailMasterData")]
+        public async Task<IActionResult> GetTrainDetailMasterData()
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetTrainDetailMasterDataQuery());
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getTrainMasterData")]
+        public async Task<IActionResult> GetTrainMasterData(GetTrainMasterDataByNameQuery getTrainMasterData)
+        {
+            try
+            {
+                var response = await _mediator.Send(getTrainMasterData);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
     }
 }

@@ -19,7 +19,8 @@ namespace TRT.Application.Pipelines.Users.Queries.GetUserById
         {
             try
             {
-                var user = await _userQueryRepository.GetById(request.id, cancellationToken);
+                var user = (await _userQueryRepository.Query(x=>x.NIC == request.id))
+                            .FirstOrDefault();
 
                 return user.ToDto();
             }

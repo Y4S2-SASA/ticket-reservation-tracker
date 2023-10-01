@@ -33,10 +33,10 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
         {
             try
             {
-                var train = await _trainQueryRepository.GetById(request.TrainDTO.Id, cancellationToken);
 
-                if(train is null)
+                if(string.IsNullOrEmpty(request.TrainDTO.Id))
                 {
+                    var train = new Domain.Entities.Train();
                     train = request.TrainDTO.ToEntity();
                     train.Status = TRT.Domain.Enums.Status.Pending;
                     await _trainCommandRepository.AddAsync(train, cancellationToken);
@@ -46,13 +46,34 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                 }
                 else
                 {
+                    var train = await _trainQueryRepository.GetById(request.TrainDTO.Id, cancellationToken);
+
                     train = request.TrainDTO.ToEntity(train);
+                    
+                    var existingPassengerClasses = train.PassengerClasses.ToList();
+                    var selectedPassengerClasses = request.TrainDTO.PassengerClasses.ToList();
+
+                    var newPassengerClasses = selectedPassengerClasses.Except(existingPassengerClasses)
+                                             .ToList();
+
+                    var deletedPassengerClasses = existingPassengerClasses.Except(selectedPassengerClasses)
+                                                  .ToList();
+
+                    if (newPassengerClasses.Count > 0)
+                    {
+                        train.PassengerClasses = newPassengerClasses;
+                    }
+
+                    foreach(var item in deletedPassengerClasses)
+                    {
+                        train.PassengerClasses.Remove(item);
+                    }
+                  
                     await _trainCommandRepository.UpdateAsync(train, cancellationToken);
 
-                    return ResultDTO.Failure(new List<string>()
-                    {
+                    return ResultDTO.Success(
                         ResponseMessageConstant.TRAIN_UPDATE_SUCCESS_RESPONSE_MESSAGE
-                    });
+                   );
                 }
             }
             catch (Exception ex)

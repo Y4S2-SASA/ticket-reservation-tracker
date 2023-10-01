@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Linq.Expressions;
 using TRT.Domain.Repositories.Query.Base;
 using TRT.Infrastructure.Data;
@@ -27,9 +28,9 @@ namespace TRT.Infrastructure.Repositories.Query.Base
 
         public async Task<T> GetById(string _id, CancellationToken cancellationToken)
         {
-            var filter = Builders<T>.Filter.Eq("_id", _id); 
-            return await _context.GetCollection<T>(typeof(T).Name).Find(filter)
-                                 .FirstOrDefaultAsync(cancellationToken);
+                var filter = Builders<T>.Filter.Eq("_id", new ObjectId(_id));
+                return await _context.GetCollection<T>(typeof(T).Name).Find(filter)
+                                     .FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<List<T>> GetPaginatedDataAsync

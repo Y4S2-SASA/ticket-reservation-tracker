@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus;
 using TRT.Application.Pipelines.Trains.Commands.SaveTrain;
+using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
+using TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter;
 
 namespace TRT.API.Controllers
 {
@@ -53,5 +55,39 @@ namespace TRT.API.Controllers
                 throw;
             }
         }
+
+        [HttpGet("getTrainById/{id}")]
+        public async Task<IActionResult> GetTrainById(string id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetTrainByIdQuery(id));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getTrainsByFilter")]
+        public async Task<IActionResult> GetTrainsByFilter(GetTrainsByFilterQuery getTrainsByFilterQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getTrainsByFilterQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+        
     }
 }
