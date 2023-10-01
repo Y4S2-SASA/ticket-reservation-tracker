@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using TRT.Domain.Enums;
 
 namespace TRT.Domain.Entities
@@ -8,7 +9,7 @@ namespace TRT.Domain.Entities
         [BsonId]
         public string NIC { get; set; }
 
-        [BsonElement("FistName")]
+        [BsonElement("FirstName")]
         public string FirstName { get; set; }
 
         [BsonElement("LastName")]
@@ -31,6 +32,7 @@ namespace TRT.Domain.Entities
 
         [BsonElement("PasswordHash")]
         public string PasswordHash { get; set; }
+
 
     }
 }

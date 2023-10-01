@@ -22,9 +22,18 @@ namespace TRT.API.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticationCommand authenticationCommand)
         {
-            var response = await _mediator.Send(authenticationCommand);
+            try
+            {
+                var response = await _mediator.Send(authenticationCommand);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+            
         }
     }
 }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using TRT.API.Services;
+using TRT.Application.Common.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddHttpContextAccessor();
 
-           // services.AddSingleton<ICurrentUserService, CurrentUserService>();
+           services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 
             services.AddSwaggerGen(options =>
