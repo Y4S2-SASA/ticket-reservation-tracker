@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const token = JSON.parse(localStorage.getItem('auth'))?.token
+
 class HttpServices {
   get = (path = '', config = {}) => {
     const configHeaders = {
@@ -55,7 +57,7 @@ class HttpServices {
     const configHeaders = {
       headers: {
         ...config.headers,
-        // Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : '',
       },
     }
     const url = `${process.env.REACT_APP_SERVER_URL + path}`
@@ -81,7 +83,7 @@ class HttpServices {
     const configHeaders = {
       headers: {
         ...config.headers,
-        // Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : '',
       },
     }
     const url = `${process.env.REACT_APP_SERVER_URL + path}/${id}`
