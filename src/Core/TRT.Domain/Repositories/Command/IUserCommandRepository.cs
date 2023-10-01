@@ -5,5 +5,6 @@ namespace TRT.Domain.Repositories.Command
 {
     public interface IUserCommandRepository : ICommandRepository<User>
     {
+        Task UpdateUserAsync(User user, CancellationToken cancellationToken);
     }
 }

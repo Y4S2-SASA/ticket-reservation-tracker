@@ -16,7 +16,6 @@ namespace System
             user.MobileNumber = userDTO.MobileNumber;
             user.Email = userDTO.Email;
             user.UserName = userDTO.Email;
-            user.Status = TRT.Domain.Enums.Status.Activated;
             user.Role = userDTO.Role;
 
             return user;
