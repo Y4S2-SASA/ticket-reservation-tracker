@@ -129,6 +129,19 @@ export default function UserList() {
   const handleStatusChange = (itemId) => {
     setSelectedStatus(itemId)
     console.log(`Selected Item ID: ${itemId}`)
+
+    selectedIds.forEach(async (nic) => {
+      const payload = {
+        nic: nic,
+        status: itemId,
+      }
+      const response = await UserAPIService.updateUserStatus(payload)
+      if (response) {
+        await getAllUsers()
+        await setSelectedIds([])
+      }
+      console.log(response)
+    })
   }
 
   // const handlePageChange = (newPage) => {

@@ -79,6 +79,22 @@ class UserAPIService {
         })
     })
   }
+
+  updateUserStatus = (req, headers = {}) => {
+    const formattedReq = {
+      nic: req.nic,
+      status: req.status,
+    }
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.put('/api/User/changeUserStatus', formattedReq, headers)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
 
 export default new UserAPIService()
