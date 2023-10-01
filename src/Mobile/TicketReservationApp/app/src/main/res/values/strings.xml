@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">TicketReservationApp</string>
+    <string name="logotxt">LOGO</string>
+    <string name="intro_txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="remember_me_txt">Remember me</string>
+    <string name="forgot_pw_txt">Forgot Password</string>
+    <string name="or_txt">or</string>
+    <string name="dont_have_an_account_txt">"Don't have an account?"</string>
+    <string name="sign_up_txt">Sign Up</string>
+    <string name="sign_in_btn">SIGN IN</string>
+
+
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="mobile_no_hint">Mobile No</string>
+    <string name="nic_hint">NIC</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_btn">SIGN UP</string>
+    <string name="already_have_an_account_txt">"Already have an account?"</string>
+    <string name="sign_in_txt">Sign In</string>
+
+    <string name="create_reservation_title">CREATE RESERVATION</string>
+    <string name="res_id">R0001</string>
+    <string name="general_details_txt">General Details</string>
+    <string name="name_hint">Name</string>
+    <string name="destination_hint">Destination</string>
+    <string name="no_of_passengers_hint">No of Passengers</string>
+    <string name="reserved_time_hint">Reserved Time</string>
+    <string name="train_no_hint">Train No</string>
+    <string name="station_name_hint">Station Name</string>
+    <string name="price_hint">Price</string>
+    <string name="view_summary_btn">VIEW SUMMARY</string>
+    <string name="train_details_txt">Train Details</string>
+    <string name="passengers_txt">Passengers(s)</string>
+    <string name="title_activity_reservation_summary">ReservationSummaryActivity</string>
+
+    <string name="reservation_summary_txt">RESERVATION SUMMARY</string>
+    <string name="reservation_confirmation_txt">I understand that this reservation can only be edited or canceled 5 days prior to the reserved date.</string>
+    <string name="confirm_reservation_btn">CONFIRM RESERVATION</string>
+
+    <string name="view_reservation_title">VIEW RESERVATION</string>
+    <string name="cancel_booking_btn">CANCEL BOOKING</string>
+    <string name="back_btn">BACK</string>
+
+    <string name="update_booking_btn">SAVE CHANGES</string>
+    <string name="edit_reservation_title">EDIT RESERVATION</string>
+
+    <string name="create_reservation_btn">CREATE RESERVATION</string>
+    <string name="current_bookings_title">CURRENT BOOKINGS</string>
+</resources>

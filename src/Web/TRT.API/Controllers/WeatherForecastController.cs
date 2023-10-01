@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 
 namespace TRT.API.Controllers
 {
@@ -34,12 +33,6 @@ namespace TRT.API.Controllers
             .ToArray();
         }
 
-        [HttpPost(Name = "SaveUser")]
-        public async Task<IActionResult> SaveUser([FromBody] SaveUserCommand command)
-        {
-            var response = await _mediator.Send(command);
-
-            return Ok(response);
-        }
+        
     }
 }

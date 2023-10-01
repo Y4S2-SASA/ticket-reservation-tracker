@@ -26,12 +26,22 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
 
             services.AddTransient<ITRTContext>(provider => provider.GetRequiredService<TRTContext>());
-           
+            services.AddTransient<TRTContextInitialiser>();
+
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 
             services.AddTransient<IUserQueryRepository, UserQueryRepository>();
             services.AddTransient<IUserCommandRepository, UserCommandRepository>();
+
+            services.AddTransient<IScheduleQueryRepository, ScheduleQueryRepository>();
+            services.AddTransient<IScheduleCommandRepository, ScheduleCommandRepository>();
+
+            services.AddTransient<IStationQueryRepository, StationQueryRepository>();
+            services.AddTransient<IStationCommandRepository, StationCommandRepository>();
+
+            services.AddTransient<ITrainQueryRepository, TrainQueryRepository>();
+            services.AddTransient<ITrainCommandRepository, TrainCommandRepository>();
 
             return services;
         }
