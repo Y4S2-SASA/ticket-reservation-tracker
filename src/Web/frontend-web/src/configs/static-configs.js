@@ -18,31 +18,43 @@ export const NAVBAR_ITEMS = [
 export const STATUS_LIST = [
   {
     id: 0,
+    label: '-All-',
+    dropLabel: '-All-',
+    isDisabled: true,
+    color: '#E8AD00',
+    showOnChange: false,
+  },
+  {
+    id: 1,
     label: 'Pending',
     dropLabel: 'Pending',
     isDisabled: true,
     color: '#E8AD00',
+    showOnChange: true,
   },
   {
-    id: 1,
+    id: 2,
     label: 'Activated',
     dropLabel: 'Active',
     isDisabled: false,
     color: '#93D94E',
+    showOnChange: true,
   },
   {
-    id: 2,
+    id: 3,
     label: 'Deactivated',
     dropLabel: 'Deactive',
     isDisabled: false,
     color: '#F28705',
+    showOnChange: true,
   },
   {
-    id: 3,
+    id: 4,
     label: 'Deleted',
     dropLabel: 'Delete',
     isDisabled: false,
     color: '#F23030',
+    showOnChange: true,
   },
 ]
 
@@ -64,26 +76,30 @@ export const getStatusColor = (status) => {
 export const ROLES = [
   {
     id: 0,
-    name: '-All-',
+    dropLabel: '-All-',
     showInForm: false,
     isDisabled: false,
+    showInFilter: true,
   },
   {
     id: 1,
-    name: 'Back Office',
+    dropLabel: 'Back Office',
     showInForm: true,
     isDisabled: false,
+    showInFilter: true,
   },
   {
     id: 2,
-    name: 'Travel Agent',
+    dropLabel: 'Travel Agent',
     showInForm: true,
     isDisabled: false,
+    showInFilter: true,
   },
   {
     id: 3,
-    name: 'Traveler',
+    dropLabel: 'Traveler',
     showInForm: true,
     isDisabled: false,
+    showInFilter: true,
   },
 ]

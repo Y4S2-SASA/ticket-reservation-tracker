@@ -68,7 +68,7 @@
                             "Schedule details Updated has been successfull";
 
         public const string SCHEDULE_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
-                             "{0} {1} has been successfull";
+                             "Schedule status has been successfull";
 
         public const string SCHEDULE_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Schedule details Not found please try again";

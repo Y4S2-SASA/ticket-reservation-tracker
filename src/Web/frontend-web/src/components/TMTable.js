@@ -79,6 +79,12 @@ const StyledTable = ({
           {renderActions(row.nic)}
         </tr>
       ))
+    } else {
+      return (
+        <div style={{ fontSize: '20px', fontWeight: 900, color: '#7E5AE9' }}>
+          No data found
+        </div>
+      )
     }
   }
 

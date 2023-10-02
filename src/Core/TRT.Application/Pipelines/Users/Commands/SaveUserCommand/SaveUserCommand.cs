@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.UserDTOs;
@@ -12,10 +13,16 @@ namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
 
     public class SaveUserCommandHandler : IRequestHandler<SaveUserCommand, ResultDTO>
     {
-        private readonly IUserCommandRepository userCommandRepository;
-        public SaveUserCommandHandler(IUserCommandRepository _userCommandRepository)
+        private readonly IUserCommandRepository _userCommandRepository;
+        private readonly ILogger<SaveUserCommandHandler> _logger;
+        public SaveUserCommandHandler
+        (
+            IUserCommandRepository userCommandRepository,
+            ILogger<SaveUserCommandHandler> logger
+        )
         {
-            this.userCommandRepository = _userCommandRepository;
+            this._userCommandRepository = userCommandRepository;
+            this._logger = logger;
         }
         public async Task<ResultDTO> Handle(SaveUserCommand request, CancellationToken cancellationToken)
         {
@@ -25,16 +32,18 @@ namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
                 user.Status = Status.Activated;
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserData.Password);
 
-                await userCommandRepository.AddAsync(user, cancellationToken);
+                await _userCommandRepository.AddAsync(user, cancellationToken);
 
-                return ResultDTO.Success(ResponseMessageConstant.USER_DETAILS_SAVE_SUCCESS_RESPONSE_MESSAGE);
+                return ResultDTO.Success
+                    (
+                        ResponseMessageConstant.USER_DETAILS_SAVE_SUCCESS_RESPONSE_MESSAGE
+                    );
             }
             catch (Exception ex)
             {
-                return ResultDTO.Failure(new List<string>()
-                {
-                   ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE
-                });
+                _logger.LogError(ex.Message, ex);
+
+                throw new ApplicationException(ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
             }
         }
     }

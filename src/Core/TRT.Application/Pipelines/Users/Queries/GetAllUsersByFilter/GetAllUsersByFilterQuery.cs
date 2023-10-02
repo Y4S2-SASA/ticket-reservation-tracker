@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System.Data;
 using System.Linq.Expressions;
+using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.UserDTOs;
 using TRT.Domain.Entities;
@@ -37,7 +38,7 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
         {
             try
             {
-                var totalRecordCount = 0;
+                var totalRecordCount = NumberConstant.ZERO;
 
                 Expression<Func<User, bool>> query = x => true;
 
@@ -48,12 +49,12 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
                                     x.UserName.Contains(request.SearchText);
                 }
 
-                if(request.Status > 0)
+                if(request.Status > NumberConstant.ZERO)
                 {
                     query = x => x.Status == request.Status;
                 }
 
-                if(request.Role > 0)
+                if(request.Role > NumberConstant.ZERO)
                 {
                    query = x => x.Role == request.Role;
                 }
@@ -75,7 +76,7 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
                         (
                             listOfUsers, 
                             totalRecordCount, 
-                            request.CurrentPage + 1, 
+                            request.CurrentPage + ApplicationLevelConstant.PAGINATION_PAGE_INCREMENT, 
                             request.PageSize
                         );
             }

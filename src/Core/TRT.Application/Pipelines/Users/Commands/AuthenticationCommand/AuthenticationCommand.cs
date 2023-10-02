@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -22,11 +23,18 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
     {
         private readonly IUserQueryRepository _userQueryRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthenticationCommandHandler> _logger;
 
-        public AuthenticationCommandHandler(IUserQueryRepository userQueryRepository, IConfiguration configuration)
+        public AuthenticationCommandHandler
+        (
+            IUserQueryRepository userQueryRepository, 
+            IConfiguration configuration,
+            ILogger<AuthenticationCommandHandler> logger
+        )
         {
             this._userQueryRepository = userQueryRepository;
             this._configuration = configuration;
+            this._logger = logger;
         }
         public async Task<UserAuthenticationResponseDTO> Handle(AuthenticationCommand request, CancellationToken cancellationToken)
         {
@@ -59,8 +67,10 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message, ex);
 
-                return UserAuthenticationResponseDTO.NotSuccess(ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
+                throw new ApplicationException(ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
+                
             }
         }
 

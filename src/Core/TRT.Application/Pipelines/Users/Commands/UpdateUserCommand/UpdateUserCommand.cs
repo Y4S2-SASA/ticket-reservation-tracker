@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.UserDTOs;
@@ -13,10 +14,17 @@ namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
     {
         private readonly IUserCommandRepository _userCommandRepository;
         private readonly IUserQueryRepository _userQueryRepository;
-        public UserUpdateCommandHandler(IUserCommandRepository userCommandRepository, IUserQueryRepository userQueryRepository)
+        private readonly ILogger<UserUpdateCommandHandler> _logger;
+        public UserUpdateCommandHandler
+        (
+            IUserCommandRepository userCommandRepository, 
+            IUserQueryRepository userQueryRepository,
+            ILogger<UserUpdateCommandHandler> logger
+        )
         {
             this._userCommandRepository = userCommandRepository;
             this._userQueryRepository = userQueryRepository;
+            this._logger = logger;
         }
         public async Task<ResultDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
@@ -34,10 +42,10 @@ namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
             }
             catch (Exception ex)
             {
-                return ResultDTO.Failure(new List<string>()
-                {
-                   ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE
-                });
+                
+                _logger.LogError(ex.Message, ex);
+
+                throw new ApplicationException(ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
             }
         }
     }

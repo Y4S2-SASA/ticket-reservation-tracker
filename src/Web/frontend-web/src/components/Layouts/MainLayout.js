@@ -35,6 +35,8 @@ const MainLayout = ({ children }) => {
         onConfirm={confirmLogout}
         title={'Confirm Logout'}
         message={'Are you sure you want to logout?'}
+        leftButton="Cancel"
+        rightButton="Logout"
       />
       <div className="navbar-container">
         <div

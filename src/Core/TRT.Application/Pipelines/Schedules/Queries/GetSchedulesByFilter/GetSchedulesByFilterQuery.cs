@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
 using TRT.Domain.Entities;
@@ -44,7 +45,8 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
         {
             try
             {
-                var totalRecordCount = 0;
+                var totalRecordCount = NumberConstant.ZERO;
+
                 var scheduleDetails = new List<ScheduleDetailDTO>();
 
                 Expression<Func<Schedule, bool>> query = x => true;
@@ -64,7 +66,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
                     query = x => x.ArrivalStationId == request.ArrivalStationId;
                 }
 
-                if(request.Status > 0)
+                if(request.Status > NumberConstant.ZERO)
                 {
                     query = x => x.Status == request.Status;
                 }
@@ -91,8 +93,8 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
                     scheduleData.TrainName = train.TrainName;
                     scheduleData.DepartureStationName = departureStation.Name;
                     scheduleData.ArrivalStationName = arrivalStationName.Name;
-                    scheduleData.ArrivalTime = item.ArrivalTime.ToString("MM/dd/yyyy hh:mm tt");
-                    scheduleData.DepartureTime = item.DepartureTime.ToString("MM/dd/yyyy hh:mm tt");
+                    scheduleData.ArrivalTime = item.ArrivalTime.ToString(DateTimeFormatConstant.DATE_WITH_TIME_FORMAT);
+                    scheduleData.DepartureTime = item.DepartureTime.ToString(DateTimeFormatConstant.DATE_WITH_TIME_FORMAT);
 
                     scheduleDetails.Add(scheduleData);
                     
@@ -102,7 +104,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
                        (
                            scheduleDetails,
                            totalRecordCount,
-                           request.CurrentPage + 1,
+                           request.CurrentPage + ApplicationLevelConstant.PAGINATION_PAGE_INCREMENT,
                            request.PageSize
                        );
 

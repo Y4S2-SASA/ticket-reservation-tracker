@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Domain.Entities;
@@ -37,7 +38,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
         {
             try
             {
-                var totalRecordCount = 0;
+                var totalRecordCount = NumberConstant.ZERO;
 
                 Expression<Func<Train, bool>> query = x => x.Status != Status.Deleted;
 
@@ -60,7 +61,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
                       (
                           listOfTrains,
                           totalRecordCount,
-                          request.CurrentPage + 1,
+                          request.CurrentPage + ApplicationLevelConstant.PAGINATION_PAGE_INCREMENT,
                           request.PageSize
                       );
             }
@@ -71,6 +72,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
             }
         }
 
+        #region Private Methods
         private Expression<Func<Train, bool>> ConfigureFilter(Expression<Func<Train, bool>> query, GetTrainsByFilterQuery request)
         {
             if (!string.IsNullOrEmpty(request.SearchText))
@@ -78,22 +80,23 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
                 query = x => x.TrainName.Contains(request.SearchText);
             }
 
-            if (request.Status > 0)
+            if (request.Status > NumberConstant.ZERO)
             {
                 query = x => x.Status == request.Status;
             }
 
-            if (request.AvailableDay > 0)
+            if (request.AvailableDay > NumberConstant.ZERO)
             {
                 query = x => x.AvailableDays == request.AvailableDay;
             }
 
-            if (request.PassengerClass > 0)
+            if (request.PassengerClass > NumberConstant.ZERO)
             {
                 query = x => x.PassengerClasses.Any(a => a == request.PassengerClass);
             }
 
             return query;
-        }
+        } 
+        #endregion
     }
 }

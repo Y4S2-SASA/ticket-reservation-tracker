@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus;
@@ -10,6 +11,7 @@ namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TrainController : ControllerBase
     {
         private readonly ILogger<TrainController> _logger;

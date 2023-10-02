@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TRT.Application.Common.Constants;
 using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.UserDTOs;
@@ -38,12 +39,12 @@ namespace TRT.Application.Pipelines.Users.Queries.GetUserMasterData
 
             var defaultValue = new DropDownDTO()
             {
-                Id = 0,
+                Id = NumberConstant.ZERO,
                 Name = "-All-"
             };
 
-            masterData.Roles.Insert(0, defaultValue); 
-            masterData.Status.Insert(0, defaultValue); 
+            masterData.Roles.Insert(NumberConstant.ZERO, defaultValue); 
+            masterData.Status.Insert(NumberConstant.ZERO, defaultValue); 
 
 
             return masterData;

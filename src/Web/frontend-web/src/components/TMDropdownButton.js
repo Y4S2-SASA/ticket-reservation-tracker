@@ -6,6 +6,7 @@ const DropdownStyledButton = ({
   items,
   handleChange,
   selectedStatus,
+  changeMode,
 }) => {
   const [itemLabel, setItemLabel] = useState(null)
   useEffect(() => {
@@ -27,7 +28,7 @@ const DropdownStyledButton = ({
           borderRadius: '46px',
         }}
       >
-        {dropdownTitle}
+        {itemLabel ? itemLabel : dropdownTitle}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -35,7 +36,7 @@ const DropdownStyledButton = ({
           <Dropdown.Item
             eventKey={item?.id}
             onClick={() => handleChange(item?.id)}
-            disabled={item?.isDisabled}
+            disabled={changeMode && item?.isDisabled}
           >
             {item?.dropLabel}
           </Dropdown.Item>
