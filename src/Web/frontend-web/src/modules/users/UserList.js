@@ -4,12 +4,13 @@ import Loader from '../../components/TMLoader'
 import MainLayout from '../../components/Layouts/MainLayout'
 import LayoutHeader from '../../components/Layouts/LayoutHeader'
 import DropdownStyledButton from '../../components/TMDropdownButton'
-import { STATUS_LIST } from '../../configs/static-configs'
+import { ROLES, STATUS_LIST } from '../../configs/static-configs'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 import { FaPlus, FaSearch } from 'react-icons/fa'
 import { USERS_HEADERS } from '../../configs/sample-data'
 import UserAPIService from '../../api-layer/users'
 import UserDialog from './UserDialog'
+import ConfirmationDialog from '../../components/TMConfirmationDialog'
 
 export default function UserList() {
   const [selectedIds, setSelectedIds] = useState([])
@@ -28,6 +29,7 @@ export default function UserList() {
     totalPages: 0,
   })
   const [currentPage, setCurrentPage] = useState(0)
+  const [filterByStatus, setFilterByStatus] = useState(0)
   const [filteredData, setFilteredData] = useState([])
   const [searchText, setSearchText] = useState('')
   const [userSettings, setUserSettings] = useState({
@@ -35,6 +37,11 @@ export default function UserList() {
     action: '',
     parentData: null,
   })
+  const [
+    showStatuConfirmationDialog,
+    setShowStatuConfirmationDialog,
+  ] = useState(false)
+  const [selectedFilterRole, setSelectedFilterRole] = useState(0)
 
   useEffect(() => {
     setLoader(true)
@@ -47,8 +54,8 @@ export default function UserList() {
     try {
       const payload = {
         searchText: searchText,
-        status: 0,
-        role: 0,
+        status: filterByStatus,
+        role: selectedFilterRole,
         currentPage: currentPage,
         pageSize: 10,
       }
@@ -93,7 +100,7 @@ export default function UserList() {
 
   useEffect(() => {
     getAllUsers()
-  }, [currentPage, searchText])
+  }, [currentPage, searchText, filterByStatus, selectedFilterRole])
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -128,12 +135,14 @@ export default function UserList() {
 
   const handleStatusChange = (itemId) => {
     setSelectedStatus(itemId)
-    console.log(`Selected Item ID: ${itemId}`)
+    setShowStatuConfirmationDialog(true)
+  }
 
+  const handleConfirmStatusChange = async () => {
     selectedIds.forEach(async (nic) => {
       const payload = {
         nic: nic,
-        status: itemId,
+        status: selectedStatus,
       }
       const response = await UserAPIService.updateUserStatus(payload)
       if (response) {
@@ -142,6 +151,20 @@ export default function UserList() {
       }
       console.log(response)
     })
+
+    setShowStatuConfirmationDialog(false)
+  }
+
+  const handleCloseConfirmationDialog = () => {
+    setShowStatuConfirmationDialog(false)
+  }
+
+  const handleStatusFilter = (itemId) => {
+    setFilterByStatus(itemId)
+  }
+
+  const handleRoleFilter = (itemId) => {
+    setSelectedFilterRole(itemId)
   }
 
   // const handlePageChange = (newPage) => {
@@ -201,23 +224,25 @@ export default function UserList() {
         {selectedIds?.length > 0 ? (
           <DropdownStyledButton
             dropdownTitle={'Change status'}
-            items={STATUS_LIST}
+            items={STATUS_LIST.filter((status) => status.showOnChange === true)}
             handleChange={handleStatusChange}
             selectedStatus={selectedStatus}
+            changeMode={true}
           />
         ) : (
           <>
             <DropdownStyledButton
               dropdownTitle={'Filter by Status'}
               items={STATUS_LIST}
-              handleChange={handleStatusChange}
-              selectedStatus={selectedStatus}
+              handleChange={handleStatusFilter}
+              selectedStatus={filterByStatus}
+              changeMode={false}
             />
             <DropdownStyledButton
               dropdownTitle={'Filter by Role'}
-              items={STATUS_LIST}
-              handleChange={handleStatusChange}
-              selectedStatus={selectedStatus}
+              items={ROLES}
+              handleChange={handleRoleFilter}
+              selectedStatus={selectedFilterRole}
             />
           </>
         )}
@@ -232,6 +257,18 @@ export default function UserList() {
       ) : (
         <MainLayout>
           <div className="users-container">
+            <ConfirmationDialog
+              title="Confirm Status Change"
+              message={`Are you sure you want to change the status to ${
+                STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
+                'Unknown'
+              }?`}
+              show={showStatuConfirmationDialog}
+              onHide={handleCloseConfirmationDialog}
+              onConfirm={handleConfirmStatusChange}
+              leftButton="Cancel"
+              rightButton="Confirm"
+            />
             <LayoutHeader
               title="Users"
               subtitle="User Management"
@@ -246,7 +283,7 @@ export default function UserList() {
               onCheckboxChange={handleCheckboxChange}
               onSelectAllChange={handleSelectAllChange}
               editEnabled={true}
-              deleteEnabled={true}
+              deleteEnabled={false}
               onEditClick={handleEditClick}
               onDeleteClick={handleDeleteClick}
               handlePageChange={handlePageChange}
