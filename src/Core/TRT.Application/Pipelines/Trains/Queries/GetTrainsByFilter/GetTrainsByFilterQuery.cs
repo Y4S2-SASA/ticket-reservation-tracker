@@ -72,6 +72,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
             }
         }
 
+        #region Private Methods
         private Expression<Func<Train, bool>> ConfigureFilter(Expression<Func<Train, bool>> query, GetTrainsByFilterQuery request)
         {
             if (!string.IsNullOrEmpty(request.SearchText))
@@ -95,6 +96,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
             }
 
             return query;
-        }
+        } 
+        #endregion
     }
 }

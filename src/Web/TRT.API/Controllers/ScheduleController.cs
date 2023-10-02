@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
+using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
@@ -65,6 +67,26 @@ namespace TRT.API.Controllers
             try
             {
                 var response = await _mediator.Send(new GetScheduleByIdQuery(id));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPut("changeStatusSchedule")]
+        public async Task<IActionResult> ChangeStatusSchedule([FromBody] StatusChangeDTO statusChangeDto)
+        {
+            try
+            {
+                var response = await _mediator.Send(new ChangeStatusScheduleCommand()
+                {
+                    StatusChangeDTO = statusChangeDto
+                });
 
                 return Ok(response);
             }
