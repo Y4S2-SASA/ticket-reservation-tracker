@@ -7,11 +7,8 @@ using TRT.Domain.Repositories.Query;
 
 namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
 {
-    public record UpdateUserCommand : IRequest<ResultDTO>
-    {
-        public UserDTO UserDetail { get; set; }
-    }
-
+    public record UpdateUserCommand(UserDTO UserDetail) : IRequest<ResultDTO>;
+   
     public class UserUpdateCommandHandler : IRequestHandler<UpdateUserCommand, ResultDTO>
     {
         private readonly IUserCommandRepository _userCommandRepository;
@@ -30,12 +27,12 @@ namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
 
                 user = request.UserDetail.ToEntity(user);
 
-                await _userCommandRepository.UpdateAsync(user, cancellationToken);
+                await _userCommandRepository.UpdateUserAsync(user, cancellationToken);
 
                 return ResultDTO.Success(ResponseMessageConstant.USER_DETAILS_UPDATE_SUCCESS_RESPONSE_MESSAGE);
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return ResultDTO.Failure(new List<string>()
                 {

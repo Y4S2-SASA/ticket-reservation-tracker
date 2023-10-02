@@ -48,14 +48,14 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
 
                 user.Status = request.Status;
 
-                await _userCommandRepository.UpdateAsync(user, cancellationToken);
+                await _userCommandRepository.UpdateUserAsync(user, cancellationToken);
 
                 return ResultDTO.Success
                 (
                    string.Format
                    (
                        ResponseMessageConstant.USER_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE, 
-                       $"{user.FistName} " +
+                       $"{user.FirstName} " +
                        $"{user.LastName}", 
                        EnumHelper.GetEnumDescription(request.Status)
                   )

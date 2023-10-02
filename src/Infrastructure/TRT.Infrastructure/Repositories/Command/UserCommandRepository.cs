@@ -1,4 +1,6 @@
-﻿using TRT.Domain.Entities;
+﻿using MongoDB.Driver;
+using SharpCompress.Common;
+using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Command;
 using TRT.Infrastructure.Data;
 using TRT.Infrastructure.Repositories.Command.Base;
@@ -12,6 +14,14 @@ namespace TRT.Infrastructure.Repositories.Command
             : base(context)
         {
 
+        }
+
+        public async Task UpdateUserAsync(User user, CancellationToken cancellationToken)
+        {
+            var filter = Builders<User>.Filter.Eq("_id", user.NIC);
+
+            await _context.GetCollection<User>(typeof(User).Name)
+                         .ReplaceOneAsync(filter, user, cancellationToken: cancellationToken);
         }
     }
 }
