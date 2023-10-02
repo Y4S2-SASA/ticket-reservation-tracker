@@ -4,10 +4,13 @@
 // pages
 @import '_pages/signin';
 @import '_pages/layout';
+@import '_pages/user';
 
 // components
 @import '_components/button';
 @import '_components/loader';
+@import '_components/layout-header';
+@import '_components/table';
 
 // common styles
 body {

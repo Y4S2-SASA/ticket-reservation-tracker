@@ -42,7 +42,36 @@
         public const string USER_DELETE_SUCCESS_RESPONSE_MEESSAGE =
                               "User details delete has been successfull";
 
-       
+
+        #endregion
+
+
+        #region Train
+        public const string TRAIN_SAVE_SUCCESS_RESPONSE_MESSAGE =
+                             "Train details saved has been successfull";
+
+        public const string TRAIN_UPDATE_SUCCESS_RESPONSE_MESSAGE =
+                            "Train details Updated has been successfull";
+
+        public const string TRAIN_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
+                             "{0} {1} has been successfull";
+
+        public const string TRAIN_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
+                              "Train details Not found please try again";
+        #endregion
+
+        #region Schedule
+        public const string SCHEDULE_SAVE_SUCCESS_RESPONSE_MESSAGE =
+                             "Schedule details saved has been successfull";
+
+        public const string SCHEDULE_UPDATE_SUCCESS_RESPONSE_MESSAGE =
+                            "Schedule details Updated has been successfull";
+
+        public const string SCHEDULE_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
+                             "{0} {1} has been successfull";
+
+        public const string SCHEDULE_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
+                              "Schedule details Not found please try again";
         #endregion
     }
 }
