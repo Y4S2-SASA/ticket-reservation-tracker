@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using SharpCompress.Common;
 using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Command;
 using TRT.Infrastructure.Data;
