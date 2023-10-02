@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
     private Button signInBtn;
+
+    private TextView signUpTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,13 @@ public class LoginActivity extends AppCompatActivity {
         usernameField = findViewById(R.id.usernameField);
         passwordField = findViewById(R.id.passwordField);
         signInBtn = findViewById(R.id.signInBtn);
+        signUpTxt = findViewById(R.id.signUpTxt);
+
+        signUpTxt.setOnClickListener(v->{
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         signInBtn.setOnClickListener(v -> {
 
@@ -50,19 +60,16 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         LoginResponse loginResponse = response.body();
                         if(loginResponse.isLoginSuccess() == true){
-//                        SharedPreferences.Editor editor = getSharedPreferences("userCredentials", MODE_PRIVATE).edit();
-//                        String token = loginResponse.getToken().toString();
+                            SharedPreferences.Editor editor = getSharedPreferences("userCredentials", MODE_PRIVATE).edit();
+                            String token = loginResponse.getToken().toString();
                             String nic = loginResponse.getUserId().toString();
-//                        String displayName = loginResponse.getDisplayName();
-//                        editor.putString("token", token);
-//                        editor.putString("nic", nic);
-//                        editor.putString("displayName", displayName);
-//                        editor.apply();
+                            String displayName = loginResponse.getDisplayName();
+                            editor.putString("token", token);
+                            editor.putString("nic", nic);
+                            editor.putString("displayName", displayName);
+                            editor.apply();
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, CurrentBookingsActivity.class);
-                            intent.putExtra("nic", nic);
-                            Log.d("TAG", loginResponse.getToken().toString());
-                            Log.d("TAG", loginResponse.getDisplayName().toString());
                             startActivity(intent);
                             finish();
                         }else{

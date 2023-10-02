@@ -1,4 +1,5 @@
 package com.sasa.ticketreservationapp.activities;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import com.sasa.ticketreservationapp.models.UserModel;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText firstNameField, lastNameField, nicField, emailField, mobileNumberField, regUsernameField, regPasswordField;
+    private TextView signInTxt;
+    private Button signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,14 @@ public class RegisterActivity extends AppCompatActivity {
         mobileNumberField = findViewById(R.id.mobileNumberField);
         regUsernameField = findViewById(R.id.regUsernameField);
         regPasswordField = findViewById(R.id.regPasswordField);
+        signInTxt = findViewById(R.id.signInTxt);
+        signUpBtn = findViewById(R.id.signUpBtn);
 
-        Button signUpBtn = findViewById(R.id.signUpBtn);
+        signInTxt.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         signUpBtn.setOnClickListener(v -> {
             String name = firstNameField.getText().toString();

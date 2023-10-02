@@ -34,14 +34,21 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     String key = null;
 
     Button createReservationBtn;
-//    SharedPreferences prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
 
+    SharedPreferences prefs;
     private boolean isOverlayVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_bookings);
+
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
+            prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
+        }else{
+            Intent intent = new Intent(CurrentBookingsActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
 //      Sets up the recycler view
         swipeRefreshLayout = findViewById(R.id.swipereservation);
@@ -94,14 +101,15 @@ public class CurrentBookingsActivity extends AppCompatActivity {
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
     createReservationBtn = findViewById(R.id.createReservationBtn);
 
+
         createReservationBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(CurrentBookingsActivity.this, CreateReservationActivity.class);
-//            startActivity(intent);
-            Intent intent = getIntent();
-            String nic = intent.getStringExtra("nic");
-//            String nic = prefs.getString("nic", "");
-            Log.d("TAG", nic);
-//            finish();
+            Intent intent = new Intent(CurrentBookingsActivity.this, CreateReservationActivity.class);
+            startActivity(intent);
+            finish();
+//                if(prefs.getString("nic", "") != null){
+//                String nic = prefs.getString("nic", "");
+//                Log.d("TAG", nic);
+//            }
         });
 
     }
