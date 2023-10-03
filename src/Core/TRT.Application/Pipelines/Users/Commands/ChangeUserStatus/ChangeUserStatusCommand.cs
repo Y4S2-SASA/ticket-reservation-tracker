@@ -48,7 +48,7 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
 
                 user.Status = request.Status;
 
-                await _userCommandRepository.UpdateAsync(user, cancellationToken);
+                await _userCommandRepository.UpdateUserAsync(user, cancellationToken);
 
                 return ResultDTO.Success
                 (
@@ -63,8 +63,9 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
-                throw;
+                _logger.LogError(ex.Message, ex);
+
+                throw new ApplicationException(ResponseMessageConstant.COMMON_EXCEPTION_RESPONSE_MESSAGE);
             }
         }
     }

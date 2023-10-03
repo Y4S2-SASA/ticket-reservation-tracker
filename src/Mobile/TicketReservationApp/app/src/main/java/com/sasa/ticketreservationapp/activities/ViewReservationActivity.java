@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,13 +8,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sasa.ticketreservationapp.R;
 
-public class ReservationSummaryActivity extends AppCompatActivity {
+public class ViewReservationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation_summary);
+        setContentView(R.layout.activity_view_reservation);
 
 
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------

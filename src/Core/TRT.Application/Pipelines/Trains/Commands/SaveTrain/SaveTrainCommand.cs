@@ -61,7 +61,7 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
 
                     if (newPassengerClasses.Count > 0)
                     {
-                        train.PassengerClasses = newPassengerClasses;
+                        train.PassengerClasses.AddRange(newPassengerClasses);
                     }
 
                     foreach(var item in deletedPassengerClasses)

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:weightSum="9"
     android:layout_height="match_parent"
-    tools:context=".BookingHistoryActivity">
+    tools:context=".activities.BookingHistoryActivity">
 
     <LinearLayout
         android:layout_weight="1"

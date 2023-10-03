@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,15 +12,20 @@ import android.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sasa.ticketreservationapp.activities.EditReservationActivity;
+import com.sasa.ticketreservationapp.R;
+import com.sasa.ticketreservationapp.handlers.ReservationsHandler;
+import com.sasa.ticketreservationapp.models.ReservationModel;
+
 import java.util.ArrayList;
 
-public class BookingHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //Initializing variables
     private Context context;
     ArrayList<ReservationModel> list = new ArrayList<>();
 
-    //    public int resMenu = R.id.menu_update;
-    public BookingHistoryAdapter(Context ctx){
+//    public int resMenu = R.id.menu_update;
+    public ReservationsAdapter(Context ctx){
         this.context = ctx;
     }
     public void setItems(ArrayList<ReservationModel> req){
@@ -55,7 +60,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     context.startActivity(intentU);// Return true to indicate that the click has been handled
                 }
                 else if (item.getItemId() == R.id.menu_delete) {
-//                    ((BookingHistoryActivity) context).toggleOverlay(true);
+//                    ((CurrentBookingsActivity) context).toggleOverlay(true);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_layout, null);
                     builder.setView(dialogView);
@@ -70,7 +75,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         public void onClick(View v) {
                             // Handle positive button click
                             // For example, you can dismiss the dialog
-//                            ((BookingHistoryActivity) context).toggleOverlay(false);
+//                            ((CurrentBookingsActivity) context).toggleOverlay(false);
                             dialog.dismiss();
                         }
                     });
@@ -80,7 +85,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         public void onClick(View v) {
                             // Handle negative button click
                             // For example, you can dismiss the dialog
-//                            ((BookingHistoryActivity) context).toggleOverlay(false);
+//                            ((CurrentBookingsActivity) context).toggleOverlay(false);
                             dialog.dismiss();
                         }
                     });

@@ -1,4 +1,4 @@
-package com.sasa.ticketreservationapp;
+package com.sasa.ticketreservationapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,20 +6,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sasa.ticketreservationapp.DAORequest;
+import com.sasa.ticketreservationapp.R;
+import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
+import com.sasa.ticketreservationapp.models.ReservationModel;
 
 import java.util.ArrayList;
 
-public class CurrentBookingsActivity extends AppCompatActivity {
+public class BookingHistoryActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -28,27 +30,15 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     boolean isLoading = false;
     String key = null;
 
-    Button createReservation;
 
     private boolean isOverlayVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_bookings);
+        setContentView(R.layout.activity_booking_history);
 
-//        createReservation = findViewById(R.id.createReservationBtn);
-//
-//        createReservation.setOnClickListener(new View.OnClickListener(){
-//         @Override
-//         public void onClick(View view) {
-//             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-//             builder.setView(R.layout.dialog_layout);
-//             AlertDialog dialog = builder.create();
-//             dialog.show();// Return true to indicate that the click h
-//         }
-
-//      Sets up the recycler view
+        //Sets up the recycler view
         swipeRefreshLayout = findViewById(R.id.swipereservation);
         recyclerView = findViewById(R.id.recyclerviewreservation);
         recyclerView.setHasFixedSize(true);
@@ -71,7 +61,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
                     }
                 }
             }
-
         }));
 
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
@@ -83,7 +72,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.profile) {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    startActivity(new Intent(getApplicationContext(), CreateReservationActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.home) {
@@ -96,8 +85,9 @@ public class CurrentBookingsActivity extends AppCompatActivity {
                 return true;
             }
         });
-//-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
-}
+//-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
+    }
+
     //Loads the data to the recycler view
     private void loadData() {
         swipeRefreshLayout.setRefreshing(true);
@@ -113,7 +103,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         isLoading = false;
         swipeRefreshLayout.setRefreshing(false);
     }
-
     void toggleOverlay(boolean show) {
         if (show && !isOverlayVisible) {
             View overlayView = LayoutInflater.from(this).inflate(R.layout.overlay_layout, null);

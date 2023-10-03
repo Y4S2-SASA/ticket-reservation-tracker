@@ -59,5 +59,19 @@
         public const string TRAIN_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Train details Not found please try again";
         #endregion
+
+        #region Schedule
+        public const string SCHEDULE_SAVE_SUCCESS_RESPONSE_MESSAGE =
+                             "Schedule details saved has been successfull";
+
+        public const string SCHEDULE_UPDATE_SUCCESS_RESPONSE_MESSAGE =
+                            "Schedule details Updated has been successfull";
+
+        public const string SCHEDULE_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
+                             "Schedule status has been successfull";
+
+        public const string SCHEDULE_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
+                              "Schedule details Not found please try again";
+        #endregion
     }
 }

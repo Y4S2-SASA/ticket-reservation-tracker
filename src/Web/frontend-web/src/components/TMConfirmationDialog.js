@@ -7,6 +7,8 @@ export default function ConfirmationDialog({
   show,
   onHide,
   onConfirm,
+  leftButton,
+  rightButton,
 }) {
   return (
     <Modal
@@ -33,14 +35,14 @@ export default function ConfirmationDialog({
             color: '#330065',
           }}
         >
-          Cancel
+          {leftButton}
         </Button>
         <Button
           variant="primary"
           onClick={onConfirm}
           style={{ backgroundColor: '#7E5AE9', border: 'none' }}
         >
-          Logout
+          {rightButton}
         </Button>
       </Modal.Footer>
     </Modal>

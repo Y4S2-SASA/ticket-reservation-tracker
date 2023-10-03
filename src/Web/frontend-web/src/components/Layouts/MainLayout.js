@@ -26,7 +26,6 @@ const MainLayout = ({ children }) => {
     localStorage.clear()
     history.push('/login')
   }
-  console.log(auth)
 
   return (
     <div className="main-layout">
@@ -36,11 +35,17 @@ const MainLayout = ({ children }) => {
         onConfirm={confirmLogout}
         title={'Confirm Logout'}
         message={'Are you sure you want to logout?'}
+        leftButton="Cancel"
+        rightButton="Logout"
       />
       <div className="navbar-container">
         <div
           className="left-sidebar"
-          style={showSidebar ? {} : { display: 'none' }}
+          style={
+            showSidebar
+              ? { height: `${window.innerHeight}pt` }
+              : { display: 'none' }
+          }
         >
           <div>
             <div className="top-layer">

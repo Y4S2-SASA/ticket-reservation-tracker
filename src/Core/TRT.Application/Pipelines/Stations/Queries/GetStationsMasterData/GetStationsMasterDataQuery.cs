@@ -38,7 +38,6 @@ namespace TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData
                 }
 
                 var listOfStations = (await _stationQueryRepository.Query(query))
-                                    .Take(10)
                                     .ToList();
 
                 return listOfStations.Select(x=> new DropDownCoreDTO()

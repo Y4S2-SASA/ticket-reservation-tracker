@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -17,11 +17,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/nameField"
-        android:layout_width="298dp"
+        android:id="@+id/firstNameField"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -36,10 +36,10 @@
 
     <EditText
         android:id="@+id/nicField"
-        android:layout_width="298dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -54,10 +54,10 @@
 
     <EditText
         android:id="@+id/emailField"
-        android:layout_width="298dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -71,11 +71,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/destinationField"
-        android:layout_width="298dp"
+        android:id="@+id/mobileNumberField"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -90,10 +90,10 @@
 
     <EditText
         android:id="@+id/regUsernameField"
-        android:layout_width="298dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -108,10 +108,10 @@
 
     <EditText
         android:id="@+id/regPasswordField"
-        android:layout_width="298dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="36dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -126,10 +126,10 @@
 
     <EditText
         android:id="@+id/lastNameField"
-        android:layout_width="298dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="56dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -138,8 +138,9 @@
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/destinationField"
+        app:layout_constraintBottom_toTopOf="@+id/mobileNumberField"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -148,12 +149,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
         android:layout_marginEnd="159dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="23dp"
         android:text="REGISTER"
         android:textColor="@color/dark_purple"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/nameField"
+        app:layout_constraintBottom_toTopOf="@+id/firstNameField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -164,7 +165,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/light_purple"
         android:text="@string/sign_up_btn"
         app:layout_constraintBottom_toTopOf="@+id/alreadyHaveAccTxt"
