@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using MediatR;
 using System.Reflection;
+using TRT.Application.Common.Behaviours;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,6 +11,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
             return services;
         }

@@ -43,6 +43,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ITrainQueryRepository, TrainQueryRepository>();
             services.AddTransient<ITrainCommandRepository, TrainCommandRepository>();
 
+            services.AddTransient<IReservationQueryRepository, ReservationQueryRepository>();
+            services.AddTransient<IReservationCommandRepository, ReservationCommandRepository>();
+
             return services;
         }
     }

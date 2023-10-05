@@ -9,6 +9,7 @@ namespace TRT.Application.Common.Interfaces
         IMongoCollection<Schedule> Schedules { get; }
         IMongoCollection<Train> Trains { get; }
         IMongoCollection<Station> Stations { get; }
+        IMongoCollection<TrainTicketPrice> TrainTicketPrices { get; }
 
     }
 }

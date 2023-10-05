@@ -7,6 +7,8 @@ using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
+using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
+using TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId;
 
 namespace TRT.API.Controllers
 {
@@ -87,6 +89,40 @@ namespace TRT.API.Controllers
                 {
                     StatusChangeDTO = statusChangeDto
                 });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("getScheduleTrainsByDestinationId/{destinationId}")]
+        public async Task<IActionResult> GetScheduleTrainsByDestinationId(string destinationId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetScheduleTrainsByDestinationIdQuery(destinationId));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("getSchudulesSubStationsByTrainId/{trainId}")]
+        public async Task<IActionResult> GetSchudulesSubStationsByTrainId(string trainId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetSchudulesSubStationsByTrainIdQuery(trainId));
 
                 return Ok(response);
             }

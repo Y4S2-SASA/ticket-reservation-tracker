@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using TRT.Application.Common.Interfaces;
 using TRT.Domain.Entities;
+using TRT.Infrastructure.Common.Constants;
 using TRT.Infrastructure.Data.Configuration;
 
 namespace TRT.Infrastructure.Data
@@ -22,13 +23,15 @@ namespace TRT.Infrastructure.Data
             return _database.GetCollection<T>(name);
         }
 
-        public IMongoCollection<User> Users => _database.GetCollection<User>("User");
+        public IMongoCollection<User> Users => _database.GetCollection<User>(CollectionConstant.User);
 
-        public IMongoCollection<Schedule> Schedules => _database.GetCollection<Schedule>("Schedule");
+        public IMongoCollection<Schedule> Schedules => _database.GetCollection<Schedule>(CollectionConstant.Schedule);
 
-        public IMongoCollection<Train> Trains => _database.GetCollection<Train>("Train");
+        public IMongoCollection<Train> Trains => _database.GetCollection<Train>(CollectionConstant.Train);
 
-        public IMongoCollection<Station> Stations => _database.GetCollection<Station>("Station");
+        public IMongoCollection<Station> Stations => _database.GetCollection<Station>(CollectionConstant.Station);
+
+        public IMongoCollection<TrainTicketPrice> TrainTicketPrices => _database.GetCollection<TrainTicketPrice>(CollectionConstant.TrainTicketPrice);
     }
 
 }
