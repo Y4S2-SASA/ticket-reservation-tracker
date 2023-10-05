@@ -8,15 +8,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
 import com.sasa.ticketreservationapp.models.UserModel;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,10 +34,14 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText firstNameField;
     private EditText lastNameField;
     private EditText nicField;
-
     private ApiInterface apiInterface;
     SharedPreferences prefs;
     String id;
+    String token;
+    private Button saveChangesBtn;
+    private UserModel userModel;
+    private UserModel currentUser;
+    private Integer accStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +68,30 @@ public class ProfileActivity extends AppCompatActivity {
         displayName.setText(fullName);
         if(prefs.getString("nic", "") != null){
             id = prefs.getString("nic", "");
+            token = prefs.getString("token", "");
+            fetchUserData(token, id);
             Log.d("TAG", id);
         }
 
-        // Make the API call to get user data
-        Call<UserModel> call = apiInterface.getUserById(id);
-        call.enqueue(new Callback<UserModel>() {
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserModel userModel = response.body();
-                    // Populate the EditText fields
-                    emailField.setText(userModel.getEmail());
-                    mobileNoField.setText(userModel.getMobileNumber());
-                    firstNameField.setText(userModel.getFirstName());
-                    lastNameField.setText(userModel.getLastName());
-                    nicField.setText(userModel.getNic());
-                }
-            }
+        saveChangesBtn = findViewById(R.id.saveBtn);
 
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                t.printStackTrace();
+        saveChangesBtn.setOnClickListener(v -> {
+            if(userModel != null){
+                currentUser = userModel;
+                currentUser.setEmail(emailField.getText().toString());
+                currentUser.setMobileNumber(mobileNoField.getText().toString());
+                currentUser.setFirstName(firstNameField.getText().toString());
+                currentUser.setLastName(lastNameField.getText().toString());
+                currentUser.setNic(userModel.getNic());
+                currentUser.setRole(3);
+                currentUser.setPassword("");
+                currentUser.setUserName(userModel.getUserName());
+                updateUserData(currentUser);
+            }else{
+                Log.d("TAG", "userModel.getEmail()");
             }
         });
+
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
         //Initialize variables and assign them
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -105,6 +114,48 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             }
         });
+
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
+    }
+    private void fetchUserData(String token, String id){
+        Call<UserModel> call = apiInterface.getUserById("Bearer " + token, id);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userModel = response.body();
+                    Log.d("TAG", userModel.getUserName());
+                    // Populate the EditText fields
+                    emailField.setText(userModel.getEmail());
+                    mobileNoField.setText(userModel.getMobileNumber());
+                    firstNameField.setText(userModel.getFirstName());
+                    lastNameField.setText(userModel.getLastName());
+                    nicField.setText(userModel.getNic());
+                }
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+    private void updateUserData(UserModel updatedUser) {
+        apiInterface.updateUser("Bearer " + token, updatedUser).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(ProfileActivity.this, "Update Successful", Toast.LENGTH_SHORT).show();
+                    fetchUserData(token, id);
+                    Log.d("TAG", "Save Successful");
+                } else {
+                    Log.d("TAG", response.toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TAG", t.toString());
+            }
+        });
     }
 }
