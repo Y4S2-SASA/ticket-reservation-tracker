@@ -1,0 +1,14 @@
+.trains-container {
+    .train-head-btn-group {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .train-head-btn-group {
+            flex-direction: column !important;
+            gap: 10px;
+        }
+    }
+}
