@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
+import com.sasa.ticketreservationapp.handlers.AuthHandler;
 import com.sasa.ticketreservationapp.models.LoginModel;
 import com.sasa.ticketreservationapp.models.UserModel;
 import com.sasa.ticketreservationapp.response.LoginResponse;
@@ -60,14 +62,14 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         LoginResponse loginResponse = response.body();
                         if(loginResponse.isLoginSuccess() == true){
+                            LoginDatabaseHelper loginDb = new LoginDatabaseHelper(LoginActivity.this);
                             SharedPreferences.Editor editor = getSharedPreferences("userCredentials", MODE_PRIVATE).edit();
                             String token = loginResponse.getToken().toString();
                             String nic = loginResponse.getUserId().toString();
                             String displayName = loginResponse.getDisplayName();
-                            editor.putString("token", token);
-                            editor.putString("nic", nic);
-                            editor.putString("displayName", displayName);
-                            editor.apply();
+
+                            AuthHandler.persistLoginData(loginDb, editor, nic, token, displayName);
+
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, CurrentBookingsActivity.class);
                             startActivity(intent);
