@@ -43,13 +43,15 @@ const StyledTable = ({
 
   const renderRows = () => {
     if (data?.length > 0) {
-      return data?.map((row) => (
-        <tr key={row.nic}>
+      return data?.map((row, index) => (
+        <tr key={index}>
           <td>
             <Form.Check
               type="checkbox"
-              checked={selectedIds.includes(row.nic)}
-              onChange={() => onCheckboxChange(row.nic)}
+              checked={
+                selectedIds.includes(row.nic) || selectedIds.includes(row.id)
+              }
+              onChange={() => onCheckboxChange(row.nic ? row.nic : row.id)}
             />
           </td>
           {headers.map((header) => (
@@ -76,7 +78,7 @@ const StyledTable = ({
               )}
             </td>
           ))}
-          {renderActions(row.nic)}
+          {renderActions(row.nic ? row.nic : row.id)}
         </tr>
       ))
     } else {
