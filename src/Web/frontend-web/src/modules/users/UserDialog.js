@@ -221,7 +221,7 @@ const UserDialog = ({ userSettings, onClose, onSave, callBackUsers }) => {
                               value={role.id}
                               //   disabled={role.isDisabled}
                             >
-                              {role.name}
+                              {role.dropLabel}
                             </option>
                           ),
                         )}
