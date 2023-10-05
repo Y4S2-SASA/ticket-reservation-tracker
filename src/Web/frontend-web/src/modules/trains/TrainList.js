@@ -4,15 +4,19 @@ import Loader from '../../components/TMLoader'
 import MainLayout from '../../components/Layouts/MainLayout'
 import LayoutHeader from '../../components/Layouts/LayoutHeader'
 import DropdownStyledButton from '../../components/TMDropdownButton'
-import { ROLES, STATUS_LIST } from '../../configs/static-configs'
-import { Button, Form, InputGroup } from 'react-bootstrap'
-import { FaPlus, FaSearch } from 'react-icons/fa'
-import { USERS_HEADERS } from '../../configs/dataConfig'
-import UserAPIService from '../../api-layer/users'
-import UserDialog from './UserDialog'
+import {
+  STATUS_LIST,
+  TRAIN_AVAILABLE_DAYS,
+  TRAIN_PASSENGER_CLASSES,
+} from '../../configs/static-configs'
+import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { FaPlus } from 'react-icons/fa'
+import { TRAIN_HEADERS } from '../../configs/dataConfig'
+import TrainDialog from './TrainDialog'
 import ConfirmationDialog from '../../components/TMConfirmationDialog'
+import TrainsAPIService from '../../api-layer/trains'
 
-export default function UserList() {
+export default function TrainList() {
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -27,7 +31,7 @@ export default function UserList() {
   const [filterByStatus, setFilterByStatus] = useState(0)
   const [filteredData, setFilteredData] = useState([])
   const [searchText, setSearchText] = useState('')
-  const [userSettings, setUserSettings] = useState({
+  const [settings, setSettings] = useState({
     openDialog: false,
     action: '',
     parentData: null,
@@ -36,19 +40,21 @@ export default function UserList() {
     showStatuConfirmationDialog,
     setShowStatuConfirmationDialog,
   ] = useState(false)
-  const [selectedFilterRole, setSelectedFilterRole] = useState(0)
+  const [selectedAvailability, setSelectedAvailability] = useState(0)
+  const [selectedPassenger, setSelectedPassenger] = useState(0)
 
-  const getAllUsers = async () => {
+  const getAllTrains = async () => {
     try {
       const payload = {
         searchText: searchText,
         status: filterByStatus,
-        role: selectedFilterRole,
+        availableDay: selectedAvailability,
+        passengerClass: selectedPassenger,
         currentPage: currentPage,
         pageSize: 10,
       }
 
-      const response = await UserAPIService.getUsers(payload)
+      const response = await TrainsAPIService.getTrains(payload)
       if (response) {
         setFilteredData(response.items)
         setSearchParameers({
@@ -65,11 +71,16 @@ export default function UserList() {
     } finally {
     }
   }
-  console.log(searchParameters)
 
   useEffect(() => {
-    getAllUsers()
-  }, [currentPage, searchText, filterByStatus, selectedFilterRole])
+    getAllTrains()
+  }, [
+    currentPage,
+    searchText,
+    filterByStatus,
+    selectedAvailability,
+    selectedPassenger,
+  ])
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -83,7 +94,7 @@ export default function UserList() {
     if (selectAll) {
       setSelectedIds([])
     } else {
-      const allIds = filteredData.map((row) => row.nic)
+      const allIds = filteredData.map((row) => row.id)
       setSelectedIds(allIds)
     }
     setSelectAll(!selectAll)
@@ -91,7 +102,7 @@ export default function UserList() {
 
   const handleEditClick = (id) => {
     console.log(`Edit clicked for ID: ${id}`)
-    setUserSettings({
+    setSettings({
       openDialog: true,
       action: 'edit',
       parentData: { id },
@@ -108,14 +119,14 @@ export default function UserList() {
   }
 
   const handleConfirmStatusChange = async () => {
-    selectedIds.forEach(async (nic) => {
+    selectedIds.forEach(async (tId) => {
       const payload = {
-        nic: nic,
+        id: tId,
         status: selectedStatus,
       }
-      const response = await UserAPIService.updateUserStatus(payload)
+      const response = await TrainsAPIService.updateTrainStatus(payload)
       if (response) {
-        await getAllUsers()
+        await getAllTrains()
         await setSelectedIds([])
       }
       console.log(response)
@@ -132,13 +143,14 @@ export default function UserList() {
     setFilterByStatus(itemId)
   }
 
-  const handleRoleFilter = (itemId) => {
-    setSelectedFilterRole(itemId)
+  const handleAvailabilityFilter = (itemId) => {
+    setSelectedAvailability(itemId)
   }
 
-  // const handlePageChange = (newPage) => {
-  //   setSearchParameers({ ...searchParameters, currentPage: newPage })
-  // }
+  const handlePassengerFilter = (itemId) => {
+    setSelectedPassenger(itemId)
+  }
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
   }
@@ -148,21 +160,23 @@ export default function UserList() {
     await setCurrentPage(0)
   }
 
-  const onCloseUserDialog = () => {
-    setUserSettings({
+  const onCloseDialog = () => {
+    setSettings({
       openDialog: false,
       action: '',
       parentData: null,
     })
   }
 
+  console.log('TRAIN_AVAILABLE_DAYS', TRAIN_AVAILABLE_DAYS)
+
   const buttonComp = () => {
     return (
-      <div className="user-head-btn-group">
+      <div className="train-head-btn-group">
         <InputGroup>
           <Form.Control
             type="text"
-            placeholder="Search Users"
+            placeholder="Search Trains"
             value={searchText}
             onChange={(e) => handleSearchInputChange(e)}
             style={{
@@ -178,10 +192,10 @@ export default function UserList() {
             backgroundColor: '#7E5AE9',
             border: 'none',
             borderRadius: '46px',
-            width: '170px',
+            width: '200px',
           }}
           onClick={() =>
-            setUserSettings({
+            setSettings({
               openDialog: true,
               action: 'add',
               parentData: null,
@@ -207,21 +221,78 @@ export default function UserList() {
               selectedStatus={filterByStatus}
               changeMode={false}
             />
-            <DropdownStyledButton
-              dropdownTitle={'Filter by Role'}
-              items={ROLES}
-              handleChange={handleRoleFilter}
-              selectedStatus={selectedFilterRole}
-            />
+            <Dropdown>
+              <Dropdown.Toggle
+                id="dropdown-autoclose-true"
+                style={{
+                  backgroundColor: '#8428E2',
+                  width: '200px',
+                  height: '46px',
+                  border: 'none',
+                  borderRadius: '46px',
+                }}
+              >
+                {selectedAvailability
+                  ? TRAIN_AVAILABLE_DAYS.filter(
+                      (d) => d.id === selectedAvailability,
+                    )
+                      .map((selectedClass) => selectedClass.name)
+                      .join(', ')
+                  : 'Availability'}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {TRAIN_AVAILABLE_DAYS?.map((item) => (
+                  <Dropdown.Item
+                    eventKey={item?.id}
+                    onClick={() => handleAvailabilityFilter(item?.id)}
+                  >
+                    {item?.name}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <Dropdown>
+              <Dropdown.Toggle
+                id="dropdown-autoclose-true"
+                style={{
+                  backgroundColor: '#8428E2',
+                  width: '150px',
+                  height: '46px',
+                  border: 'none',
+                  borderRadius: '46px',
+                }}
+              >
+                {selectedPassenger
+                  ? TRAIN_PASSENGER_CLASSES.filter(
+                      (d) => d.id === selectedPassenger,
+                    )
+                      .map((selectedClass) => selectedClass.name)
+                      .join(', ')
+                  : 'Passenger'}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {TRAIN_PASSENGER_CLASSES?.map((item) => (
+                  <Dropdown.Item
+                    eventKey={item?.id}
+                    onClick={() => handlePassengerFilter(item?.id)}
+                  >
+                    {item?.name}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </>
         )}
       </div>
     )
   }
-  console.log(userSettings.openDialog)
+
   return (
     <MainLayout loading={true} loadingTime={2000}>
-      <div className="users-container">
+      <div className="trains-container">
         <ConfirmationDialog
           title="Confirm Status Change"
           message={`Are you sure you want to change the status to ${
@@ -235,12 +306,12 @@ export default function UserList() {
           rightButton="Confirm"
         />
         <LayoutHeader
-          title="Users"
-          subtitle="User Management"
+          title="Trains"
+          subtitle="Train Management"
           buttonComponent={buttonComp()}
         />
         <StyledTable
-          headers={USERS_HEADERS}
+          headers={TRAIN_HEADERS}
           data={filteredData}
           searchParameters={searchParameters}
           selectedIds={selectedIds}
@@ -255,12 +326,12 @@ export default function UserList() {
           currentPage={currentPage}
         />
         <div>
-          {userSettings.openDialog && (
-            <UserDialog
-              userSettings={userSettings}
-              onClose={onCloseUserDialog}
-              onSave={onCloseUserDialog}
-              callBackUsers={getAllUsers}
+          {settings.openDialog && (
+            <TrainDialog
+              settings={settings}
+              onClose={onCloseDialog}
+              onSave={onCloseDialog}
+              callBackData={getAllTrains}
             />
           )}
         </div>

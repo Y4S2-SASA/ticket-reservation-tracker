@@ -13,6 +13,13 @@ export const NAVBAR_ITEMS = [
     label: 'Users',
     entitlementRoles: ['Back Office'],
   },
+  {
+    id: 3,
+    pathUrl: '/trains',
+    icon: '/images/icons/train.png',
+    label: 'Trains',
+    entitlementRoles: ['Back Office'],
+  },
 ]
 
 export const STATUS_LIST = [
@@ -103,3 +110,19 @@ export const ROLES = [
     showInFilter: true,
   },
 ]
+
+function getTrainMasterData(property) {
+  const masterData = localStorage.getItem('train-masterdata')
+
+  const parsedData = JSON.parse(masterData)
+
+  if (parsedData && parsedData[property]) {
+    return parsedData[property]
+  } else {
+    return null
+  }
+}
+
+export const TRAIN_STATUSES = getTrainMasterData('status')
+export const TRAIN_AVAILABLE_DAYS = getTrainMasterData('availableDays')
+export const TRAIN_PASSENGER_CLASSES = getTrainMasterData('passengerClasses')

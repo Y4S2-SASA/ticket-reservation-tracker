@@ -8,13 +8,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
+import com.sasa.ticketreservationapp.handlers.AuthHandler;
 import com.sasa.ticketreservationapp.models.UserModel;
 
 import retrofit2.Call;
@@ -54,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         nicField = findViewById(R.id.nicField);
         displayName = findViewById(R.id.profileTitle);
 
+        Button logoutButton = findViewById(R.id.logoutBtn);
+
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         String fullName = "WELCOME " + prefs.getString("displayName", "") + " !";
         displayName.setText(fullName);
@@ -83,6 +89,16 @@ public class ProfileActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthHandler.clearLoginData(new LoginDatabaseHelper(ProfileActivity.this), getSharedPreferences("userCredentials", MODE_PRIVATE).edit());
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
         //Initialize variables and assign them
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -107,4 +123,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
     }
+
+
 }
