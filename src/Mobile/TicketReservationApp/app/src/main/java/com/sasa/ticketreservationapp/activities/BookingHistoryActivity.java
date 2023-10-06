@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.sasa.ticketreservationapp.DAORequest;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
 import com.sasa.ticketreservationapp.models.ReservationModel;
@@ -26,7 +25,6 @@ public class BookingHistoryActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ReservationsAdapter adapter;
-    DAORequest dao = new DAORequest();
     boolean isLoading = false;
     String key = null;
 
