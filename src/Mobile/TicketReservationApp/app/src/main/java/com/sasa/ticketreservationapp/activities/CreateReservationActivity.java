@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -31,21 +32,35 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CreateReservationActivity extends AppCompatActivity {
-    private Spinner destinationSpinner;
+    private Spinner pClassSpinner;
     private ApiInterface apiInterface;
     private String id, token, destinationId;
     private SharedPreferences prefs;
     private EditText reservedDateField;
+    private AutoCompleteTextView searchDestinationField;
+    private AutoCompleteTextView searchSubStationField;
     private Calendar calendar;
 
-
+    private String[] suggestions = {"Apple", "Banana", "Cherry", "Date", "Grape", "Lemon", "Orange"};
+    private String[] pClassTypes = {"Select class", "1", "2", "3"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_reservation);
 
-        destinationSpinner = findViewById(R.id.destinationSpinner);
+        pClassSpinner = findViewById(R.id.pClassSpinner);
+        searchDestinationField = findViewById(R.id.searchDestinationField);
+        searchSubStationField = findViewById(R.id.searchSubStationField);
         reservedDateField = findViewById(R.id.reservedDateField);
+
+        ArrayAdapter<String> stationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, suggestions);
+        searchDestinationField.setAdapter(stationAdapter);
+        searchSubStationField.setAdapter(stationAdapter);
+
+        ArrayAdapter<String> pClassAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, pClassTypes);
+        pClassAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pClassSpinner.setAdapter(pClassAdapter);
+
         calendar = Calendar.getInstance();
 
         reservedDateField.setOnClickListener(view -> showDatePickerDialog());
@@ -61,11 +76,11 @@ public class CreateReservationActivity extends AppCompatActivity {
 //        fetchDestinations();
 
         //FETCH DESTINATIONS TEMPORARILY
-        fetchDestinations(destinations -> {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, destinations);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            destinationSpinner.setAdapter(adapter);
-        });
+//        fetchDestinations(destinations -> {
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, destinations);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            destinationSpinner.setAdapter(adapter);
+//        });
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
         //Initialize variables and assign them
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
