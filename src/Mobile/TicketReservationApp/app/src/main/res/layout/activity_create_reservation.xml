@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.CreateReservationActivity">
 
-    <EditText
-        android:id="@+id/reservedTimeField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/reserved_time_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/passengersField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/backBtn"
         android:layout_width="208dp"
@@ -54,7 +35,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/white"
         android:text="@string/view_summary_btn"
         android:textColor="@color/dark_purple"
@@ -79,26 +60,7 @@
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/reservedTimeField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/stationNameField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/station_name_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/reservedDateField"
+        app:layout_constraintBottom_toTopOf="@+id/classField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -107,8 +69,9 @@
         android:id="@+id/priceField"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
         android:foregroundTint="#0330065F"
@@ -116,16 +79,16 @@
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
+        app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trainNoField" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/trainNoField"
-        android:layout_width="0dp"
+        android:layout_width="153dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="40dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
@@ -134,8 +97,7 @@
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
-        app:layout_constraintEnd_toStartOf="@+id/priceField"
+        app:layout_constraintBottom_toTopOf="@+id/priceField"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -144,12 +106,12 @@
         android:layout_height="27dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/create_reservation_title"
         android:textColor="@color/dark_purple"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/classField"
+        app:layout_constraintBottom_toTopOf="@+id/searchDestinationField"
         app:layout_constraintEnd_toStartOf="@+id/resID"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -158,12 +120,13 @@
         android:layout_width="77dp"
         android:layout_height="29dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="28dp"
         android:text="@string/res_id"
         android:textColor="@color/dark_purple"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/classField"
+        app:layout_constraintBottom_toTopOf="@+id/searchDestinationField"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
     <EditText
         android:id="@+id/classField"
@@ -179,11 +142,9 @@
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/destinationSpinner"
+        app:layout_constraintBottom_toTopOf="@+id/pClassSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <TextView
         android:id="@+id/orTxt4"
@@ -199,24 +160,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/passengersField" />
 
-    <EditText
-        android:id="@+id/passengersField"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/no_of_passengers_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Spinner
-        android:id="@+id/destinationSpinner"
+        android:id="@+id/pClassSpinner"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
@@ -225,7 +170,58 @@
         android:background="@drawable/rounded_edittext_with_border"
         android:foregroundTint="#0330065F"
         android:paddingStart="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/trainNoField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/passengersField"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:ems="10"
+        android:foregroundTint="#0330065F"
+        android:hint="@string/no_of_passengers_hint"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/priceField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/trainNoField"
+        app:layout_constraintTop_toBottomOf="@+id/pClassSpinner" />
+
+    <AutoCompleteTextView
+        android:id="@+id/searchDestinationField"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:hint="Destination"
+        android:paddingLeft="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchSubStationField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/searchSubStationField"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:hint="Starting station"
+        android:paddingLeft="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/reservedDateField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
