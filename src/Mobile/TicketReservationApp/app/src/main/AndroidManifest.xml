@@ -36,13 +36,13 @@
             android:name=".activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.CurrentBookingsActivity"
             android:exported="false" />
         <activity
             android:name=".activities.CreateReservationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CurrentBookingsActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

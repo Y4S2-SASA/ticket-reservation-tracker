@@ -16,8 +16,7 @@ import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
 import com.sasa.ticketreservationapp.handlers.AuthHandler;
-import com.sasa.ticketreservationapp.models.LoginModel;
-import com.sasa.ticketreservationapp.models.UserModel;
+import com.sasa.ticketreservationapp.request.LoginRequest;
 import com.sasa.ticketreservationapp.response.LoginResponse;
 
 import retrofit2.Call;
@@ -51,10 +50,10 @@ public class LoginActivity extends AppCompatActivity {
             String username = usernameField.getText().toString();
             String password = passwordField.getText().toString();
 
-            LoginModel loginModel = new LoginModel(username, password);
+            LoginRequest loginRequest = new LoginRequest(username, password);
 
             ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-            Call<LoginResponse> call = apiInterface.loginUser(loginModel);
+            Call<LoginResponse> call = apiInterface.loginUser(loginRequest);
 
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
