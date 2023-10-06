@@ -8,13 +8,15 @@ using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
+using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId;
+using TRT.Domain.Entities;
 
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ScheduleController : ControllerBase
     {
         private readonly ILogger<ScheduleController> _logger;
@@ -123,6 +125,23 @@ namespace TRT.API.Controllers
             try
             {
                 var response = await _mediator.Send(new GetSchudulesSubStationsByTrainIdQuery(trainId));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getScheduleTrainsData")]
+        public async Task<IActionResult> GetScheduleTrainsData(GetScheduleTrainsDataQuery getScheduleTrainsDataQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getScheduleTrainsDataQuery);
 
                 return Ok(response);
             }

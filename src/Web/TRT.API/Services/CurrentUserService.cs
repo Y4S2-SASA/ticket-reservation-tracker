@@ -16,18 +16,14 @@ namespace TRT.API.Services
             get
             {
                 if (_httpContextAccessor.HttpContext == null)
-                    return (string?)null;
+                    return null;
 
-                try
-                {
-                    return (_httpContextAccessor.HttpContext.User?
-                            .FindFirstValue(ClaimTypes.NameIdentifier))
-                            .ToString();
-                }
-                catch (Exception ex)
-                {
-                    return (string?)null;
-                }
+                var user = _httpContextAccessor.HttpContext.User;
+
+                if (user == null)
+                    return null;
+
+                return user.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
             }
