@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData;
@@ -9,6 +10,7 @@ namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MasterDataController : ControllerBase
     {
         private readonly ILogger<MasterDataController> _logger;

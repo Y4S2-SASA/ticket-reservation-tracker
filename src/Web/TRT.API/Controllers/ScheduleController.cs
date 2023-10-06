@@ -1,16 +1,18 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
+using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
+using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
-using TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter;
 
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ScheduleController : ControllerBase
     {
         private readonly ILogger<ScheduleController> _logger;
@@ -59,5 +61,41 @@ namespace TRT.API.Controllers
             }
         }
 
+        [HttpGet("getScheduleById")]
+        public async Task<IActionResult> GetScheduleById(string id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetScheduleByIdQuery(id));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPut("changeStatusSchedule")]
+        public async Task<IActionResult> ChangeStatusSchedule([FromBody] StatusChangeDTO statusChangeDto)
+        {
+            try
+            {
+                var response = await _mediator.Send(new ChangeStatusScheduleCommand()
+                {
+                    StatusChangeDTO = statusChangeDto
+                });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
     }
 }

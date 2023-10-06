@@ -15,7 +15,8 @@ namespace System
             train.SeatCapacity = trainDTO.SeatCapacity;
             if (string.IsNullOrEmpty(trainDTO.Id))
             {
-                train.PassengerClasses = trainDTO.PassengerClasses;
+                
+                train.PassengerClasses.AddRange(trainDTO.PassengerClasses);
             }
 
             return train;

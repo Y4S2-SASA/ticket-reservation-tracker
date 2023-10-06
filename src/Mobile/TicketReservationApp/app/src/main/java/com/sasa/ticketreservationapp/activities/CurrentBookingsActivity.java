@@ -9,7 +9,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.sasa.ticketreservationapp.DAORequest;
+import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
 import com.sasa.ticketreservationapp.models.ReservationModel;
@@ -29,7 +28,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ReservationsAdapter adapter;
-    DAORequest dao = new DAORequest();
     boolean isLoading = false;
     String key = null;
 
@@ -42,14 +40,14 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_bookings);
-
-        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
+        LoginDatabaseHelper loginDb = new LoginDatabaseHelper(CurrentBookingsActivity.this);
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null && loginDb.IsUserLoginDataAvailableInSqlLite()){
             prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
         }else{
             Intent intent = new Intent(CurrentBookingsActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-
+        System.out.print("ON CREATE CALLED");
 //      Sets up the recycler view
         swipeRefreshLayout = findViewById(R.id.swipereservation);
         recyclerView = findViewById(R.id.recyclerviewreservation);

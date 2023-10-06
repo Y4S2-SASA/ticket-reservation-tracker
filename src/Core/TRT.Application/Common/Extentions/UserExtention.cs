@@ -15,7 +15,7 @@ namespace System
             user.LastName = userDTO.LastName;
             user.MobileNumber = userDTO.MobileNumber;
             user.Email = userDTO.Email;
-            user.UserName = userDTO.Email;
+            user.UserName = userDTO.UserName;
             user.Role = userDTO.Role;
 
             return user;
