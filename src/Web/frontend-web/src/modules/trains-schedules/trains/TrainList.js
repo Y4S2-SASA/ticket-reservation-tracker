@@ -1,20 +1,21 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import StyledTable from '../../components/TMTable'
-import Loader from '../../components/TMLoader'
-import MainLayout from '../../components/Layouts/MainLayout'
-import LayoutHeader from '../../components/Layouts/LayoutHeader'
-import DropdownStyledButton from '../../components/TMDropdownButton'
+
+import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { FaPlus } from 'react-icons/fa'
+
+import TrainsAPIService from '../../../api-layer/trains'
+import TrainDialog from './TrainDialog'
+import StyledTable from '../../../components/TMTable'
+import MainLayout from '../../../components/Layouts/MainLayout'
+import LayoutHeader from '../../../components/Layouts/LayoutHeader'
+import DropdownStyledButton from '../../../components/TMDropdownButton'
 import {
   STATUS_LIST,
   TRAIN_AVAILABLE_DAYS,
   TRAIN_PASSENGER_CLASSES,
-} from '../../configs/static-configs'
-import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
-import { FaPlus } from 'react-icons/fa'
-import { TRAIN_HEADERS } from '../../configs/dataConfig'
-import TrainDialog from './TrainDialog'
-import ConfirmationDialog from '../../components/TMConfirmationDialog'
-import TrainsAPIService from '../../api-layer/trains'
+} from '../../../configs/static-configs'
+import { TRAIN_HEADERS } from '../../../configs/dataConfig'
+import ConfirmationDialog from '../../../components/TMConfirmationDialog'
 
 export default function TrainList() {
   const [selectedIds, setSelectedIds] = useState([])

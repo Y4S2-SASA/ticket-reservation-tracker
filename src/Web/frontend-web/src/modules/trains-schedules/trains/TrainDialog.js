@@ -3,18 +3,15 @@ import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import {
-  ROLES,
   TRAIN_AVAILABLE_DAYS,
   TRAIN_PASSENGER_CLASSES,
-} from '../../configs/static-configs'
-import TrainsAPIService from '../../api-layer/trains'
-import Select from 'react-select'
+} from '../../../configs/static-configs'
+import TrainsAPIService from '../../../api-layer/trains'
 
 const TrainDialog = ({ settings, onClose, onSave, callBackData }) => {
   const { openDialog, action, parentData } = settings
   const [data, setData] = useState(null)
   const [dataLoading, setDataLoading] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
 
   useEffect(() => {
     const getById = async () => {
