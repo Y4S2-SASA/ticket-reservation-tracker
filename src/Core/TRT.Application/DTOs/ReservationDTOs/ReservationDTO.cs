@@ -11,7 +11,7 @@ namespace TRT.Application.DTOs.ReservationDTOs
         public string TrainId { get; set; }
         public string ArrivalStationId { get; set; }
         public DateTime DateTime { get; set; }
-        public string NoOfPassengers { get; set; }
+        public int NoOfPassengers { get; set; }
         public decimal Price { get; set; }
 
     }

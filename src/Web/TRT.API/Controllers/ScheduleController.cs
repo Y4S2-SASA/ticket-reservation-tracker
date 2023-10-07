@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
+using TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCount;
 using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
@@ -142,6 +143,23 @@ namespace TRT.API.Controllers
             try
             {
                 var response = await _mediator.Send(getScheduleTrainsDataQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getAvailableTrainSeatCount")]
+        public async Task<IActionResult> GetAvailableTrainSeatCount(GetAvailableTrainSeatCountQuery getAvailableTrainSeatCountQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getAvailableTrainSeatCountQuery);
 
                 return Ok(response);
             }

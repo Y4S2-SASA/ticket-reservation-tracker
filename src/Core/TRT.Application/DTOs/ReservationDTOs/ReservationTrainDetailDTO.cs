@@ -5,5 +5,6 @@
         public string TrainId { get; set; }
         public string TrainName { get; set; }
         public DateTime ArrivalTime { get; set; }
+        public string ScheduleId { get; set;}
     }
 }

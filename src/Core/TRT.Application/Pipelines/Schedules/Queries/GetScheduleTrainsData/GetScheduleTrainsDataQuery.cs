@@ -42,7 +42,8 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData
                                   .AddSeconds(NumberConstant.MINUSONE);
 
             var listOfSchedules = (await _scheduleQueryRepository
-                                 .Query(x => x.SubStationDetails.Any(s => s.StationId == request.DestinationStationId && s.StationId == request.StartPointStationId) &&
+                                 .Query(x => x.SubStationDetails.Any(s => s.StationId == request.DestinationStationId && 
+                                 s.StationId == request.StartPointStationId) &&
                                  x.DepartureTime >= startDate && x.DepartureTime <= endDate))
                                  .ToList();
 
@@ -57,7 +58,9 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData
                 {
                     TrainId = trainDetail.Id,
                     TrainName = trainDetail.TrainName,
-                    ArrivalTime = startPointStation.ArrivalTime
+                    ArrivalTime = startPointStation.ArrivalTime,
+                    ScheduleId = schedule.Id,
+                    
                 });
             }
 

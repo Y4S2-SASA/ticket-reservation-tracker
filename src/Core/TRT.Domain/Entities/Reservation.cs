@@ -32,7 +32,7 @@ namespace TRT.Domain.Entities
         public DateTime DateTime { get; set; }
 
         [BsonElement("NoOfPassengers")]
-        public string NoOfPassengers { get; set; }
+        public int NoOfPassengers { get; set; }
 
         [BsonElement("Price")]
         public decimal Price { get; set; }

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pipelines\Reservations\Queries\" />
     <Folder Include="Pipelines\Stations\Commands\" />
   </ItemGroup>
 
