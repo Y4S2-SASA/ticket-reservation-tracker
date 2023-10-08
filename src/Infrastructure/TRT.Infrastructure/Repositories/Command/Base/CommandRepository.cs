@@ -12,11 +12,11 @@ namespace TRT.Infrastructure.Repositories.Command.Base
         {
             this._context = context;
         }
-        public async Task AddAsync(T entity, CancellationToken cancellationToken)
+        public async Task<T> AddAsync(T entity, CancellationToken cancellationToken)
         {
             await _context.GetCollection<T>(typeof(T).Name)
                           .InsertOneAsync(entity, cancellationToken: cancellationToken);
-
+            return entity;
         }
         public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
         {

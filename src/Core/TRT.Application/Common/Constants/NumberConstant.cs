@@ -7,5 +7,6 @@
         public const int ONE = 1;
         public const int TEN = 10;
         public const int FIVE = 5;
+        public const decimal DECIMAL_ZERO = 0.0m;
     }
 }

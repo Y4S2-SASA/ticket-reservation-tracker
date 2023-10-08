@@ -7,6 +7,7 @@ using TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCount;
 using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
+using TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData;
@@ -170,5 +171,23 @@ namespace TRT.API.Controllers
                 throw;
             }
         }
+
+        [HttpPost("getSchedulePrice")]
+        public async Task<IActionResult> GetSchedulePrice(GetSchedulePriceQuery getSchedulePriceQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getSchedulePriceQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
     }
 }

@@ -46,6 +46,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IReservationQueryRepository, ReservationQueryRepository>();
             services.AddTransient<IReservationCommandRepository, ReservationCommandRepository>();
 
+            services.AddTransient<ITrainTicketPriceQueryRepository, TrainTicketPriceQueryRepository>();
+            services.AddTransient<ITrainTicketPriceCommandRepository, TrainTicketPriceCommandRepository>();
+
             return services;
         }
     }
