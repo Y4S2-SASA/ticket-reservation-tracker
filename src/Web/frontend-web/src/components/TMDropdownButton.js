@@ -9,6 +9,7 @@ const DropdownStyledButton = ({
   changeMode,
 }) => {
   const [itemLabel, setItemLabel] = useState(null)
+
   useEffect(() => {
     if (selectedStatus) {
       const getSelected = items.find((item) => item.id === selectedStatus)
@@ -28,7 +29,7 @@ const DropdownStyledButton = ({
           borderRadius: '46px',
         }}
       >
-        {itemLabel ? itemLabel : dropdownTitle}
+        {selectedStatus > 0 ? itemLabel : dropdownTitle}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

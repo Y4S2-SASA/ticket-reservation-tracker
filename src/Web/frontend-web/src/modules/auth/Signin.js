@@ -9,6 +9,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import AuthAPIService from '../../api-layer/auth'
 import { ToastContainer, toast } from 'react-toastify'
+import MasterDataAPIService from '../../api-layer/master-data'
 // import { jwtDecode } from '../../utils/helpers'
 
 const validationSchema = Yup.object().shape({
@@ -53,9 +54,16 @@ export default function SignIn() {
             displayName: response?.displayName,
           }
           const strigifiedData = JSON.stringify(authData)
-          localStorage.setItem('auth', strigifiedData)
-          history.push('/dashboard')
+          await localStorage.setItem('auth', strigifiedData)
+
+          const trainMdRes = await MasterDataAPIService.getTrainMasterData()
+          const strigifiedMasterData = JSON.stringify(trainMdRes)
+          await localStorage.setItem('train-masterdata', strigifiedMasterData)
+
           toast.success(response?.message)
+          setTimeout(() => {
+            history.push('/dashboard')
+          }, 2000)
         } else {
           toast.error(response?.message || 'Error occured. Try again!')
         }
