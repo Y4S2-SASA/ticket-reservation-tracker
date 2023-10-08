@@ -3,16 +3,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
+using TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCount;
 using TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule;
 using TRT.Application.Pipelines.Schedules.Commands.SaveSchedule;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleById;
+using TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
+using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
+using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData;
+using TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId;
+using TRT.Domain.Entities;
 
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ScheduleController : ControllerBase
     {
         private readonly ILogger<ScheduleController> _logger;
@@ -97,5 +103,91 @@ namespace TRT.API.Controllers
                 throw;
             }
         }
+
+        [HttpGet("getScheduleTrainsByDestinationId/{destinationId}")]
+        public async Task<IActionResult> GetScheduleTrainsByDestinationId(string destinationId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetScheduleTrainsByDestinationIdQuery(destinationId));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("getSchudulesSubStationsByTrainId/{trainId}")]
+        public async Task<IActionResult> GetSchudulesSubStationsByTrainId(string trainId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetSchudulesSubStationsByTrainIdQuery(trainId));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getScheduleTrainsData")]
+        public async Task<IActionResult> GetScheduleTrainsData(GetScheduleTrainsDataQuery getScheduleTrainsDataQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getScheduleTrainsDataQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getAvailableTrainSeatCount")]
+        public async Task<IActionResult> GetAvailableTrainSeatCount(GetAvailableTrainSeatCountQuery getAvailableTrainSeatCountQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getAvailableTrainSeatCountQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpPost("getSchedulePrice")]
+        public async Task<IActionResult> GetSchedulePrice(GetSchedulePriceQuery getSchedulePriceQuery)
+        {
+            try
+            {
+                var response = await _mediator.Send(getSchedulePriceQuery);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
     }
 }

@@ -39,9 +39,9 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                     var train = new Domain.Entities.Train();
                     train = request.TrainDTO.ToEntity();
                     train.Status = TRT.Domain.Enums.Status.Pending;
-                    await _trainCommandRepository.AddAsync(train, cancellationToken);
+                    var newTrain = await _trainCommandRepository.AddAsync(train, cancellationToken);
 
-                    return ResultDTO.Success(ResponseMessageConstant.TRAIN_SAVE_SUCCESS_RESPONSE_MESSAGE);
+                    return ResultDTO.Success(ResponseMessageConstant.TRAIN_SAVE_SUCCESS_RESPONSE_MESSAGE, newTrain.Id);
 
                 }
                 else
@@ -72,7 +72,7 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                     await _trainCommandRepository.UpdateAsync(train, cancellationToken);
 
                     return ResultDTO.Success(
-                        ResponseMessageConstant.TRAIN_UPDATE_SUCCESS_RESPONSE_MESSAGE
+                        ResponseMessageConstant.TRAIN_UPDATE_SUCCESS_RESPONSE_MESSAGE, train.Id
                    );
                 }
             }

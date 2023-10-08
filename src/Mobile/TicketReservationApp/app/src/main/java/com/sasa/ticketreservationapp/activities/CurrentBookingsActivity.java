@@ -9,7 +9,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.sasa.ticketreservationapp.DAORequest;
 import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
@@ -30,7 +28,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ReservationsAdapter adapter;
-    DAORequest dao = new DAORequest();
     boolean isLoading = false;
     String key = null;
 
