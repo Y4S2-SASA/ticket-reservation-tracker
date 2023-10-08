@@ -42,7 +42,7 @@ namespace System
             trainDetailDTO.Id = train.Id;
             trainDetailDTO.TrainName = train.TrainName;
             trainDetailDTO.TrainAvailableDays = EnumHelper.GetEnumDescription(train.AvailableDays);
-            trainDetailDTO.Status = train.Status;
+            trainDetailDTO.Status = EnumHelper.GetEnumDescription(train.Status);
             trainDetailDTO.SeatCapacity = train.SeatCapacity;
             trainDetailDTO.PassengerClassNames = string.Join(",", train.PassengerClasses
                                                 .Select(x => EnumHelper.GetEnumDescription(x)));

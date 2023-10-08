@@ -73,5 +73,10 @@
         public const string SCHEDULE_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Schedule details Not found please try again";
         #endregion
+
+        #region Reservation
+        public const string RESERVATION_SAVE_SUCCESS_RESPONSE_MESSAGE =
+                            "Reservation details saved has been successfull."; 
+        #endregion
     }
 }

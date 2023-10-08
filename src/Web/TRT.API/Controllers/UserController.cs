@@ -27,6 +27,7 @@ namespace TRT.API.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpPost("saveUser")]
         public async Task<IActionResult> SaveUser([FromBody] UserDTO userDTO)
         {
@@ -117,6 +118,31 @@ namespace TRT.API.Controllers
                 var response = await _mediator.Send(validateUserNICQuery);
 
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [Authorize(Roles = AuthorizedRoles.Traveler)]
+        [HttpPut("deactiveTravelerAccount")]
+        public async Task<IActionResult> DeactiveTravelerAccount(ChangeUserStatusCommand changeUserStatusCommand)
+        {
+            try
+            {
+                if(changeUserStatusCommand.Status == Domain.Enums.Status.Deactivated)
+                {
+                    var response = await _mediator.Send(changeUserStatusCommand);
+
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+              
             }
             catch (Exception ex)
             {
