@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
@@ -12,7 +11,6 @@ using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId;
-using TRT.Domain.Entities;
 
 namespace TRT.API.Controllers
 {

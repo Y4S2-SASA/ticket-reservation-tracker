@@ -76,7 +76,13 @@
 
         #region Reservation
         public const string RESERVATION_SAVE_SUCCESS_RESPONSE_MESSAGE =
-                            "Reservation details saved has been successfull."; 
+                            "Reservation details saved has been successfull.";
+
+        public const string UNABLE_TO_UPDATE_RESERVATION = 
+            "Unable to Update Reservation\", \"We regret to inform you that we are unable to update your reservation as it is less than 5 days before the reservation date.";
+
+        public const string RESERVATION_UPDATE_SUCCESS_RESPONSE_MESSAGE =
+                           "Reservation details updated has been successfull.";
         #endregion
     }
 }

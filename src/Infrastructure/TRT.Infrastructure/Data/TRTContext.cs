@@ -32,6 +32,8 @@ namespace TRT.Infrastructure.Data
         public IMongoCollection<Station> Stations => _database.GetCollection<Station>(CollectionConstant.Station);
 
         public IMongoCollection<TrainTicketPrice> TrainTicketPrices => _database.GetCollection<TrainTicketPrice>(CollectionConstant.TrainTicketPrice);
+
+        public IMongoCollection<Reservation> Reservations => _database.GetCollection<Reservation>(CollectionConstant.Reservation);
     }
 
 }
