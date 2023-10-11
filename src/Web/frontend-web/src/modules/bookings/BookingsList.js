@@ -11,9 +11,10 @@ import {
 } from '../../configs/static-configs'
 import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
-import { TRAIN_HEADERS } from '../../configs/dataConfig'
+import { RESERVATION_HEADERS } from '../../configs/dataConfig'
 import BookingDialog from './BookingDialog'
 import ConfirmationDialog from '../../components/TMConfirmationDialog'
+import ReservationsAPIService from '../../api-layer/reservations'
 import TrainsAPIService from '../../api-layer/trains'
 
 export default function BookingsList() {
@@ -58,8 +59,8 @@ export default function BookingsList() {
         // passengerClass: selectedPassenger,
         // currentPage: currentPage,
         reservationNumber: selectedReservation,
-        fromDate: "",
-        toDate: selectedDate,
+        fromDate: "2023-10-01",
+        toDate: "2023-10-12",
         trainId: selectedTrain,
         destinationStationId: selectedDestination,
         arrivalStationId: selectedArrivalStation,
@@ -68,7 +69,7 @@ export default function BookingsList() {
         pageSize: 10,
       }
 
-      const response = await TrainsAPIService.getTrains(payload)
+      const response = await ReservationsAPIService.getReservations(payload)
       if (response) {
         setFilteredData(response.items)
         setSearchParameers({
@@ -329,7 +330,7 @@ export default function BookingsList() {
           buttonComponent={buttonComp()}
         />
         <StyledTable
-          headers={TRAIN_HEADERS}
+          headers={RESERVATION_HEADERS}
           data={filteredData}
           searchParameters={searchParameters}
           selectedIds={selectedIds}
