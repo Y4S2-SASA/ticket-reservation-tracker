@@ -167,7 +167,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 destinationStationId: formDataDestination[0].id,
                 arrivalStationId: formDataOrigin[0].id,
                 dateTime: formDataStartDate,
-                noOfPassengers: passengerCount,
+                noOfPassengers: parseInt(passengerCount),
                 price: price
             }
             const response = await ReservationsAPIService.saveReservation(payload)
