@@ -33,10 +33,12 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   const [schedules, setSchedules] = useState([]);
   const [formDataselectedPClass, setFormDataSelectedPclass] = useState(1);
   const [selectedTrain, setSelectedTrain] = useState("{}");
-
-  const handlePClassOnChange = (e) => {
+  const [passengerCount, setPassengerCount] = useState(0)
+  const [price, setPrice] = useState(0);
+  
+  const handleChangePassengerCount = (e) => {
     console.log(e.target.value)
-    setFormDataSelectedPclass(e.target.value)
+    setPassengerCount(e.target.value)
   }
 
   const handleSelectTime = (e) => {
@@ -69,6 +71,28 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         setStationsLoading(false);
     }
     return stations;
+  }
+
+  const checkPrice = async () => {
+    try {
+        const reqObj = {
+            selectedTrainId: getTrainObj("trainId"),
+            departureStationId: formDataDestination[0].id,
+            arrivalStationId: formDataOrigin[0].id,
+            selectedScheduleId: getTrainObj("scheduleId"),
+            passengerCount: passengerCount,
+            passengerClass: parseInt(formDataselectedPClass)
+        }
+       // setSchedulesLoading(true)
+        const price = await ScheduleAPIService.getSchedulePrice(reqObj)
+        console.log(price)
+       setPrice(price)
+    } catch (error) {
+        console.log(error)
+        // setPrice(-1)
+    } finally {
+        //setSchedulesLoading(false)
+    }
   }
 
   const checkTrainAvailability = async () => {
@@ -305,22 +329,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
               </Form.Group>
             </Col>
             <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Passenger count*</Form.Label>
-                      <Field name="seatCapacity">
-                        {({ field }) => <Form.Control {...field}/>}
-                      </Field>
-                      <ErrorMessage
-                        name="seatCapacity"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Row style={{ marginTop: '10px' }}>
-            <Col sm={12}>
-              <Form.Group style={{}}>
+            <Form.Group style={{}}>
                 <Form.Label>Train</Form.Label>
 
                         <Form.Control value={getTrainObj("trainName")} />
@@ -329,14 +338,14 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                   
         
               </Form.Group>
-            </Col>
-            
+                    
+                </Col>
             </Row>
             <Row style={{ marginTop: '10px' }}>
-            <Col sm={6}>
-                    <Form.Group>
+            <Col sm={12}>
+            <Form.Group>
                       <Form.Label>Passenger count*</Form.Label>
-                      <Field name="seatCapacity">
+                      <Field name="seatCapacity" onChange={(e) => handleChangePassengerCount(e)}>
                         {({ field }) => <Form.Control {...field}/>}
                       </Field>
                       <ErrorMessage
@@ -345,19 +354,47 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                         className="text-danger"
                       />
                     </Form.Group>
-                </Col>
-            <Col sm={6}>
-              <Form.Group style={{}}>
+            </Col>
+            
+            </Row>
+            <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '20px',
+                  }}
+                >
+                  <Row>
+                    <Col sm={12}>
+                      <Button
+                        variant="secondary"
+                        onClick={checkPrice}
+                        style={{
+                          border: 'none',
+                          borderRadius: '46px',
+                          marginLeft: '10px',
+                        }}
+                      >
+                        Check Price
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
+<Row>
+                <Col sm={6}>
+            <Form.Group style={{}}>
                 <Form.Label>Price</Form.Label>
-   
-                    <Field name="trainName" value={selectedTrain.trainName || "cat"}>
-                        {({ field }) => <Form.Control value={selectedTrain.trainName || "cat"} {...field} />}
-                      </Field>
+
+                        <Form.Control value={price} />
+                      {/* </Field> */}
+                    
                   
         
               </Form.Group>
-            </Col>
+                    
+                </Col>
             </Row>
+           
             </>
                 }
                 <div
