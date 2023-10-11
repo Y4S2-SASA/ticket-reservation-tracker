@@ -29,7 +29,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="56dp">
 
         <TextView
             android:id="@+id/currentBookingsTxt"
@@ -43,6 +43,22 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/createReservationBtn"
+            android:layout_width="58dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="95dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/light_purple"
+            android:text="+"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +71,7 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipereservation"
             android:layout_width="match_parent"
-            android:layout_height="464dp">
+            android:layout_height="522dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerviewreservation"
@@ -68,19 +84,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/createReservationBtn"
-        android:layout_width="215dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/light_purple"
-        android:text="@string/create_reservation_btn"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

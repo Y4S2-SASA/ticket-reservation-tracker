@@ -1,9 +1,14 @@
 package com.sasa.ticketreservationapp.config;
 
+import com.sasa.ticketreservationapp.request.AvailableSeatRequest;
 import com.sasa.ticketreservationapp.request.LoginRequest;
 import com.sasa.ticketreservationapp.models.UserModel;
 import com.sasa.ticketreservationapp.request.AccountStatusRequest;
-import com.sasa.ticketreservationapp.response.DestinationResponse;
+import com.sasa.ticketreservationapp.request.PriceRequest;
+import com.sasa.ticketreservationapp.request.ReservationRequest;
+import com.sasa.ticketreservationapp.request.ScheduleRequest;
+import com.sasa.ticketreservationapp.response.ScheduleResponse;
+import com.sasa.ticketreservationapp.response.StationResponse;
 import com.sasa.ticketreservationapp.response.LoginResponse;
 
 import java.util.List;
@@ -30,10 +35,22 @@ public interface ApiInterface {
     @PUT("api/User/updateUser")
     Call<Void> updateUser(@Header("Authorization") String authorization, @Body UserModel userModel);
 
-    @GET("api/Destination/getDestinations")
-    Call<List<DestinationResponse>> getDestinations(@Header("Authorization") String authorization);
+    @GET("api/MasterData/getAllStationMasterData")
+    Call<List<StationResponse>> getStations(@Header("Authorization") String authorization);
 
     @PUT("api/User/deactiveTravelerAccount")
     Call<Void> updateUserStatus(@Header("Authorization") String authorization, @Body AccountStatusRequest accountStatusRequest);
+
+    @POST("/api/Schedule/getScheduleTrainsData")
+    Call<List<ScheduleResponse>> getScheduleTrainsData(@Header("Authorization") String authorization, @Body ScheduleRequest request);
+
+    @POST("/api/Schedule/getAvailableTrainSeatCount")
+    Call<Integer> getAvailableTrainSeatCount(@Header("Authorization") String authorization, @Body AvailableSeatRequest request);
+
+    @POST("/api/Schedule/getSchedulePrice")
+    Call<Integer> getSchedulePrice(@Header("Authorization") String authorization, @Body PriceRequest request);
+
+    @POST("/api/Reservation/saveReservation")
+    Call<Void> saveReservation(@Header("Authorization") String authorization, @Body ReservationRequest request);
 
 }
