@@ -32,7 +32,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   const [isSchedulesLoading, setSchedulesLoading] = useState(true);
   const [schedules, setSchedules] = useState([]);
   const [formDataselectedPClass, setFormDataSelectedPclass] = useState(1);
-  const [selectedTrain, setSelectedTrain] = useState({});
+  const [selectedTrain, setSelectedTrain] = useState("{}");
 
   const handlePClassOnChange = (e) => {
     console.log(e.target.value)
@@ -41,8 +41,18 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
 
   const handleSelectTime = (e) => {
     setSelectedTrain(e.target.value)
-    console.log(e)
+    console.log(JSON.parse(e.target.value))
+    console.log(selectedTrain)
 
+  }
+
+  const getTrainObj = (attri) => {
+    try {
+        const trainObj = JSON.parse(selectedTrain);
+        return trainObj[attri]
+    } catch (error) {
+        return ""
+    }
   }
   
   const getAllStations = async () => {
@@ -270,11 +280,11 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 {isScheduleAvailable && !isSchedulesLoading && 
                 <>
             <Row style={{ marginTop: '10px' }}>
-            <Col sm={12}>
+            <Col sm={6}>
               <Form.Group style={{}}>
                 <Form.Label>Time*</Form.Label>
                 <Field
-                  onChange={e => handleSelectTime(e, setFieldValue)}
+                  onChange={e => handleSelectTime(e)}
                   value={selectedTrain.arrivalTime}
                   name="availableDays"
                   as="select"
@@ -294,13 +304,26 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 </Field>
               </Form.Group>
             </Col>
+            <Col sm={6}>
+                    <Form.Group>
+                      <Form.Label>Passenger count*</Form.Label>
+                      <Field name="seatCapacity">
+                        {({ field }) => <Form.Control {...field}/>}
+                      </Field>
+                      <ErrorMessage
+                        name="seatCapacity"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </Form.Group>
+                </Col>
             </Row>
             <Row style={{ marginTop: '10px' }}>
             <Col sm={12}>
               <Form.Group style={{}}>
                 <Form.Label>Train</Form.Label>
 
-                        <Form.Control value={JSON.parse(selectedTrain).trainName} />
+                        <Form.Control value={getTrainObj("trainName")} />
                       {/* </Field> */}
                     
                   
