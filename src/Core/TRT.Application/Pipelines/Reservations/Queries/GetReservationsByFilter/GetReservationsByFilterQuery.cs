@@ -96,7 +96,7 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
         {
             var startDate = request.FromDate; 
             var endDate = request.ToDate.AddDays(NumberConstant.ONE)
-                                  .AddSeconds(NumberConstant.MINUSONE); ;
+                                  .AddSeconds(NumberConstant.MINUSONE);
 
             if(!string.IsNullOrEmpty(request.ReservationNumber))
             {
