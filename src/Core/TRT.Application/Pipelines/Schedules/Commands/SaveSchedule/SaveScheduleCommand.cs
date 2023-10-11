@@ -47,6 +47,20 @@ namespace TRT.Application.Pipelines.Schedules.Commands.SaveSchedule
 
                     AddNewSubStations(schedule, request.ScheduleDTO.SubStationDetails);
 
+                    schedule.SubStationDetails.Add(new SubStationDetail()
+                    {
+                        StationId = request.ScheduleDTO.DepartureStationId,
+                        ArrivalTime = request.ScheduleDTO.DepartureTime,
+                    });
+
+                    schedule.SubStationDetails.Insert(NumberConstant.ZERO, new SubStationDetail()
+                    {
+                        StationId = request.ScheduleDTO.ArrivalStationId,
+                        ArrivalTime = request.ScheduleDTO.ArrivalTime,
+                    });
+
+
+
                     await _scheduleCommandRepository.AddAsync(schedule, cancellationToken);
 
                     return ResultDTO.Success(ResponseMessageConstant.SCHEDULE_SAVE_SUCCESS_RESPONSE_MESSAGE);

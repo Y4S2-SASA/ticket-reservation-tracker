@@ -5,7 +5,6 @@ using TRT.Application.DTOs.UserDTOs;
 using TRT.Application.Pipelines.Users.Commands.ChangeUserStatus;
 using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
-using TRT.Application.Pipelines.Users.Queries.GetAllUsers;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter;
 using TRT.Application.Pipelines.Users.Queries.GetUserById;
 using TRT.Application.Pipelines.Users.Queries.ValidateUserNIC;
