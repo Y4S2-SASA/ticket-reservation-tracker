@@ -34,7 +34,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     const [isStationsLoading, setStationsLoading] = useState(true);
     const [isScheduleAvailable, setShedulesAvailability] = useState(false);
     const [isSchedulesLoading, setSchedulesLoading] = useState(false);
-    const [isPriceLoading, setPriceLoading] = useState(false);  
+    const [isPriceLoading, setPriceLoading] = useState(false);
     const [schedules, setSchedules] = useState([]);
     const [formDataselectedPClass, setFormDataSelectedPclass] = useState(1);
     const [selectedTrain, setSelectedTrain] = useState("{}");
@@ -126,12 +126,14 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         getAllStations()
         const getById = async () => {
             setDataLoading(true)
-            const response = await TrainsAPIService.getTrainById({
-                id: parentData?.id,
-            })
+            const response = await ReservationsAPIService.getReservation(parentData.id)
             if (response) {
                 await setData(response)
                 await setDataLoading(false)
+                await setPriceLoading(false)
+                await setShedulesAvailability(true)
+                await setSchedulesLoading(false)
+                await setReadyToSubmit(true)
             }
             console.log(response)
         }
@@ -150,10 +152,16 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     })
 
     const initialValues = {
-        trainName: action === 'add' ? '' : data?.trainName,
-        seatCapacity: action === 'add' ? '' : data?.seatCapacity,
-        availableDays: action === 'add' ? '' : data?.availableDays,
-        passengerClasses: action === 'add' ? [] : data?.passengerClasses || [],
+
+        id: action === 'edit' ? data?.id : '',
+        referenceNumber: action === 'edit' ? data?.referenceNumber : '',
+        trainName: action === 'edit' ? data?.trainName : '',
+        passengerClass: action === 'edit' ? data?.passengerClass : '',
+        destinationStationName: action === 'edit' ? data?.destinationStationName : '',
+        arrivalStationName: action === 'edit' ? data?.arrivalStationName : '',
+        dateTime: action === 'edit' ? data?.dateTime : '',
+        seatCapacity: action === 'edit' ? data?.noOfPassengers : '',
+        price: action === 'edit' ? data?.price : ''
     }
 
     const handleSubmit = async (formData) => {
@@ -252,6 +260,12 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                 <Form.Label>Destination station*</Form.Label>
                                                 <Typeahead
                                                     id="des"
+                                                    // defaultSelected={
+                                                    //     stations.find(station => station.id === data.destinationStationId)
+                                                    //   }
+                                                    //value={stations.map(station => station.id == data.destinationStationId)[0]}
+                                                  //  labelKey={stations.map(station => station.id == data.destinationStationId)[0].label}
+                                                    name="destinationStationName"
                                                     onChange={destination => setFormDataDestination(destination)}
                                                     isLoading={isStationsLoading}
                                                     disabled={isStationsLoading}
@@ -265,6 +279,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                 <Form.Label>Origin station*</Form.Label>
                                                 <Typeahead
                                                     id="ori"
+                                                    name="arrivalStationName"
                                                     onChange={_origin => setFormDataOrigin(_origin)}
                                                     isLoading={isStationsLoading}
                                                     disabled={isStationsLoading}
@@ -303,6 +318,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                             <Form.Group style={{}}>
                                                 <Form.Label>Booking date*</Form.Label>
                                                 <DatePicker
+                                                    name="dateTime"
                                                     selected={formDataStartDate}
                                                     onChange={(date) => setFormDataStartDate(date)}
                                                     minDate={new Date()}
@@ -369,7 +385,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                     <Form.Group style={{}}>
                                                         <Form.Label>Train</Form.Label>
 
-                                                        <Form.Control value={getTrainObj("trainName")} />
+                                                        <Form.Control name="trainName" value={getTrainObj("trainName")} />
 
 
 
@@ -414,25 +430,25 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                                 marginLeft: '10px',
                                                             }}
                                                         >
-                                                            {isPriceLoading ? <Spinner/> : "Check Price"}
+                                                            {isPriceLoading ? <Spinner /> : "Check Price"}
                                                         </Button>
                                                     </Col>
                                                 </Row>
                                             </div>
                                             {readyToSubmit &&
-                                            <Row>
-                                            <Col sm={12}>
-                                                <Form.Group style={{}}>
-                                                    <Form.Label>Price</Form.Label>
+                                                <Row>
+                                                    <Col sm={12}>
+                                                        <Form.Group style={{}}>
+                                                            <Form.Label>Price</Form.Label>
 
-                                                    <Form.Control value={price} />
+                                                            <Form.Control name="price" value={price} />
 
 
 
-                                                </Form.Group>
+                                                        </Form.Group>
 
-                                            </Col>
-                                        </Row>
+                                                    </Col>
+                                                </Row>
                                             }
 
 

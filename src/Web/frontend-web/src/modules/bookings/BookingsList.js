@@ -48,8 +48,8 @@ export default function BookingsList() {
     const [selectedTrain, setSelectedTrain] = useState("")
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedReservation, setSelectedReservation] = useState("");
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
 
     const getAllTrains = () => { }
     const getAllReservations = async () => {

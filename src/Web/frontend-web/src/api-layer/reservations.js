@@ -28,6 +28,20 @@ class ReservationsAPIService {
     });
   }
 
+  getReservation = (id) => {
+    return new Promise((resolve, reject) => {
+        HttpServiceConfig.get(
+          `/api/Reservation/getReservationById/${id}`
+        )
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+  }
+
   getReservations = (req, headers = {}) => { // Corrected the variable name from "header" to "headers"
     const formattedReq = {
       reservationNumber: req.reservationNumber,
