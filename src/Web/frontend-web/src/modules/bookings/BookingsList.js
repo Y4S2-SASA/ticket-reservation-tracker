@@ -42,14 +42,28 @@ export default function BookingsList() {
   ] = useState(false)
   const [selectedAvailability, setSelectedAvailability] = useState(0)
   const [selectedPassenger, setSelectedPassenger] = useState(0)
+  const [selectedDestination, setSelectedDestination] = useState("")
+  const [selectedArrivalStation, setSelectedArrivalStation] = useState("")
+  const [selectedTrain, setSelectedTrain] = useState("")
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedReservation, setSelectedReservation] = useState("");
 
-  const getAllTrains = async () => {
+  const getAllTrains = () => {}
+  const getAllReservations = async () => {
     try {
       const payload = {
-        searchText: searchText,
+        // searchText: searchText,
+        // status: filterByStatus,
+        // availableDay: selectedAvailability,
+        // passengerClass: selectedPassenger,
+        // currentPage: currentPage,
+        reservationNumber: selectedReservation,
+        fromDate: "",
+        toDate: selectedDate,
+        trainId: selectedTrain,
+        destinationStationId: selectedDestination,
+        arrivalStationId: selectedArrivalStation,
         status: filterByStatus,
-        availableDay: selectedAvailability,
-        passengerClass: selectedPassenger,
         currentPage: currentPage,
         pageSize: 10,
       }
@@ -73,13 +87,17 @@ export default function BookingsList() {
   }
 
   useEffect(() => {
-    getAllTrains()
+    //getAllTrains()
+    getAllReservations()
   }, [
     currentPage,
     searchText,
     filterByStatus,
-    selectedAvailability,
-    selectedPassenger,
+    selectedDestination,
+    selectedArrivalStation,
+    selectedTrain,
+    selectedDate,
+    selectedReservation
   ])
 
   const handleCheckboxChange = (id) => {
