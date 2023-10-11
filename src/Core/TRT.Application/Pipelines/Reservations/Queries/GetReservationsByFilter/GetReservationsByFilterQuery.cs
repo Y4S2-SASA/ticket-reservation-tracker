@@ -95,7 +95,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
         private Expression<Func<Reservation, bool>> ConfigureReservationFilter(Expression<Func<Reservation, bool>> query, GetReservationsByFilterQuery request)
         {
             var startDate = request.FromDate; 
-            var endDate = request.ToDate;
+            var endDate = request.ToDate.AddDays(NumberConstant.ONE)
+                                  .AddSeconds(NumberConstant.MINUSONE); ;
 
             if(!string.IsNullOrEmpty(request.ReservationNumber))
             {
