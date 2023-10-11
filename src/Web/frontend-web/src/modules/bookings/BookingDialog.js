@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import {
@@ -33,11 +35,11 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   const [schedules, setSchedules] = useState([]);
   const [formDataselectedPClass, setFormDataSelectedPclass] = useState(1);
   const [selectedTrain, setSelectedTrain] = useState("{}");
-  const [passengerCount, setPassengerCount] = useState(0)
+  const [passengerCount, setPassengerCount] = useState(0);
   const [price, setPrice] = useState(0);
   
   const handleChangePassengerCount = (e) => {
-    console.log(e.target.value)
+    console.log("333",e.target.value)
     setPassengerCount(e.target.value)
   }
 
@@ -80,7 +82,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             departureStationId: formDataDestination[0].id,
             arrivalStationId: formDataOrigin[0].id,
             selectedScheduleId: getTrainObj("scheduleId"),
-            passengerCount: passengerCount,
+            passengerCount: parseInt(passengerCount),
             passengerClass: parseInt(formDataselectedPClass)
         }
        // setSchedulesLoading(true)
@@ -183,9 +185,11 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          {action === 'edit' ? 'Edit Train' : 'Add Train'}
+          {action === 'edit' ? 'Edit Reservation' : 'Add Reservation'}
         </Modal.Title>
+        
       </Modal.Header>
+      
       <Modal.Body>
         {action === 'edit' && dataLoading ? (
           <center>
@@ -204,20 +208,20 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             onSubmit={handleSubmit}
           >
             {({ isValid, handleSubmit, values, setFieldValue }) => (
-                
+                <>
+
               <Form onSubmit={handleSubmit}>
+
                 <Row>
                   <Col sm={6}>
                     <Form.Group>
                       <Form.Label>Destination station*</Form.Label>
                        <Typeahead
-                        id="basic-example"
                         onChange={destination => setFormDataDestination(destination)}
                         isLoading={isStationsLoading}
                         disabled={isStationsLoading}
                         options={stations}
                         placeholder="Choose destination"
-                        //selected={formDataDestination}
                        />
                     </Form.Group>
                   </Col>
@@ -225,19 +229,12 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                     <Form.Group>
                       <Form.Label>Origin station*</Form.Label>
                       <Typeahead
-                        id="basic-example"
                         onChange={_origin => setFormDataOrigin(_origin)}
                         isLoading={isStationsLoading}
                         disabled={isStationsLoading}
                         options={stations}
                         placeholder="Choose origin station"
-                        //selected={formDataOrigin}
                         />
-                      <ErrorMessage
-                        name="seatCapacity"
-                        component="div"
-                        className="text-danger"
-                      />
                     </Form.Group>
                   </Col>
                 </Row>
@@ -248,7 +245,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                       <Field
                         onChange={e => setFormDataSelectedPclass(e.target.value)}
                         value={formDataselectedPClass}
-                        name="availableDays"
+                        name="passengerClass"
                         as="select"
                         style={{
                           width: '100%',
@@ -310,7 +307,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 <Field
                   onChange={e => handleSelectTime(e)}
                   value={selectedTrain.arrivalTime}
-                  name="availableDays"
+                  name="time"
                   as="select"
                   style={{
                     width: '100%',
@@ -332,8 +329,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             <Form.Group style={{}}>
                 <Form.Label>Train</Form.Label>
 
-                        <Form.Control value={getTrainObj("trainName")} />
-                      {/* </Field> */}
+                        <Form.Control value={getTrainObj("trainName")}/>
                     
                   
         
@@ -345,8 +341,11 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             <Col sm={12}>
             <Form.Group>
                       <Form.Label>Passenger count*</Form.Label>
-                      <Field name="seatCapacity" onChange={(e) => handleChangePassengerCount(e)}>
-                        {({ field }) => <Form.Control {...field}/>}
+                      <Field name="seatCapacity">
+                        {({ field }) => <Form.Control {...field} onChange={(e) => {
+                  setPassengerCount(e.target.value);
+                  field.onChange(e);
+                }}/>}
                       </Field>
                       <ErrorMessage
                         name="seatCapacity"
@@ -386,7 +385,6 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 <Form.Label>Price</Form.Label>
 
                         <Form.Control value={price} />
-                      {/* </Field> */}
                     
                   
         
@@ -435,6 +433,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                   </Row>
                 </div>
               </Form>
+              </>
             )}
           </Formik>
         )}
