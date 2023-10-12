@@ -3,7 +3,7 @@ import HttpServiceConfig from '../configs/http-service-config';
 class ReservationsAPIService {
   saveReservation = (req, headers = {}) => { // Corrected the variable name from "header" to "headers"
     const formattedReq = {
-      id: "",
+      id: req.id,
       referenceNumber: "",
       passengerClass: req.passengerClass,
       trainId: req.trainId,
@@ -26,6 +26,34 @@ class ReservationsAPIService {
           reject(error);
         });
     });
+  }
+
+  getReservation = (id) => {
+    return new Promise((resolve, reject) => {
+        HttpServiceConfig.get(
+          `/api/Reservation/getReservationById/${id}`
+        )
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+  }
+
+  deleteReservation = (id) => {
+    return new Promise((resolve, reject) => {
+        HttpServiceConfig.delete(
+          `/api/Reservation/deleteReservation`, id
+        )
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
   }
 
   getReservations = (req, headers = {}) => { // Corrected the variable name from "header" to "headers"
