@@ -125,28 +125,8 @@ public class CurrentBookingsActivity extends AppCompatActivity {
             Intent intent = new Intent(CurrentBookingsActivity.this, CreateReservationActivity.class);
             startActivity(intent);
             finish();
-//                if(prefs.getString("nic", "") != null){
-//                String nic = prefs.getString("nic", "");
-//                Log.d("TAG", nic);
-//            }
         });
-
     }
-    //Loads the data to the recycler view
-//    private void loadData() {
-//        swipeRefreshLayout.setRefreshing(true);
-//
-//        // Simulated data retrieval (replace this with your actual data retrieval logic)
-//        ArrayList<ReservationModel> reqs = new ArrayList<>();
-//        reqs.add(new ReservationModel("John Doe", "New York", "2", "T001", "12-11-2023, 9:00 AM", "Station A", "$50", "RES001"));
-//        reqs.add(new ReservationModel("Jane Smith", "Chicago", "1", "T001", "12-11-2023, 10:30 AM", "Station B", "$30", "RES002"));
-//        reqs.add(new ReservationModel("Bob Johnson", "Los Angeles", "3", "T001", "12-11-2023, 11:45 AM", "Station C", "$70", "RES003"));
-//
-//        adapter.setItems(reqs);
-//        adapter.notifyDataSetChanged();
-//        isLoading = false;
-//        swipeRefreshLayout.setRefreshing(false);
-//    }
 
     void toggleOverlay(boolean show) {
         if (show && !isOverlayVisible) {

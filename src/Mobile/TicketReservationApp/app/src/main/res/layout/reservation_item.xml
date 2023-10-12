@@ -9,9 +9,10 @@
         android:padding="10dp">
 
         <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/req_bg">
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/req_bg"
+            android:layout_marginTop="11dp">
 
             <TextView
                 android:id="@+id/tv_reqPrefix"
@@ -31,7 +32,7 @@
                 android:id="@+id/tv_to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="55dp"
                 android:paddingLeft="18dp"
                 android:text="To:"
                 android:textColor="@color/dark_purple"
@@ -55,7 +56,7 @@
                 android:id="@+id/tv_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="55dp"
                 android:layout_marginTop="25dp"
                 android:paddingLeft="18dp"
                 android:text="From:"
@@ -80,7 +81,7 @@
                 android:id="@+id/tv_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="55dp"
                 android:layout_marginTop="50dp"
                 android:paddingLeft="18dp"
                 android:text="Time:"

@@ -46,7 +46,7 @@ public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         String reservedTime = req.getDateTime();
         String destination = req.getDestinationStationName();
         String departure = req.getArrivalStationName();
-        String prefix = (req.getDestinationStationName().substring(0, 2));
+        String prefix = (req.getDestinationStationName().substring(0, 2)).toUpperCase();
         vhc.tv_reservedTime.setText(reservedTime);
         vhc.tv_destination.setText(destination);
         vhc.tv_reqPrefix.setText(prefix);
