@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pipelines\Dashboards\Commands\" />
     <Folder Include="Pipelines\Stations\Commands\" />
     <Folder Include="Pipelines\TrainTicketPrices\Commands\" />
   </ItemGroup>

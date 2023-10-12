@@ -6,11 +6,12 @@ using TRT.Application.DTOs.ReservationDTOs;
 using TRT.Application.Pipelines.Stations.Queries.GetStatusByIdQuery;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
 using TRT.Application.Pipelines.Users.Queries.GetUserById;
+using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
 
 namespace TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation
 {
-    public record GetTraverlerReservationQuery : IRequest<List<ReservationDetailDTO>>
+    public record GetTraverlerReservationQuery(int Status) : IRequest<List<ReservationDetailDTO>>
     {
     }
 
@@ -36,7 +37,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation
             var reservations = new List<ReservationDetailDTO>();
 
             var listOfReservation = (await _reservationQueryRepository
-                                        .Query(x => x.CreatedUserNIC == _currentUserService.UserId))
+                                        .Query(x => x.CreatedUserNIC == _currentUserService.UserId && 
+                                        x.Status == (Status)request.Status))
                                         .ToList();
 
             foreach(var reservation in listOfReservation)

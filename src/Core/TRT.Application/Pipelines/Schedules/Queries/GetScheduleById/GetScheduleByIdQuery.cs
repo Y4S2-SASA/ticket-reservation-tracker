@@ -5,11 +5,8 @@ using TRT.Domain.Repositories.Query;
 
 namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleById
 {
-    public record GetScheduleByIdQuery(string id) : IRequest<ScheduleDTO>
-    {
-
-    }
-
+    public record GetScheduleByIdQuery(string id) : IRequest<ScheduleDTO>;
+  
     public class GetScheduleByIdQueryHandler : IRequestHandler<GetScheduleByIdQuery, ScheduleDTO>
     {
         private readonly IScheduleQueryRepository _scheduleQueryRepository;

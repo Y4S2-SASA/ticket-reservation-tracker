@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using TRT.Application.Common.Constants;
+using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.ScheduleDTOs;
 using TRT.Domain.Entities;
@@ -95,7 +96,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
                     scheduleData.ArrivalStationName = arrivalStationName.Name;
                     scheduleData.ArrivalTime = item.ArrivalTime.ToString(DateTimeFormatConstant.DATE_WITH_TIME_FORMAT);
                     scheduleData.DepartureTime = item.DepartureTime.ToString(DateTimeFormatConstant.DATE_WITH_TIME_FORMAT);
-
+                    scheduleData.Status = EnumHelper.GetEnumDescription(item.Status);
                     scheduleDetails.Add(scheduleData);
                     
                 }

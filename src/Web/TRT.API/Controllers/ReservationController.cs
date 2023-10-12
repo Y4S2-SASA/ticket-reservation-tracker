@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.DTOs.ReservationDTOs;
 using TRT.Application.Pipelines.Reservations.Commands.ChangeReservationStatus;
+using TRT.Application.Pipelines.Reservations.Commands.DeleteReservation;
 using TRT.Application.Pipelines.Reservations.Commands.SaveReservation;
+using TRT.Application.Pipelines.Reservations.Queries.GetReservationById;
 using TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter;
 using TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation;
 using TRT.Domain.Constants;
@@ -45,12 +47,12 @@ namespace TRT.API.Controllers
         }
 
         [Authorize(Roles = AuthorizedRoles.Traveler)]
-        [HttpGet("getTraverlerReservation")]
-        public async Task<IActionResult> GetTraverlerReservation()
+        [HttpGet("getTraverlerReservation/{status}")]
+        public async Task<IActionResult> GetTraverlerReservation(int status)
         {
             try
             {
-                var response = await _mediator.Send(new GetTraverlerReservationQuery());
+                var response = await _mediator.Send(new GetTraverlerReservationQuery(status));
 
                 return Ok(response);
             }
@@ -84,6 +86,38 @@ namespace TRT.API.Controllers
             try
             {
                 var response = await _mediator.Send(changeReservationStatusCommand);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpGet("getReservationById/{id}")]
+        public async Task<IActionResult> GetReservationById(string id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetReservationByIdQuery(id));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        [HttpDelete("deleteReservation/{id}")]
+        public async Task<IActionResult> DeleteReservation(string id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new DeleteReservationCommand(id));
 
                 return Ok(response);
             }

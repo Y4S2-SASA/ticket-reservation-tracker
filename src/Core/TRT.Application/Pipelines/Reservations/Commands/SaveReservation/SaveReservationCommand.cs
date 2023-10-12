@@ -73,6 +73,8 @@ namespace TRT.Application.Pipelines.Reservations.Commands.SaveReservation
                     if (dateTimeDifference.Days >= NumberConstant.FIVE)
                     {
                         exsistingReservation = request.Reservation.ToEntity(exsistingReservation);
+
+                        await _reservationCommandRepository.UpdateAsync(exsistingReservation, cancellationToken);
                     }
 
                     return ResultDTO.Success(ResponseMessageConstant.RESERVATION_UPDATE_SUCCESS_RESPONSE_MESSAGE);

@@ -16,8 +16,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
     public record GetReservationsByFilterQuery : IRequest<PaginatedListDTO<ReservationDetailDTO>>
     {
         public string? ReservationNumber { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string? TrainId { get; set; }
         public string? DestinationStationId { get; set; }
         public string? ArrivalStationId { get; set; }
@@ -94,9 +94,7 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
 
         private Expression<Func<Reservation, bool>> ConfigureReservationFilter(Expression<Func<Reservation, bool>> query, GetReservationsByFilterQuery request)
         {
-            var startDate = request.FromDate; 
-            var endDate = request.ToDate.AddDays(NumberConstant.ONE)
-                                  .AddSeconds(NumberConstant.MINUSONE);
+            
 
             if(!string.IsNullOrEmpty(request.ReservationNumber))
             {
@@ -105,7 +103,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
 
             if(request.FromDate != null && request.ToDate != null)
             {
-                query = x => x.DateTime >= request.FromDate && x.DateTime <= request.ToDate;
+                query = x => x.DateTime >= request.FromDate && x.DateTime <= request.ToDate.Value.AddDays(NumberConstant.ONE)
+                                  .AddSeconds(NumberConstant.MINUSONE); ;
             }
 
             if(!string.IsNullOrEmpty(request.TrainId))

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using TRT.Application.Common.Constants;
 using TRT.Application.Common.Interfaces;
 
 namespace TRT.Application.Common.Behaviours
@@ -33,7 +34,7 @@ namespace TRT.Application.Common.Behaviours
 
             var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-            if (elapsedMilliseconds <= 500) return response;
+            if (elapsedMilliseconds <= NumberConstant.FIVEHUNDRANT) return response;
             var requestName = typeof(TRequest).Name;
             var userId = _currentUserService.UserId ?? string.Empty;
 
