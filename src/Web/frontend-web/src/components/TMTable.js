@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Form, Button } from 'react-bootstrap'
+import { Table, Form, Button, Spinner, Row } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
 import { getStatusColor } from '../configs/static-configs'
@@ -18,6 +18,8 @@ const StyledTable = ({
   onDeleteClick,
   handlePageChange,
   currentPage,
+  isLoadingEnabaled,
+  isLoading
 }) => {
   console.log('data', data)
   const renderActions = (id) => {
@@ -42,7 +44,19 @@ const StyledTable = ({
   }
 
   const renderRows = () => {
-    if (data?.length > 0) {
+    if (isLoadingEnabaled && isLoading) {
+      return <tr>
+        <td colSpan={headers.length + 2}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Spinner animation="border" />
+          </div>
+        </td>
+      </tr>
+    } else if (data?.length > 0) {
       return data?.map((row, index) => (
         <tr key={index}>
           <td>

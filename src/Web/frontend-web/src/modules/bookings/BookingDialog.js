@@ -224,8 +224,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             const response = await ReservationsAPIService.saveReservation(payload)
             if (response) {
                 console.log(response)
-                await callBackData()
-                await onClose()
+                callBackData()
+                onClose()
             } else {
                 console.log(response)
             }
@@ -502,7 +502,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                             borderRadius: '46px',
                                                         }}
                                                     >
-                                                        Saveo
+                                                        Save
                                                     </Button>
                                                 </Col>
                                             </Row>

@@ -18,6 +18,7 @@ import ReservationsAPIService from '../../api-layer/reservations'
 import TrainsAPIService from '../../api-layer/trains'
 
 export default function BookingsList() {
+    const [dataLoading, setDataLoading] = useState([])
     const [selectedIds, setSelectedIds] = useState([])
     const [selectAll, setSelectAll] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
@@ -78,7 +79,7 @@ export default function BookingsList() {
         }
       } else {
         alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
-        // const response = await ReservationsAPIService.deleteReservation(id);
+        const response = await ReservationsAPIService.deleteReservation(id);
         // if (response) {
         //     alert("Reservation deleted");
         //     getAllReservations();
@@ -89,9 +90,10 @@ export default function BookingsList() {
     }
 
     const getAllReservations = async () => {
+        setDataLoading(true)
         try {
             const payload = {
-                reservationNumber: selectedReservation,
+                reservationNumber: searchText || "",
                 fromDate: fromDate,
                 toDate: toDate,
                 trainId: selectedTrain,
@@ -117,6 +119,7 @@ export default function BookingsList() {
             }
         } catch (e) {
         } finally {
+            setDataLoading(false)
         }
     }
 
@@ -236,7 +239,7 @@ export default function BookingsList() {
 
                     <Form.Control
                         type="text"
-                        placeholder="Search Trains"
+                        placeholder="Search Reservations"
                         value={searchText}
                         onChange={(e) => handleSearchInputChange(e)}
                         style={{
@@ -343,6 +346,8 @@ export default function BookingsList() {
                     onDeleteClick={handleDeleteClick}
                     handlePageChange={handlePageChange}
                     currentPage={currentPage}
+                    isLoadingEnabaled={true}
+                    isLoading={dataLoading}
                 />
                 <div>
                     {settings.openDialog && (
@@ -350,7 +355,7 @@ export default function BookingsList() {
                             settings={settings}
                             onClose={onCloseDialog}
                             onSave={onCloseDialog}
-                            callBackData={getAllTrains}
+                            callBackData={getAllReservations}
                         />
                     )}
                 </div>
