@@ -1,27 +1,20 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import StyledTable from '../../components/TMTable'
-import Loader from '../../components/TMLoader'
 import MainLayout from '../../components/Layouts/MainLayout'
 import LayoutHeader from '../../components/Layouts/LayoutHeader'
-import DropdownStyledButton from '../../components/TMDropdownButton'
 import {
-    STATUS_LIST,
     TRAIN_AVAILABLE_DAYS,
-    TRAIN_PASSENGER_CLASSES,
 } from '../../configs/static-configs'
-import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { Button, Form, InputGroup } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 import { RESERVATION_HEADERS } from '../../configs/dataConfig'
 import BookingDialog from './BookingDialog'
-import ConfirmationDialog from '../../components/TMConfirmationDialog'
 import ReservationsAPIService from '../../api-layer/reservations'
-import TrainsAPIService from '../../api-layer/trains'
 
 export default function BookingsList() {
     const [dataLoading, setDataLoading] = useState([])
     const [selectedIds, setSelectedIds] = useState([])
     const [selectAll, setSelectAll] = useState(false)
-    const [selectedStatus, setSelectedStatus] = useState(null)
     const [searchParameters, setSearchParameers] = useState({
         pageSize: 10,
         hasNextPage: false,
@@ -30,7 +23,6 @@ export default function BookingsList() {
         totalPages: 0,
     })
     const [currentPage, setCurrentPage] = useState(0)
-    const [filterByStatus, setFilterByStatus] = useState(0)
     const [filteredData, setFilteredData] = useState([])
     const [searchText, setSearchText] = useState('')
     const [settings, setSettings] = useState({
@@ -38,28 +30,15 @@ export default function BookingsList() {
         action: '',
         parentData: null,
     })
-    const [
-        showStatuConfirmationDialog,
-        setShowStatuConfirmationDialog,
-    ] = useState(false)
-    const [selectedAvailability, setSelectedAvailability] = useState(0)
-    const [selectedPassenger, setSelectedPassenger] = useState(0)
-    const [selectedDestination, setSelectedDestination] = useState("")
-    const [selectedArrivalStation, setSelectedArrivalStation] = useState("")
-    const [selectedTrain, setSelectedTrain] = useState("")
-    const [selectedDate, setSelectedDate] = useState("");
-    const [selectedReservation, setSelectedReservation] = useState("");
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
-
-    const getAllTrains = () => { }
 
     const ableToDeleteEdit = (id) => {
         const reservation = filteredData.filter(data => data.id === id)
 
         const reservationDate = new Date(reservation.dateTime);
-        const today = new Date();  
-        const timeDifference = today - reservationDate; 
+        const today = new Date();
+        const timeDifference = today - reservationDate;
         const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
         if (daysDifference >= 5) {
@@ -69,24 +48,24 @@ export default function BookingsList() {
         }
     }
     const deleteReservation = async (id) => {
-      if (ableToDeleteEdit(id)) {
-        const response = await ReservationsAPIService.deleteReservation(id);
-        if (response) {
-            alert("Reservation deleted");
-            getAllReservations();
+        if (ableToDeleteEdit(id)) {
+            const response = await ReservationsAPIService.deleteReservation(id);
+            if (response) {
+                alert("Reservation deleted");
+                getAllReservations();
+            } else {
+                alert("Something went wrong")
+            }
         } else {
-            alert("Something went wrong")
+            alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
+            const response = await ReservationsAPIService.deleteReservation(id);
+            // if (response) {
+            //     alert("Reservation deleted");
+            //     getAllReservations();
+            // } else {
+            //     alert("Something went wrong")
+            // }
         }
-      } else {
-        alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
-        const response = await ReservationsAPIService.deleteReservation(id);
-        // if (response) {
-        //     alert("Reservation deleted");
-        //     getAllReservations();
-        // } else {
-        //     alert("Something went wrong")
-        // }
-      }
     }
 
     const getAllReservations = async () => {
@@ -96,10 +75,10 @@ export default function BookingsList() {
                 reservationNumber: searchText || "",
                 fromDate: fromDate,
                 toDate: toDate,
-                trainId: selectedTrain,
-                destinationStationId: selectedDestination,
-                arrivalStationId: selectedArrivalStation,
-                status: filterByStatus,
+                trainId: "",
+                destinationStationId: "",
+                arrivalStationId: "",
+                status: 0,
                 currentPage: currentPage,
                 pageSize: 10,
             }
@@ -124,17 +103,10 @@ export default function BookingsList() {
     }
 
     useEffect(() => {
-        //getAllTrains()
         getAllReservations()
     }, [
         currentPage,
         searchText,
-        filterByStatus,
-        selectedDestination,
-        selectedArrivalStation,
-        selectedTrain,
-        selectedDate,
-        selectedReservation,
         fromDate,
         toDate
     ])
@@ -166,51 +138,13 @@ export default function BookingsList() {
                 parentData: { id },
             })
         } else {
-          alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
+            alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
         }
     }
 
     const handleDeleteClick = (id) => {
         deleteReservation(id)
         console.log(`Delete clicked for ID: ${id}`)
-    }
-
-    const handleStatusChange = (itemId) => {
-        setSelectedStatus(itemId)
-        setShowStatuConfirmationDialog(true)
-    }
-
-    const handleConfirmStatusChange = async () => {
-        selectedIds.forEach(async (tId) => {
-            const payload = {
-                id: tId,
-                status: selectedStatus,
-            }
-            const response = await TrainsAPIService.updateTrainStatus(payload)
-            if (response) {
-                await getAllTrains()
-                await setSelectedIds([])
-            }
-            console.log(response)
-        })
-
-        setShowStatuConfirmationDialog(false)
-    }
-
-    const handleCloseConfirmationDialog = () => {
-        setShowStatuConfirmationDialog(false)
-    }
-
-    const handleStatusFilter = (itemId) => {
-        setFilterByStatus(itemId)
-    }
-
-    const handleAvailabilityFilter = (itemId) => {
-        setSelectedAvailability(itemId)
-    }
-
-    const handlePassengerFilter = (itemId) => {
-        setSelectedPassenger(itemId)
     }
 
     const handlePageChange = (newPage) => {
@@ -316,7 +250,7 @@ export default function BookingsList() {
     return (
         <MainLayout loading={true} loadingTime={2000}>
             <div className="trains-container">
-                <ConfirmationDialog
+                {/* <ConfirmationDialog
                     title="Confirm Status Change"
                     message={`Are you sure you want to change the status to ${STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
                         'Unknown'
@@ -326,10 +260,10 @@ export default function BookingsList() {
                     onConfirm={handleConfirmStatusChange}
                     leftButton="Cancel"
                     rightButton="Confirm"
-                />
+                /> */}
                 <LayoutHeader
-                    title="Trains"
-                    subtitle="Train Management"
+                    title="Reservations"
+                    subtitle="Reservation Management"
                     buttonComponent={buttonComp()}
                 />
                 <StyledTable
