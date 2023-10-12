@@ -28,6 +28,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     const [dataLoading, setDataLoading] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null)
     const [formDataDestination, setFormDataDestination] = useState({});
+    const [destinationStationId, setDestinationStationId] = useState("");
+    const [originStationId, setOriginStationId] = useState("");
     const [formDataOrigin, setFormDataOrigin] = useState({});
     const [formDataStartDate, setFormDataStartDate] = useState(new Date());
     const [stations, setStations] = useState([])
@@ -123,22 +125,35 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     }
 
     useEffect(() => {
-        getAllStations()
+        
         const getById = async () => {
             setDataLoading(true)
             const response = await ReservationsAPIService.getReservation(parentData.id)
             if (response) {
                 await setData(response)
-                await setDataLoading(false)
+                await getAllStations()
                 await setPriceLoading(false)
                 await setShedulesAvailability(true)
                 await setSchedulesLoading(false)
                 await setReadyToSubmit(true)
+                await setDestinationStationId(response.destinationStationId)
+                await setOriginStationId(response.arrivalStationId)
+                
+              
             }
+            await setDataLoading(false)
             console.log(response)
+        }
+
+        const setStationValues = (destinationStationId, arrivalStationId) => {
+            console.log(destinationStationId)
+            setFormDataOrigin(stations.map(station => arrivalStationId == station.id))
+            setFormDataDestination(stations.map(station => destinationStationId == station.id))
         }
         if (action === 'edit') {
             getById()
+        } else {
+            getAllStations()
         }
     }, [action])
 
@@ -161,7 +176,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         arrivalStationName: action === 'edit' ? data?.arrivalStationName : '',
         dateTime: action === 'edit' ? data?.dateTime : '',
         seatCapacity: action === 'edit' ? data?.noOfPassengers : '',
-        price: action === 'edit' ? data?.price : ''
+        price: action === 'edit' ? data?.price : '',
+        // dateTime: action === 'edit' ? new Date(data?.dateTime) : new Date(),
     }
 
     const handleSubmit = async (formData) => {
@@ -259,12 +275,9 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                             <Form.Group>
                                                 <Form.Label>Destination station*</Form.Label>
                                                 <Typeahead
+                                                    clearButton
                                                     id="des"
-                                                    // defaultSelected={
-                                                    //     stations.find(station => station.id === data.destinationStationId)
-                                                    //   }
-                                                    //value={stations.map(station => station.id == data.destinationStationId)[0]}
-                                                  //  labelKey={stations.map(station => station.id == data.destinationStationId)[0].label}
+                                                    defaultSelected={stations.filter(station => station.id === destinationStationId)}
                                                     name="destinationStationName"
                                                     onChange={destination => setFormDataDestination(destination)}
                                                     isLoading={isStationsLoading}
@@ -278,7 +291,9 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                             <Form.Group>
                                                 <Form.Label>Origin station*</Form.Label>
                                                 <Typeahead
+                                                    clearButton
                                                     id="ori"
+                                                    defaultSelected={stations.filter(station => station.id === originStationId)}
                                                     name="arrivalStationName"
                                                     onChange={_origin => setFormDataOrigin(_origin)}
                                                     isLoading={isStationsLoading}
