@@ -52,6 +52,42 @@ export default function BookingsList() {
     const [toDate, setToDate] = useState(null);
 
     const getAllTrains = () => { }
+
+    const ableToDeleteEdit = (id) => {
+        const reservation = filteredData.filter(data => data.id === id)
+
+        const reservationDate = new Date(reservation.dateTime);
+        const today = new Date();  
+        const timeDifference = today - reservationDate; 
+        const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        if (daysDifference >= 5) {
+            return true
+        } else {
+            return false
+        }
+    }
+    const deleteReservation = async (id) => {
+      if (ableToDeleteEdit(id)) {
+        const response = await ReservationsAPIService.deleteReservation(id);
+        if (response) {
+            alert("Reservation deleted");
+            getAllReservations();
+        } else {
+            alert("Something went wrong")
+        }
+      } else {
+        alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
+        // const response = await ReservationsAPIService.deleteReservation(id);
+        // if (response) {
+        //     alert("Reservation deleted");
+        //     getAllReservations();
+        // } else {
+        //     alert("Something went wrong")
+        // }
+      }
+    }
+
     const getAllReservations = async () => {
         try {
             const payload = {
@@ -120,14 +156,19 @@ export default function BookingsList() {
 
     const handleEditClick = (id) => {
         console.log(`Edit clicked for ID: ${id}`)
-        setSettings({
-            openDialog: true,
-            action: 'edit',
-            parentData: { id },
-        })
+        if (ableToDeleteEdit(id)) {
+            setSettings({
+                openDialog: true,
+                action: 'edit',
+                parentData: { id },
+            })
+        } else {
+          alert("Reservation date must be 5 days or more earlier to eligilble to edit or delete")
+        }
     }
 
     const handleDeleteClick = (id) => {
+        deleteReservation(id)
         console.log(`Delete clicked for ID: ${id}`)
     }
 
@@ -297,7 +338,7 @@ export default function BookingsList() {
                     onCheckboxChange={handleCheckboxChange}
                     onSelectAllChange={handleSelectAllChange}
                     editEnabled={true}
-                    deleteEnabled={false}
+                    deleteEnabled={true}
                     onEditClick={handleEditClick}
                     onDeleteClick={handleDeleteClick}
                     handlePageChange={handlePageChange}

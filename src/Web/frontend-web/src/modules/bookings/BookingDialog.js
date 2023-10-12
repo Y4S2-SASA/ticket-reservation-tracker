@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import {
-    ROLES,
-    TRAIN_AVAILABLE_DAYS,
     TRAIN_PASSENGER_CLASSES,
 } from '../../configs/static-configs'
-import TrainsAPIService from '../../api-layer/trains'
-import Select, { components } from 'react-select'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,10 +20,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     const { openDialog, action, parentData } = settings
     const [data, setData] = useState(null)
     const [dataLoading, setDataLoading] = useState(false)
-    const [selectedOption, setSelectedOption] = useState(null)
     const [formDataDestination, setFormDataDestination] = useState({});
-    const [destinationStationId, setDestinationStationId] = useState("");
-    const [originStationId, setOriginStationId] = useState("");
     const [formDataOrigin, setFormDataOrigin] = useState({});
     const [formDataStartDate, setFormDataStartDate] = useState(new Date());
     const [stations, setStations] = useState([])
@@ -142,16 +133,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                 await setShedulesAvailability(true)
                 await setSchedulesLoading(false)
                 await setReadyToSubmit(true)
-                // await setDestinationStationId(response.destinationStationId)
-                // await setOriginStationId(response.arrivalStationId)
                 await setFormDataSelectedPclass(response.passengerClass)
                 await setFormDataStartDate(new Date(response.dateTime))
-                //await setSelectedTrain()
-                console.log(_stations.filter(station => station.id === response.destinationStationId))
-                // await setFormDataDestination(_stations.filter(station => station.id === response.destinationStationId))
-                // await setFormDataOrigin(_stations.filter(station => station.id === response.arrivalStationId))
-
-                console.log( new Date(response.dateTime).toLocaleDateString('en-CA'))
                 await checkTrainAvailability({
                     destinationStationId: response.destinationStationId,
                     startPointStationId: response.arrivalStationId,
@@ -165,7 +148,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             setTimeout(async () => {
                 await  setDataLoading(false)
             },1000)
-            //await setDataLoading(false)
+            // await setDataLoading(false)
             console.log(response)
         }
         if (action === 'edit') {
@@ -195,11 +178,9 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         dateTime: action === 'edit' ? data?.dateTime : '',
         seatCapacity: action === 'edit' ? data?.noOfPassengers : '',
         price: action === 'edit' ? data?.price : '',
-        // dateTime: action === 'edit' ? new Date(data?.dateTime) : new Date(),
     }
 
     const handleSubmit = async (formData) => {
-        console.log("submitting")
         try {
             const payload = {
                 id: action === 'edit' ? parentData.id : '',
@@ -243,8 +224,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             const response = await ReservationsAPIService.saveReservation(payload)
             if (response) {
                 console.log(response)
-                // await callBackData()
-                // await onClose()
+                await callBackData()
+                await onClose()
             } else {
                 console.log(response)
             }
