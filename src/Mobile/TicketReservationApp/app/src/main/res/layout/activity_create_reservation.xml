@@ -120,6 +120,8 @@
 
     <EditText
         android:id="@+id/reservedDateField"
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
