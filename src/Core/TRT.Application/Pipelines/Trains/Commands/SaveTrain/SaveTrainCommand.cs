@@ -5,7 +5,11 @@ using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: SaveTrainCommand.cs
+ * Purpose: Handle GetScheduleById
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
 {
     public record SaveTrainCommand : IRequest<ResultDTO>
@@ -29,6 +33,13 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
             this._trainCommandRepository = trainCommandRepository;  
             this._logger = logger;  
         }
+
+        /// <summary>
+        /// Handle Save and update TrainCommand.
+        /// </summary>
+        /// <param name="request">>Contains Train details</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(SaveTrainCommand request, CancellationToken cancellationToken)
         {
             try

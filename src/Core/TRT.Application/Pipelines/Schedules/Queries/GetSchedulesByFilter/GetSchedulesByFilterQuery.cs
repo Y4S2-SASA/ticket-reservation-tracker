@@ -9,6 +9,11 @@ using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: GetSchedulesByFilterQuery.cs
+ * Purpose: Handle  Get Schedules filter
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
 {
     public record GetSchedulesByFilterQuery 
@@ -42,6 +47,13 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
             this._stationQueryRepository = stationQueryRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle GetScheduleById.
+        /// </summary>
+        /// <param name="request">>Parameters</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>PaginatedListDTO<ScheduleDetailDTO></returns>
         public async Task<PaginatedListDTO<ScheduleDetailDTO>> Handle(GetSchedulesByFilterQuery request, CancellationToken cancellationToken)
         {
             try

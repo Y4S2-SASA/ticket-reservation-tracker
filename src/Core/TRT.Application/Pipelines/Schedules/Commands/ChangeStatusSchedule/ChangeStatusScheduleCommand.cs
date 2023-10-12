@@ -6,13 +6,19 @@ using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: ChangeStatusScheduleCommand.cs
+ * Purpose: Handle hangeStatusSchedule
+ * Author: Perera M.S.D/1IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule
 {
-    public class ChangeStatusScheduleCommand : IRequest<ResultDTO>
+    public record ChangeStatusScheduleCommand : IRequest<ResultDTO>
     {
         public StatusChangeDTO StatusChangeDTO { get; set; }
     }
 
+    
     public class ChangeStatusScheduleCommandHandler : IRequestHandler<ChangeStatusScheduleCommand, ResultDTO>
     {
         private readonly IScheduleQueryRepository _scheduleQueryRepository;
@@ -30,6 +36,13 @@ namespace TRT.Application.Pipelines.Schedules.Commands.ChangeStatusSchedule
             this._scheduleCommandRepository = _scheduleCommandRepository;
             this._logger = logger;  
         }
+
+        /// <summary>
+        /// Handle ChangeStatusSchedule.
+        /// </summary>
+        /// <param name="request">>Contains StatusChange data</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Result dto</returns>
         public async Task<ResultDTO> Handle(ChangeStatusScheduleCommand request, CancellationToken cancellationToken)
         {
             try

@@ -6,7 +6,11 @@ using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName;
 using TRT.Application.Pipelines.Users.Queries.GetUserMasterData;
-
+/*
+ * File: MasterDataController.cs
+ * Purpose: Controller for managing the Master data.
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
@@ -17,6 +21,11 @@ namespace TRT.API.Controllers
         private readonly ILogger<MasterDataController> _logger;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MasterDataController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="mediator">The mediator.</param>
         public MasterDataController(ILogger<MasterDataController> logger, IMediator mediator)
         {
             _logger = logger;

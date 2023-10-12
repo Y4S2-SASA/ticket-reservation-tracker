@@ -3,11 +3,14 @@ using Microsoft.Extensions.Logging;
 using TRT.Application.Common.Constants;
 using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.ResponseDTOs;
-using TRT.Application.Pipelines.Trains.Commands.SaveTrain;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: ChangeTrainStatusCommand.cs
+ * Purpose: Handle Change Train Status
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
 {
     public class ChangeTrainStatusCommand : IRequest<ResultDTO>
@@ -32,6 +35,13 @@ namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
             this._trainCommandRepository = trainCommandRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Change Train Status
+        /// </summary>
+        /// <param name="request">>Contains Status change parameter details</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(ChangeTrainStatusCommand request, CancellationToken cancellationToken)
         {
            

@@ -1,7 +1,11 @@
 ﻿using MediatR;
 using TRT.Application.DTOs.Common;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetScheduleTrainsByDestinationIdQuery.cs
+ * Purpose: Handle  Get Schedule Trains By Destination Id
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId
 {
     public record GetScheduleTrainsByDestinationIdQuery(string destinationId) : IRequest<List<DropDownCoreDTO>>
@@ -23,6 +27,14 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestina
             this._scheduleQueryRepository = scheduleQueryRepository;
             this._trainQueryRepository = trainQueryRepository;
         }
+
+
+        /// <summary>
+        /// Handle Get Schedule Trains By Destination Id.
+        /// </summary>
+        /// <param name="request">>Contains destinationId</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Schedule Trains  Destination Master Data</returns>
         public async Task<List<DropDownCoreDTO>> Handle(GetScheduleTrainsByDestinationIdQuery request, CancellationToken cancellationToken)
         {
             var trains = new List<DropDownCoreDTO>();

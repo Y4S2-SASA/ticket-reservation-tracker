@@ -6,7 +6,11 @@ using TRT.Application.DTOs.ScheduleDTOs;
 using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: aveScheduleCommand.cs
+ * Purpose: Handle SaveScheduleCommand
+ * Author: Perera M.S.D/1IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Commands.SaveSchedule
 {
     public record SaveScheduleCommand : IRequest<ResultDTO>
@@ -30,6 +34,13 @@ namespace TRT.Application.Pipelines.Schedules.Commands.SaveSchedule
             this._scheduleCommandRepository = scheduleCommandRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle ChangeStatusSchedule.
+        /// </summary>
+        /// <param name="request">>Contains Schedule data</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Result dto</returns>
         public async Task<ResultDTO> Handle(SaveScheduleCommand request, CancellationToken cancellationToken)
         {
             try
@@ -108,6 +119,7 @@ namespace TRT.Application.Pipelines.Schedules.Commands.SaveSchedule
             }
         }
 
+        //AddNewSubStations
         private void AddNewSubStations(Schedule schedule, List<SubStationDetailDTO> subStationDetails)
         {
             foreach (var item in subStationDetails)

@@ -5,6 +5,11 @@ using TRT.Application.Pipelines.TrainTicketPrices.Queries.GetTrainTicketPriceByC
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: GetSchedulePriceQuery.cs
+ * Purpose: Handle GetSchedulePrice
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice
 {
     public record GetSchedulePriceQuery : IRequest<decimal>
@@ -18,6 +23,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice
        
     }
 
+    
     public class GetSchedulePriceQueryHandler : IRequestHandler<GetSchedulePriceQuery, decimal>
     {
         private readonly IScheduleQueryRepository _scheduleQueryRepository;
@@ -31,6 +37,13 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice
             this._scheduleQueryRepository = scheduleQueryRepository;
             this._mediator = mediator;
         }
+
+        /// <summary>
+        /// Handle GetSchedulePrice.
+        /// </summary>
+        /// <param name="request">>Contains SchedulePrice parameters</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>price</returns>
         public async Task<decimal> Handle(GetSchedulePriceQuery request, CancellationToken cancellationToken)
         {
             var price = NumberConstant.DECIMAL_ZERO;
