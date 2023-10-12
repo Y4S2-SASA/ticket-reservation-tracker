@@ -66,14 +66,15 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             setStationsLoading(true)
             const stationsRes = await MasterDataAPIService.getAllStationMasterData()
             const _stations = stationsRes.map(station => ({ label: station.name, id: station.id }));
-            setStations(_stations);
+            console.log("setting stations")
+            await setStations(_stations);
+            return _stations;
         } catch (error) {
             console.log(error)
-            setStations([]);
+            // setStations([]);
         } finally {
             setStationsLoading(false);
         }
-        return stations;
     }
 
     const checkPrice = async () => {
@@ -99,16 +100,18 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         }
     }
 
-    const checkTrainAvailability = async () => {
+    const checkTrainAvailability = async (_req) => {
         try {
-            const reqObj = {
-                destinationStationId: formDataDestination[0].id,
-                startPointStationId: formDataOrigin[0].id,
-                dateTime: formDataStartDate.toLocaleDateString('en-CA'),
-                passengerClass: parseInt(formDataselectedPClass),
-            }
+             const reqObj = {
+                    destinationStationId: _req?.destinationStationId || formDataDestination[0]?.id,
+                    startPointStationId: _req?.startPointStationId || formDataOrigin[0]?.id,
+                    dateTime: _req?.dateTime || formDataStartDate.toLocaleDateString('en-CA'),
+                    passengerClass: _req?.passengerClass || parseInt(formDataselectedPClass),
+                }
+            console.log(reqObj)
             setSchedulesLoading(true)
             const _schedules = await ScheduleAPIService.getScheduleTrainsData(reqObj)
+            console.log(_schedules)
             if (Array.isArray(_schedules) && _schedules.length > 0) {
                 setShedulesAvailability(true)
             } else {
@@ -131,24 +134,39 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
             const response = await ReservationsAPIService.getReservation(parentData.id)
             if (response) {
                 await setData(response)
-                await getAllStations()
+                const _stations = await getAllStations()
+                await setPrice(response.price)
+                await setFormDataDestination(_stations.filter(station => station.id === response.destinationStationId))
+                await setFormDataOrigin(_stations.filter(station => station.id === response.arrivalStationId))
                 await setPriceLoading(false)
                 await setShedulesAvailability(true)
                 await setSchedulesLoading(false)
                 await setReadyToSubmit(true)
-                await setDestinationStationId(response.destinationStationId)
-                await setOriginStationId(response.arrivalStationId)
+                // await setDestinationStationId(response.destinationStationId)
+                // await setOriginStationId(response.arrivalStationId)
+                await setFormDataSelectedPclass(response.passengerClass)
+                await setFormDataStartDate(new Date(response.dateTime))
+                //await setSelectedTrain()
+                console.log(_stations.filter(station => station.id === response.destinationStationId))
+                // await setFormDataDestination(_stations.filter(station => station.id === response.destinationStationId))
+                // await setFormDataOrigin(_stations.filter(station => station.id === response.arrivalStationId))
+
+                console.log( new Date(response.dateTime).toLocaleDateString('en-CA'))
+                await checkTrainAvailability({
+                    destinationStationId: response.destinationStationId,
+                    startPointStationId: response.arrivalStationId,
+                    dateTime: new Date(response.dateTime).toLocaleDateString('en-CA'),
+                    passengerClass: parseInt(response.passengerClass),
+                })
+                
                 
               
             }
-            await setDataLoading(false)
+            setTimeout(async () => {
+                await  setDataLoading(false)
+            },1000)
+            //await setDataLoading(false)
             console.log(response)
-        }
-
-        const setStationValues = (destinationStationId, arrivalStationId) => {
-            console.log(destinationStationId)
-            setFormDataOrigin(stations.map(station => arrivalStationId == station.id))
-            setFormDataDestination(stations.map(station => destinationStationId == station.id))
         }
         if (action === 'edit') {
             getById()
@@ -277,7 +295,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                 <Typeahead
                                                     clearButton
                                                     id="des"
-                                                    defaultSelected={stations.filter(station => station.id === destinationStationId)}
+                                                    defaultSelected={stations.filter(station => station.id === formDataDestination[0]?.id)}
                                                     name="destinationStationName"
                                                     onChange={destination => setFormDataDestination(destination)}
                                                     isLoading={isStationsLoading}
@@ -293,7 +311,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                 <Typeahead
                                                     clearButton
                                                     id="ori"
-                                                    defaultSelected={stations.filter(station => station.id === originStationId)}
+                                                    defaultSelected={stations.filter(station => station.id === formDataOrigin[0]?.id)}
                                                     name="arrivalStationName"
                                                     onChange={_origin => setFormDataOrigin(_origin)}
                                                     isLoading={isStationsLoading}
@@ -336,7 +354,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                                                     name="dateTime"
                                                     selected={formDataStartDate}
                                                     onChange={(date) => setFormDataStartDate(date)}
-                                                    minDate={new Date()}
+                                                    // minDate={new Date()}
                                                     maxDate={new Date().setDate(new Date().getDate() + 30)}
                                                 />
                                             </Form.Group>
