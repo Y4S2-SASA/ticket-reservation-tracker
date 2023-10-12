@@ -17,11 +17,11 @@ export default function AppRouter() {
         <AuthenticateRoutesConfig path="/users" component={UserList} />
         <AuthenticateRoutesConfig path="/trains" component={TrainList} />
         <AuthenticateRoutesConfig
-          path="/trains-with-schedules"
+          path="/trains-with-schedules/:id"
           component={TrainsSchedulesConfig}
         />
-        <Redirect from="/" to="/dashboard" />
         <AuthenticateRoutesConfig path="/bookings" component={BookingsList} />
+        <Redirect from="/" to="/dashboard" />
       </Switch>
     </BrowserRouter>
   )

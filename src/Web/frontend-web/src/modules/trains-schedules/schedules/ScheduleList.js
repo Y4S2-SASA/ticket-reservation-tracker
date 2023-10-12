@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { Button, Col, Dropdown, Form, InputGroup, Row } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 
 import TrainsAPIService from '../../../api-layer/trains'
-import TrainDialog from './TrainDialog'
+import TrainDialog from './ScheduleDialog'
 import StyledTable from '../../../components/TMTable'
 import MainLayout from '../../../components/Layouts/MainLayout'
 import LayoutHeader from '../../../components/Layouts/LayoutHeader'
@@ -14,11 +14,12 @@ import {
   TRAIN_AVAILABLE_DAYS,
   TRAIN_PASSENGER_CLASSES,
 } from '../../../configs/static-configs'
-import { TRAIN_HEADERS } from '../../../configs/dataConfig'
+import { SCHEDULE_HEADERS } from '../../../configs/dataConfig'
 import ConfirmationDialog from '../../../components/TMConfirmationDialog'
 import { useHistory } from 'react-router-dom'
+import ScheduleAPIService from '../../../api-layer/schedules'
 
-export default function TrainList() {
+export default function ScheduleList({ handleStep, trainData }) {
   const history = useHistory()
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -46,18 +47,18 @@ export default function TrainList() {
   const [selectedAvailability, setSelectedAvailability] = useState(0)
   const [selectedPassenger, setSelectedPassenger] = useState(0)
 
-  const getAllTrains = async () => {
+  const getAllSchedules = async () => {
     try {
       const payload = {
-        searchText: searchText,
+        trainId: trainData?.id,
+        departureStationId: '',
         status: filterByStatus,
-        availableDay: selectedAvailability,
-        passengerClass: selectedPassenger,
+        arrivalStationId: '',
         currentPage: currentPage,
         pageSize: 10,
       }
 
-      const response = await TrainsAPIService.getTrains(payload)
+      const response = await ScheduleAPIService.getSchedules(payload)
       if (response) {
         setFilteredData(response.items)
         setSearchParameers({
@@ -76,14 +77,8 @@ export default function TrainList() {
   }
 
   useEffect(() => {
-    getAllTrains()
-  }, [
-    currentPage,
-    searchText,
-    filterByStatus,
-    selectedAvailability,
-    selectedPassenger,
-  ])
+    getAllSchedules()
+  }, [currentPage, filterByStatus, selectedAvailability])
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -105,12 +100,11 @@ export default function TrainList() {
 
   const handleEditClick = (id) => {
     console.log(`Edit clicked for ID: ${id}`)
-    // setSettings({
-    //   openDialog: true,
-    //   action: 'edit',
-    //   parentData: { id },
-    // })
-    history.push(`/trains-with-schedules/${id}`)
+    setSettings({
+      openDialog: true,
+      action: 'edit',
+      parentData: { id },
+    })
   }
 
   const handleDeleteClick = (id) => {
@@ -130,7 +124,7 @@ export default function TrainList() {
       }
       const response = await TrainsAPIService.updateTrainStatus(payload)
       if (response) {
-        await getAllTrains()
+        await getAllSchedules()
         await setSelectedIds([])
       }
       console.log(response)
@@ -177,19 +171,6 @@ export default function TrainList() {
   const buttonComp = () => {
     return (
       <div className="train-head-btn-group">
-        <InputGroup>
-          <Form.Control
-            type="text"
-            placeholder="Search Trains"
-            value={searchText}
-            onChange={(e) => handleSearchInputChange(e)}
-            style={{
-              height: '46px',
-              border: 'none',
-              borderRadius: '46px',
-            }}
-          />
-        </InputGroup>
         <Button
           style={{
             height: '46px',
@@ -199,12 +180,11 @@ export default function TrainList() {
             width: '200px',
           }}
           onClick={() =>
-            // setSettings({
-            //   openDialog: true,
-            //   action: 'add',
-            //   parentData: null,
-            // })
-            history.push('/trains-with-schedules/new')
+            setSettings({
+              openDialog: true,
+              action: 'add',
+              parentData: null,
+            })
           }
         >
           <FaPlus /> Add
@@ -296,51 +276,91 @@ export default function TrainList() {
   }
 
   return (
-    <MainLayout loading={true} loadingTime={2000}>
-      <div className="trains-container">
-        <ConfirmationDialog
-          title="Confirm Status Change"
-          message={`Are you sure you want to change the status to ${
-            STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
-            'Unknown'
-          }?`}
-          show={showStatuConfirmationDialog}
-          onHide={handleCloseConfirmationDialog}
-          onConfirm={handleConfirmStatusChange}
-          leftButton="Cancel"
-          rightButton="Confirm"
-        />
-        <LayoutHeader
-          title="Trains"
-          subtitle="Train Management"
-          buttonComponent={buttonComp()}
-        />
-        <StyledTable
-          headers={TRAIN_HEADERS}
-          data={filteredData}
-          searchParameters={searchParameters}
-          selectedIds={selectedIds}
-          selectAll={selectAll}
-          onCheckboxChange={handleCheckboxChange}
-          onSelectAllChange={handleSelectAllChange}
-          editEnabled={true}
-          deleteEnabled={false}
-          onEditClick={handleEditClick}
-          onDeleteClick={handleDeleteClick}
-          handlePageChange={handlePageChange}
-          currentPage={currentPage}
-        />
-        <div>
-          {settings.openDialog && (
-            <TrainDialog
-              settings={settings}
-              onClose={onCloseDialog}
-              onSave={onCloseDialog}
-              callBackData={getAllTrains}
-            />
-          )}
-        </div>
+    <div className="trains-container">
+      <ConfirmationDialog
+        title="Confirm Status Change"
+        message={`Are you sure you want to change the status to ${
+          STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
+          'Unknown'
+        }?`}
+        show={showStatuConfirmationDialog}
+        onHide={handleCloseConfirmationDialog}
+        onConfirm={handleConfirmStatusChange}
+        leftButton="Cancel"
+        rightButton="Confirm"
+      />
+      <LayoutHeader
+        title="Schedules"
+        subtitle="Schedule Management"
+        buttonComponent={buttonComp()}
+      />
+      <StyledTable
+        headers={SCHEDULE_HEADERS}
+        data={filteredData}
+        searchParameters={searchParameters}
+        selectedIds={selectedIds}
+        selectAll={selectAll}
+        onCheckboxChange={handleCheckboxChange}
+        onSelectAllChange={handleSelectAllChange}
+        editEnabled={true}
+        deleteEnabled={false}
+        onEditClick={handleEditClick}
+        onDeleteClick={handleDeleteClick}
+        handlePageChange={handlePageChange}
+        currentPage={currentPage}
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: '20px',
+        }}
+      >
+        <Row>
+          <Col sm={6}>
+            <Button
+              variant="secondary"
+              onClick={() => handleStep('train')}
+              style={{
+                border: 'none',
+                borderRadius: '46px',
+                marginLeft: '10px',
+                width: '100px',
+              }}
+            >
+              Back
+            </Button>
+          </Col>
+          <Col sm={6}>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => handleStep('train')}
+              style={{
+                backgroundColor: '#8428E2',
+                border: 'none',
+                borderRadius: '46px',
+                width: '100px',
+              }}
+            >
+              Done
+            </Button>
+          </Col>
+        </Row>
       </div>
-    </MainLayout>
+
+      <div>
+        {settings.openDialog && (
+          <TrainDialog
+            settings={settings}
+            onClose={onCloseDialog}
+            onSave={onCloseDialog}
+            callBackData={getAllSchedules}
+            trainData={trainData}
+          />
+        )}
+      </div>
+    </div>
   )
 }

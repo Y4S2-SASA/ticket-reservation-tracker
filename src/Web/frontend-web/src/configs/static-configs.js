@@ -20,6 +20,13 @@ export const NAVBAR_ITEMS = [
     label: 'Trains',
     entitlementRoles: ['Back Office'],
   },
+  {
+    id: 3,
+    pathUrl: '/bookings',
+    icon: '/images/icons/train.png',
+    label: 'Bookings',
+    entitlementRoles: ['Back Office'],
+  },
 ]
 
 export const STATUS_LIST = [
@@ -126,3 +133,8 @@ function getTrainMasterData(property) {
 export const TRAIN_STATUSES = getTrainMasterData('status')
 export const TRAIN_AVAILABLE_DAYS = getTrainMasterData('availableDays')
 export const TRAIN_PASSENGER_CLASSES = getTrainMasterData('passengerClasses')
+
+export function getObjectById(id, array) {
+  const foundObject = array.find((item) => item.id === id)
+  return foundObject ? [foundObject] : []
+}

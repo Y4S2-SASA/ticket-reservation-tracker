@@ -43,11 +43,11 @@ export default function BookingsList() {
   ] = useState(false)
   const [selectedAvailability, setSelectedAvailability] = useState(0)
   const [selectedPassenger, setSelectedPassenger] = useState(0)
-  const [selectedDestination, setSelectedDestination] = useState("")
-  const [selectedArrivalStation, setSelectedArrivalStation] = useState("")
-  const [selectedTrain, setSelectedTrain] = useState("")
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedReservation, setSelectedReservation] = useState("");
+  const [selectedDestination, setSelectedDestination] = useState('')
+  const [selectedArrivalStation, setSelectedArrivalStation] = useState('')
+  const [selectedTrain, setSelectedTrain] = useState('')
+  const [selectedDate, setSelectedDate] = useState('')
+  const [selectedReservation, setSelectedReservation] = useState('')
 
   const getAllTrains = () => {}
   const getAllReservations = async () => {
@@ -59,8 +59,8 @@ export default function BookingsList() {
         // passengerClass: selectedPassenger,
         // currentPage: currentPage,
         reservationNumber: selectedReservation,
-        fromDate: "2023-10-01",
-        toDate: "2023-10-12",
+        fromDate: '2023-10-01',
+        toDate: '2023-10-12',
         trainId: selectedTrain,
         destinationStationId: selectedDestination,
         arrivalStationId: selectedArrivalStation,
@@ -98,7 +98,7 @@ export default function BookingsList() {
     selectedArrivalStation,
     selectedTrain,
     selectedDate,
-    selectedReservation
+    selectedReservation,
   ])
 
   const handleCheckboxChange = (id) => {
@@ -325,8 +325,8 @@ export default function BookingsList() {
           rightButton="Confirm"
         />
         <LayoutHeader
-          title="Trains"
-          subtitle="Train Management"
+          title="Bookings"
+          subtitle="Booking Management"
           buttonComponent={buttonComp()}
         />
         <StyledTable

@@ -22,6 +22,7 @@
       justify-content: center;
       transition: background-color 0.3s ease;
       font-weight: 900;
+      
     }
 
     .step-title {
@@ -43,8 +44,9 @@
     background-color: #8428E2;
     margin: 0 auto;
     margin-top: -30px;
-    margin-left: -100px;
-    width: 300px;
+    margin-left: -62px;
+    min-width: 100px !important;
+    max-width: 100px !important;
     z-index: -1;
   }
 

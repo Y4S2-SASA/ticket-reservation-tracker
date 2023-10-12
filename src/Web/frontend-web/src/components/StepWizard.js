@@ -21,7 +21,10 @@ const StepWizard = ({ currentActive, leftStepperTitle, rightStepperTitle }) => {
           {leftStepperTitle}
         </div>
       </div>
-      <div className="step-line"></div>
+      <div
+        className="step-line"
+        // style={currentActive === 2 ? { left: 0 } : {}}
+      />
       <div className="step">
         <div
           className={`step-circle ${currentActive === 2 ? 'active' : ''}`}
