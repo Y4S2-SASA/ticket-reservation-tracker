@@ -48,7 +48,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice
             if (startIndex != NumberConstant.MINUSONE && 
                     endIndex != NumberConstant.MINUSONE && startIndex < endIndex) 
             {
-               rangeCountSubstations = endIndex - startIndex - NumberConstant.ONE;
+               rangeCountSubstations = endIndex - startIndex;
 
                var train = await _mediator
                                     .Send(new GetTrainByIdQuery(request.SelectedTrainId), cancellationToken);
@@ -58,7 +58,7 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulePrice
                     PassengerClass = request.PassengerClass,
                 }, cancellationToken);
 
-                reservationPerPersonPrice = reservationPerPersonPrice * ticketPrice.Price;
+                reservationPerPersonPrice = rangeCountSubstations * ticketPrice.Price;
 
                 price = reservationPerPersonPrice * request.PassengerCount;
 

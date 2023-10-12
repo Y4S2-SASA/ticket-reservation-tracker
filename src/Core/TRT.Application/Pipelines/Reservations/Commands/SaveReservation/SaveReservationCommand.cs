@@ -51,9 +51,34 @@ namespace TRT.Application.Pipelines.Reservations.Commands.SaveReservation
 
                     await _reservationCommandRepository.AddAsync(reservation, cancellationToken);
 
+                    return ResultDTO.Success(ResponseMessageConstant.RESERVATION_SAVE_SUCCESS_RESPONSE_MESSAGE);
+
+                }
+                else
+                {
+                    var todayDate = DateTime.Now;
+                    
+                    var exsistingReservation = await _reservationQueryRepository.GetById(request.Reservation.Id, cancellationToken);
+
+                    var dateTimeDifference = exsistingReservation.DateTime.Subtract(todayDate);
+
+                    if(dateTimeDifference.Days < NumberConstant.FIVE)
+                    {
+                       return  ResultDTO.Failure(new List<string>()
+                               {
+                                    ResponseMessageConstant.UNABLE_TO_UPDATE_RESERVATION
+                               });
+                    }
+
+                    if (dateTimeDifference.Days >= NumberConstant.FIVE)
+                    {
+                        exsistingReservation = request.Reservation.ToEntity(exsistingReservation);
+                    }
+
+                    return ResultDTO.Success(ResponseMessageConstant.RESERVATION_UPDATE_SUCCESS_RESPONSE_MESSAGE);
+
                 }
 
-                return ResultDTO.Success(ResponseMessageConstant.RESERVATION_SAVE_SUCCESS_RESPONSE_MESSAGE);
             }
             catch (Exception ex)
             {
