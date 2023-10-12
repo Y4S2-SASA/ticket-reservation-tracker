@@ -11,7 +11,7 @@ namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TrainController : ControllerBase
     {
         private readonly ILogger<TrainController> _logger;

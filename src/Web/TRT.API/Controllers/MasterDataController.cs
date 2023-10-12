@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TRT.Application.Pipelines.Stations.Queries.GetAllStationMasterData;
 using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName;
@@ -89,5 +90,20 @@ namespace TRT.API.Controllers
             }
         }
 
+        [HttpGet("getAllStationMasterData")]
+        public async Task<IActionResult> GetAllStationMasterData()
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetAllStationMasterDataQuery());
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
     }
 }

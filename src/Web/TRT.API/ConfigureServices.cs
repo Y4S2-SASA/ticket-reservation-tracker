@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     Title = "TRT (EAD Assignment 1). - Web API Documentation",
                     Version = "v1",
-                    Description = "",
+                    Description = "23-Y4S2 SASA Development Team",
                     TermsOfService = new Uri("https://example.com/terms")
                 });
 

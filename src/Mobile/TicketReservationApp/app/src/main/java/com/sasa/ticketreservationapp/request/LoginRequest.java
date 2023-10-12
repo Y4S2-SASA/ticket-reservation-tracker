@@ -1,10 +1,10 @@
-package com.sasa.ticketreservationapp.models;
+package com.sasa.ticketreservationapp.request;
 
-public class LoginModel {
+public class LoginRequest {
     private String username;
     private String password;
 
-    public LoginModel(String username, String password) {
+    public LoginRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }

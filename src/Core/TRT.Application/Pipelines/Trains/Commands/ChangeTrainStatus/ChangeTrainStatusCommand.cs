@@ -34,8 +34,7 @@ namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
         }
         public async Task<ResultDTO> Handle(ChangeTrainStatusCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
+           
                 var train = await _trainQueryRepository.GetById(request.Id, cancellationToken);
 
                 if (train != null)
@@ -60,12 +59,7 @@ namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
                 }
 
                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                throw;
-            }
+           
         }
     }
 }

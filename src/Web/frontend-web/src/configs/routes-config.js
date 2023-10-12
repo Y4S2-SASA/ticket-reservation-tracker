@@ -6,6 +6,7 @@ import Dashboard from '../modules/landing/Dashboard'
 import UserList from '../modules/users/UserList'
 import TrainsSchedulesConfig from '../modules/trains-schedules/TrainsSchedulesConfig'
 import TrainList from '../modules/trains-schedules/trains/TrainList'
+import BookingsList from '../modules/bookings/BookingsList'
 
 export default function AppRouter() {
   return (
@@ -20,6 +21,7 @@ export default function AppRouter() {
           component={TrainsSchedulesConfig}
         />
         <Redirect from="/" to="/dashboard" />
+        <AuthenticateRoutesConfig path="/bookings" component={BookingsList} />
       </Switch>
     </BrowserRouter>
   )

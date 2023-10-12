@@ -20,6 +20,7 @@ namespace TRT.Infrastructure.Data
             {
                 await SeedUsersAsync();
                 await SeedStationsAsync();
+                await SeedTicketPriceAsync();
             }
             catch (Exception ex)
             {
@@ -211,6 +212,36 @@ namespace TRT.Infrastructure.Data
 
                 await _context.Stations.InsertManyAsync(data);
             }
+        }
+        private async Task SeedTicketPriceAsync()
+        {
+            if (!_context.TrainTicketPrices.Find(p => true).Any())
+            {
+                var firstClassPrice = new TrainTicketPrice()
+                {
+                    PassengerClass = Domain.Enums.PassengerClass.FirstClass,
+                    Price = 300,
+                };
+
+                await _context.TrainTicketPrices.InsertOneAsync(firstClassPrice);
+
+                var secondClassPrice = new TrainTicketPrice()
+                {
+                    PassengerClass = Domain.Enums.PassengerClass.SecondClass,
+                    Price = 100,
+                };
+
+                await _context.TrainTicketPrices.InsertOneAsync(secondClassPrice);
+
+                var thirdClassPrice = new TrainTicketPrice()
+                {
+                    PassengerClass = Domain.Enums.PassengerClass.ThirdClass,
+                    Price = 50,
+                };
+
+                await _context.TrainTicketPrices.InsertOneAsync(thirdClassPrice);
+            }
+               
         }
     }
 }
