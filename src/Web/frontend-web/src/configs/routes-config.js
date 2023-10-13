@@ -5,6 +5,7 @@ import SignIn from '../modules/auth/Signin'
 import Dashboard from '../modules/landing/Dashboard'
 import UserList from '../modules/users/UserList'
 import TrainList from '../modules/trains/TrainList'
+import BookingsList from '../modules/bookings/BookingsList'
 
 export default function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export default function AppRouter() {
         <AuthenticateRoutesConfig path="/dashboard" component={Dashboard} />
         <AuthenticateRoutesConfig path="/users" component={UserList} />
         <AuthenticateRoutesConfig path="/trains" component={TrainList} />
+        <AuthenticateRoutesConfig path="/bookings" component={BookingsList} />
       </Switch>
     </BrowserRouter>
   )

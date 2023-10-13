@@ -17,3 +17,16 @@ export const TRAIN_HEADERS = [
   { key: 'trainAvailableDays', label: 'Available At' },
   { key: 'status', label: 'Status' },
 ]
+
+export const RESERVATION_HEADERS = [
+  { key: 'referenceNumber', label: 'Ref No' },
+  { key: 'trainName', label: "Train"},
+  { key: 'destinationStationName', label: 'Destination'},
+  { key: 'arrivalStationName', label: 'Arrival'},
+  { key: 'passengerClass', label: 'Class'},
+  { key: 'noOfPassengers', label: 'Seats'},
+  { key: 'price', label: 'Price'},
+  { key: 'dateTime', label: 'Date & Time'},
+  { key: 'createdByUser', label: "Created By"},
+  { key: 'status', label: "Status"}
+]

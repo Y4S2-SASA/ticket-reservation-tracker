@@ -9,19 +9,29 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
+import com.sasa.ticketreservationapp.config.ApiClient;
+import com.sasa.ticketreservationapp.config.ApiInterface;
 import com.sasa.ticketreservationapp.models.ReservationModel;
+import com.sasa.ticketreservationapp.response.ReservationResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CurrentBookingsActivity extends AppCompatActivity {
 
@@ -30,24 +40,37 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     ReservationsAdapter adapter;
     boolean isLoading = false;
     String key = null;
-
     Button createReservationBtn;
-
     SharedPreferences prefs;
+    private String id, token;
+    private ApiInterface apiInterface;
     private boolean isOverlayVisible = false;
+    private List<ReservationResponse> reservations;
+    private ProgressBar progressBar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_bookings);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         LoginDatabaseHelper loginDb = new LoginDatabaseHelper(CurrentBookingsActivity.this);
-        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null && loginDb.IsUserLoginDataAvailableInSqlLite()){
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
             prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
+            if(prefs.getString("nic", "") != null){
+                id = prefs.getString("nic", "");
+                token = prefs.getString("token", "");
+            }
         }else{
             Intent intent = new Intent(CurrentBookingsActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-        System.out.print("ON CREATE CALLED");
+        loadData();
+
 //      Sets up the recycler view
         swipeRefreshLayout = findViewById(R.id.swipereservation);
         recyclerView = findViewById(R.id.recyclerviewreservation);
@@ -56,7 +79,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
         adapter = new ReservationsAdapter(this);
         recyclerView.setAdapter(adapter);
-        loadData();
 
         recyclerView.addOnScrollListener((new RecyclerView.OnScrollListener() {
             @Override
@@ -67,7 +89,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
                 if (totalItem < lastVisible + 3) {
                     if (!isLoading) {
                         isLoading = true;
-                        loadData();
                     }
                 }
             }
@@ -104,27 +125,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
             Intent intent = new Intent(CurrentBookingsActivity.this, CreateReservationActivity.class);
             startActivity(intent);
             finish();
-//                if(prefs.getString("nic", "") != null){
-//                String nic = prefs.getString("nic", "");
-//                Log.d("TAG", nic);
-//            }
         });
-
-    }
-    //Loads the data to the recycler view
-    private void loadData() {
-        swipeRefreshLayout.setRefreshing(true);
-
-        // Simulated data retrieval (replace this with your actual data retrieval logic)
-        ArrayList<ReservationModel> reqs = new ArrayList<>();
-        reqs.add(new ReservationModel("John Doe", "New York", "2", "T001", "12-11-2023, 9:00 AM", "Station A", "$50", "RES001"));
-        reqs.add(new ReservationModel("Jane Smith", "Chicago", "1", "T001", "12-11-2023, 10:30 AM", "Station B", "$30", "RES002"));
-        reqs.add(new ReservationModel("Bob Johnson", "Los Angeles", "3", "T001", "12-11-2023, 11:45 AM", "Station C", "$70", "RES003"));
-
-        adapter.setItems(reqs);
-        adapter.notifyDataSetChanged();
-        isLoading = false;
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     void toggleOverlay(boolean show) {
@@ -140,6 +141,66 @@ public class CurrentBookingsActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void loadData() {
+        Call<List<ReservationResponse>> call = apiInterface.getTraverlerReservation("Bearer " + token);
+
+        call.enqueue(new Callback<List<ReservationResponse>>() {
+            @Override
+            public void onResponse(Call<List<ReservationResponse>> call, Response<List<ReservationResponse>> response) {
+                if (response.isSuccessful()) {
+                    reservations = response.body();
+                    // Process the reservations data and update the adapter
+                    processReservations(reservations);
+                    Log.d("TAG", response.body().toString());
+                } else {
+                    Log.e("Load Data", response.toString());
+                }
+                isLoading = false;
+                swipeRefreshLayout.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<List<ReservationResponse>> call, Throwable t) {
+                // Handle failure
+                isLoading = false;
+                swipeRefreshLayout.setRefreshing(false);
+                Log.e("L", t.toString());
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private ReservationModel convertToModel(ReservationResponse response) {
+        ReservationModel model = new ReservationModel();
+
+        // Set values from ReservationResponse to ReservationModel
+        model.setId(response.getId());
+        model.setReferenceNumber(response.getReferenceNumber());
+        model.setPassengerClass(response.getPassengerClass());
+        model.setDestinationStationName(response.getDestinationStationName());
+        model.setTrainName(response.getTrainName());
+        model.setArrivalStationName(response.getArrivalStationName());
+        model.setDateTime(response.getDateTime());
+        model.setNoOfPassengers(response.getNoOfPassengers());
+        model.setPrice(response.getPrice());
+        Log.d("TAG", response.getArrivalStationName());
+
+        return model;
+    }
+
+    private void processReservations(List<ReservationResponse> reservations) {
+        ArrayList<ReservationModel> reservationModels = new ArrayList<>();
+        for (ReservationResponse response : reservations) {
+            // Convert ReservationResponse to ReservationModel and add to list
+            ReservationModel model = convertToModel(response);
+            reservationModels.add(model);
+        }
+        adapter.setItems(reservationModels);
+        adapter.notifyDataSetChanged();
+    }
+
 }
 //    private void loadData() {
 //        swipeRefreshLayout.setRefreshing(true);

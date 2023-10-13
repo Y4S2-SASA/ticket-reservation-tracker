@@ -24,6 +24,30 @@ class MasterDataAPIService {
         })
     })
   }
+
+  getAllStationMasterData = (headers = {}) => {
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.get('/api/MasterData/getAllStationMasterData', headers)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getAllStationMasterData = (headers = {}) => {
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.get('/api/MasterData/getAllStationMasterData', headers)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
 
 export default new MasterDataAPIService()
