@@ -14,8 +14,15 @@ class MasterDataAPIService {
   }
 
   getTrainList = (headers = {}) => {
+    const formatterReq = {
+      searchText: '',
+    }
     return new Promise((resolve, reject) => {
-      HttpServiceConfig.get(`/api/MasterData/getTrainMasterData`, headers)
+      HttpServiceConfig.post(
+        `/api/MasterData/getTrainMasterData`,
+        formatterReq,
+        headers,
+      )
         .then((data) => {
           resolve(data)
         })
@@ -40,6 +47,18 @@ class MasterDataAPIService {
   getAllStationMasterData = (headers = {}) => {
     return new Promise((resolve, reject) => {
       HttpServiceConfig.get('/api/MasterData/getAllStationMasterData', headers)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getDashboardData = (headers = {}) => {
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.get('/api/Dashboard/getDashboardMasterData', headers)
         .then((data) => {
           resolve(data)
         })

@@ -1,3 +1,8 @@
+/*
+ * File: TMTable.js
+ * Author: Jayathilake S.M.D.A.R./IT20037338
+ */
+
 import React from 'react'
 import { Table, Form, Button, Spinner, Row } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
@@ -19,7 +24,7 @@ const StyledTable = ({
   handlePageChange,
   currentPage,
   isLoadingEnabaled,
-  isLoading
+  isLoading,
 }) => {
   console.log('data', data)
   const renderActions = (id) => {
@@ -45,17 +50,21 @@ const StyledTable = ({
 
   const renderRows = () => {
     if (isLoadingEnabaled && isLoading) {
-      return <tr>
-        <td colSpan={headers.length + 2}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <Spinner animation="border" />
-          </div>
-        </td>
-      </tr>
+      return (
+        <tr>
+          <td colSpan={headers.length + 2}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Spinner animation="border" />
+            </div>
+          </td>
+        </tr>
+      )
     } else if (data?.length > 0) {
       return data?.map((row, index) => (
         <tr key={index}>

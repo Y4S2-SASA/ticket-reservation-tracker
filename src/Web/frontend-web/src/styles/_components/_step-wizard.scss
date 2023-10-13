@@ -1,0 +1,61 @@
+/*
+ * File: _step-wizard.scss.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
+.step-wizard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 300px;
+
+  .step {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+
+    .step-circle {
+      width: 50px;
+      height: 50px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+      font-weight: 900;
+      
+    }
+
+    .step-title {
+      margin-top: 10px;
+      margin-left: -70px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #8428E2;
+    }
+
+    &.active .step-circle {
+      background-color: #28a745;
+    }
+  }
+
+  .step-line {
+    flex: 1;
+    height: 3px;
+    background-color: #8428E2;
+    margin: 0 auto;
+    margin-top: -30px;
+    margin-left: -62px;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    z-index: -1;
+  }
+
+  .step-content {
+    margin-top: 20px;
+  }
+}

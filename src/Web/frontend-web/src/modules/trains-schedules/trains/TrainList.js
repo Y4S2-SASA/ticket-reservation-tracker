@@ -1,22 +1,30 @@
+/*
+ * File: TrainList.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import React, { Fragment, useEffect, useState } from 'react'
-import StyledTable from '../../components/TMTable'
-import Loader from '../../components/TMLoader'
-import MainLayout from '../../components/Layouts/MainLayout'
-import LayoutHeader from '../../components/Layouts/LayoutHeader'
-import DropdownStyledButton from '../../components/TMDropdownButton'
+
+import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { FaPlus } from 'react-icons/fa'
+
+import TrainsAPIService from '../../../api-layer/trains'
+import TrainDialog from './TrainDialog'
+import StyledTable from '../../../components/TMTable'
+import MainLayout from '../../../components/Layouts/MainLayout'
+import LayoutHeader from '../../../components/Layouts/LayoutHeader'
+import DropdownStyledButton from '../../../components/TMDropdownButton'
 import {
   STATUS_LIST,
   TRAIN_AVAILABLE_DAYS,
   TRAIN_PASSENGER_CLASSES,
-} from '../../configs/static-configs'
-import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
-import { FaPlus } from 'react-icons/fa'
-import { TRAIN_HEADERS } from '../../configs/dataConfig'
-import TrainDialog from './TrainDialog'
-import ConfirmationDialog from '../../components/TMConfirmationDialog'
-import TrainsAPIService from '../../api-layer/trains'
+} from '../../../configs/static-configs'
+import { TRAIN_HEADERS } from '../../../configs/dataConfig'
+import ConfirmationDialog from '../../../components/TMConfirmationDialog'
+import { useHistory } from 'react-router-dom'
 
 export default function TrainList() {
+  const history = useHistory()
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -102,11 +110,12 @@ export default function TrainList() {
 
   const handleEditClick = (id) => {
     console.log(`Edit clicked for ID: ${id}`)
-    setSettings({
-      openDialog: true,
-      action: 'edit',
-      parentData: { id },
-    })
+    // setSettings({
+    //   openDialog: true,
+    //   action: 'edit',
+    //   parentData: { id },
+    // })
+    history.push(`/trains-with-schedules/${id}`)
   }
 
   const handleDeleteClick = (id) => {
@@ -195,11 +204,12 @@ export default function TrainList() {
             width: '200px',
           }}
           onClick={() =>
-            setSettings({
-              openDialog: true,
-              action: 'add',
-              parentData: null,
-            })
+            // setSettings({
+            //   openDialog: true,
+            //   action: 'add',
+            //   parentData: null,
+            // })
+            history.push('/trains-with-schedules/new')
           }
         >
           <FaPlus /> Add

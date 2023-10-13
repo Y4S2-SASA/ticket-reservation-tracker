@@ -1,10 +1,16 @@
-import HttpServiceConfig from '../configs/http-service-config';
+/*
+ * File: reservations.js
+ * Author: Bartholomeusz S.V/IT20274702
+ */
+
+import HttpServiceConfig from '../configs/http-service-config'
 
 class ReservationsAPIService {
-  saveReservation = (req, headers = {}) => { // Corrected the variable name from "header" to "headers"
+  saveReservation = (req, headers = {}) => {
+    // Corrected the variable name from "header" to "headers"
     const formattedReq = {
       id: req.id,
-      referenceNumber: "",
+      referenceNumber: '',
       passengerClass: req.passengerClass,
       trainId: req.trainId,
       destinationStationId: req.destinationStationId,
@@ -12,7 +18,7 @@ class ReservationsAPIService {
       dateTime: req.dateTime,
       noOfPassengers: req.noOfPassengers,
       price: req.price,
-    };
+    }
     return new Promise((resolve, reject) => {
       HttpServiceConfig.post(
         '/api/Reservation/saveReservation',
@@ -20,43 +26,40 @@ class ReservationsAPIService {
         headers, // Corrected the variable name from "headers" to "headers"
       )
         .then((data) => {
-          resolve(data);
+          resolve(data)
         })
         .catch((error) => {
-          reject(error);
-        });
-    });
+          reject(error)
+        })
+    })
   }
 
   getReservation = (id) => {
     return new Promise((resolve, reject) => {
-        HttpServiceConfig.get(
-          `/api/Reservation/getReservationById/${id}`
-        )
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      HttpServiceConfig.get(`/api/Reservation/getReservationById/${id}`)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
   deleteReservation = (id) => {
     return new Promise((resolve, reject) => {
-        HttpServiceConfig.delete(
-          `/api/Reservation/deleteReservation`, id
-        )
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      HttpServiceConfig.delete(`/api/Reservation/deleteReservation`, id)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
-  getReservations = (req, headers = {}) => { // Corrected the variable name from "header" to "headers"
+  getReservations = (req, headers = {}) => {
+    // Corrected the variable name from "header" to "headers"
     const formattedReq = {
       reservationNumber: req.reservationNumber,
       fromDate: req.fromDate,
@@ -67,7 +70,7 @@ class ReservationsAPIService {
       status: req.status,
       currentPage: req.currentPage,
       pageSize: req.pageSize,
-    };
+    }
     return new Promise((resolve, reject) => {
       HttpServiceConfig.post(
         '/api/Reservation/getReservationsByFilter',
@@ -75,13 +78,13 @@ class ReservationsAPIService {
         headers, // Corrected the variable name from "headers" to "headers"
       )
         .then((data) => {
-          resolve(data);
+          resolve(data)
         })
         .catch((error) => {
-          reject(error);
-        });
-    });
+          reject(error)
+        })
+    })
   }
 }
 
-export default new ReservationsAPIService();
+export default new ReservationsAPIService()

@@ -1,3 +1,8 @@
+/*
+ * File: UserDialog.js
+ * Author: Dunusinghe A.V./IT20025526
+ */
+
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'

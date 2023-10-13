@@ -1,3 +1,8 @@
+/*
+ * File: trains.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import HttpServiceConfig from '../configs/http-service-config'
 
 class TrainsAPIService {

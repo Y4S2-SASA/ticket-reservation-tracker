@@ -1,3 +1,8 @@
+/*
+ * File: users.js
+ * Author: Dunusinghe A.V./IT20025526
+ */
+
 import HttpServiceConfig from '../configs/http-service-config'
 
 class UserAPIService {

@@ -1,3 +1,8 @@
+/*
+ * File: UserList.js
+ * Author: Dunusinghe A.V./IT20025526
+ */
+
 import React, { Fragment, useEffect, useState } from 'react'
 import StyledTable from '../../components/TMTable'
 import Loader from '../../components/TMLoader'

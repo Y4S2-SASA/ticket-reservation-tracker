@@ -1,3 +1,8 @@
+/*
+ * File: TMConfirmationDialog.js
+ * Author: Dunusinghe A.V./IT20025526
+ */
+
 export default function OrDivider(props) {
   return (
     <div
