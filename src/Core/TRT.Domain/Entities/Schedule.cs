@@ -8,7 +8,7 @@ namespace TRT.Domain.Entities
     {
         public Schedule()
         {
-            SubStationDetails = new HashSet<SubStationDetail>();
+            SubStationDetails = new List<SubStationDetail>();
         }
 
         [BsonId]
@@ -39,7 +39,7 @@ namespace TRT.Domain.Entities
         public Status Status { get; set; }
 
         [BsonElement("SubStationDetails")]
-        public ICollection<SubStationDetail> SubStationDetails { get; set; }
+        public List<SubStationDetail> SubStationDetails { get; set; }
 
 
     }

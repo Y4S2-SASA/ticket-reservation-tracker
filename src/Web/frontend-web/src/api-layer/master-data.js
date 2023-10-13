@@ -55,6 +55,18 @@ class MasterDataAPIService {
         })
     })
   }
+
+  getDashboardData = (headers = {}) => {
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.get('/api/Dashboard/getDashboardMasterData', headers)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
 
 export default new MasterDataAPIService()

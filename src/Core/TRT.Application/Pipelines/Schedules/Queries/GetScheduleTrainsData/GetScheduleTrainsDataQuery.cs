@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using System.Linq.Expressions;
 using TRT.Application.Common.Constants;
 using TRT.Application.Common.Interfaces;
 using TRT.Application.DTOs.ReservationDTOs;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
+using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
 
@@ -41,9 +43,10 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData
                                   .AddDays(NumberConstant.ONE)
                                   .AddSeconds(NumberConstant.MINUSONE);
 
+
             var listOfSchedules = (await _scheduleQueryRepository
-                                 .Query(x => x.SubStationDetails.Any(s => s.StationId == request.DestinationStationId && 
-                                 s.StationId == request.StartPointStationId) &&
+                                 .Query(x=> x.SubStationDetails.Any(x => x.StationId == request.StartPointStationId) && 
+                                 x.SubStationDetails.Any(s=>s.StationId == request.DestinationStationId) && 
                                  x.DepartureTime >= startDate && x.DepartureTime <= endDate))
                                  .ToList();
 

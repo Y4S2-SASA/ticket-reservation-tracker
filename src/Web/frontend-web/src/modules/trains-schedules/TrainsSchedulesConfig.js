@@ -1,3 +1,8 @@
+/*
+ * File: TrainSchedulesConfig.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import React, { useEffect, useState } from 'react'
 import StepWizard from '../../components/StepWizard'
 import MainLayout from '../../components/Layouts/MainLayout'
@@ -250,7 +255,7 @@ export default function TrainsSchedulesConfig({
                       <Col sm={6}>
                         <Button
                           variant="secondary"
-                          onClick={onClose}
+                          onClick={() => (window.location.href = '/trains')}
                           style={{
                             border: 'none',
                             borderRadius: '46px',

@@ -1,3 +1,8 @@
+/*
+ * File: ScheduleList.js
+ * Author: Jayathilake S.M.D.A.R./IT20037338
+ */
+
 import React, { Fragment, useEffect, useState } from 'react'
 
 import { Button, Col, Dropdown, Form, InputGroup, Row } from 'react-bootstrap'
@@ -18,6 +23,7 @@ import { SCHEDULE_HEADERS } from '../../../configs/dataConfig'
 import ConfirmationDialog from '../../../components/TMConfirmationDialog'
 import { useHistory } from 'react-router-dom'
 import ScheduleAPIService from '../../../api-layer/schedules'
+import MasterDataAPIService from '../../../api-layer/master-data'
 
 export default function ScheduleList({ handleStep, trainData }) {
   const history = useHistory()
@@ -46,14 +52,28 @@ export default function ScheduleList({ handleStep, trainData }) {
   ] = useState(false)
   const [selectedAvailability, setSelectedAvailability] = useState(0)
   const [selectedPassenger, setSelectedPassenger] = useState(0)
+  const [stations, setStations] = useState([])
+
+  useEffect(() => {
+    const getStations = async () => {
+      try {
+        const res = await MasterDataAPIService.getAllStationMasterData()
+        setStations(res)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    getStations()
+  }, [])
 
   const getAllSchedules = async () => {
     try {
       const payload = {
         trainId: trainData?.id,
-        departureStationId: '',
+        departureStationId:
+          selectedAvailability > 0 ? selectedAvailability : '',
         status: filterByStatus,
-        arrivalStationId: '',
+        arrivalStationId: selectedPassenger > 0 ? selectedPassenger : '',
         currentPage: currentPage,
         pageSize: 10,
       }
@@ -78,7 +98,7 @@ export default function ScheduleList({ handleStep, trainData }) {
 
   useEffect(() => {
     getAllSchedules()
-  }, [currentPage, filterByStatus, selectedAvailability])
+  }, [currentPage, filterByStatus, selectedAvailability, selectedPassenger])
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -122,7 +142,7 @@ export default function ScheduleList({ handleStep, trainData }) {
         id: tId,
         status: selectedStatus,
       }
-      const response = await TrainsAPIService.updateTrainStatus(payload)
+      const response = await ScheduleAPIService.updateScheduleStatus(payload)
       if (response) {
         await getAllSchedules()
         await setSelectedIds([])
@@ -141,11 +161,11 @@ export default function ScheduleList({ handleStep, trainData }) {
     setFilterByStatus(itemId)
   }
 
-  const handleAvailabilityFilter = (itemId) => {
+  const handleDepartureFilter = (itemId) => {
     setSelectedAvailability(itemId)
   }
 
-  const handlePassengerFilter = (itemId) => {
+  const handleArrivalFilter = (itemId) => {
     setSelectedPassenger(itemId)
   }
 
@@ -218,19 +238,18 @@ export default function ScheduleList({ handleStep, trainData }) {
                 }}
               >
                 {selectedAvailability
-                  ? TRAIN_AVAILABLE_DAYS.filter(
-                      (d) => d.id === selectedAvailability,
-                    )
+                  ? stations
+                      .filter((d) => d.id === selectedAvailability)
                       .map((selectedClass) => selectedClass.name)
                       .join(', ')
-                  : 'Availability'}
+                  : 'Departure Station'}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                {TRAIN_AVAILABLE_DAYS?.map((item) => (
+                {stations?.map((item) => (
                   <Dropdown.Item
                     eventKey={item?.id}
-                    onClick={() => handleAvailabilityFilter(item?.id)}
+                    onClick={() => handleDepartureFilter(item?.id)}
                   >
                     {item?.name}
                   </Dropdown.Item>
@@ -250,19 +269,18 @@ export default function ScheduleList({ handleStep, trainData }) {
                 }}
               >
                 {selectedPassenger
-                  ? TRAIN_PASSENGER_CLASSES.filter(
-                      (d) => d.id === selectedPassenger,
-                    )
+                  ? stations
+                      .filter((d) => d.id === selectedPassenger)
                       .map((selectedClass) => selectedClass.name)
                       .join(', ')
-                  : 'Passenger'}
+                  : 'Arrival Station'}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                {TRAIN_PASSENGER_CLASSES?.map((item) => (
+                {stations?.map((item) => (
                   <Dropdown.Item
                     eventKey={item?.id}
-                    onClick={() => handlePassengerFilter(item?.id)}
+                    onClick={() => handleArrivalFilter(item?.id)}
                   >
                     {item?.name}
                   </Dropdown.Item>

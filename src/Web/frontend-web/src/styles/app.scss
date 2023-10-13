@@ -1,3 +1,8 @@
+/*
+ * File: app.scss
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+ */
+
 // utilities
 @import '_utilities/variables';
 
@@ -6,6 +11,7 @@
 @import '_pages/layout';
 @import '_pages/user';
 @import '_pages/train';
+@import '_pages/dashboard';
 
 // components
 @import '_components/button';

@@ -1,26 +1,23 @@
-import React, { Fragment, useEffect, useState } from 'react'
+/*
+ * File: BookingList.js
+ * Author: Bartholomeusz S.V/IT20274702
+ */
+
+import React, { useEffect, useState } from 'react'
 import StyledTable from '../../components/TMTable'
-import Loader from '../../components/TMLoader'
 import MainLayout from '../../components/Layouts/MainLayout'
 import LayoutHeader from '../../components/Layouts/LayoutHeader'
-import DropdownStyledButton from '../../components/TMDropdownButton'
-import {
-  STATUS_LIST,
-  TRAIN_AVAILABLE_DAYS,
-  TRAIN_PASSENGER_CLASSES,
-} from '../../configs/static-configs'
-import { Button, Dropdown, Form, InputGroup } from 'react-bootstrap'
+import { TRAIN_AVAILABLE_DAYS } from '../../configs/static-configs'
+import { Button, Form, InputGroup } from 'react-bootstrap'
 import { FaPlus } from 'react-icons/fa'
 import { RESERVATION_HEADERS } from '../../configs/dataConfig'
 import BookingDialog from './BookingDialog'
-import ConfirmationDialog from '../../components/TMConfirmationDialog'
 import ReservationsAPIService from '../../api-layer/reservations'
-import TrainsAPIService from '../../api-layer/trains'
 
 export default function BookingsList() {
+  const [dataLoading, setDataLoading] = useState([])
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
   const [searchParameters, setSearchParameers] = useState({
     pageSize: 10,
     hasNextPage: false,
@@ -29,7 +26,6 @@ export default function BookingsList() {
     totalPages: 0,
   })
   const [currentPage, setCurrentPage] = useState(0)
-  const [filterByStatus, setFilterByStatus] = useState(0)
   const [filteredData, setFilteredData] = useState([])
   const [searchText, setSearchText] = useState('')
   const [settings, setSettings] = useState({
@@ -37,34 +33,57 @@ export default function BookingsList() {
     action: '',
     parentData: null,
   })
-  const [
-    showStatuConfirmationDialog,
-    setShowStatuConfirmationDialog,
-  ] = useState(false)
-  const [selectedAvailability, setSelectedAvailability] = useState(0)
-  const [selectedPassenger, setSelectedPassenger] = useState(0)
-  const [selectedDestination, setSelectedDestination] = useState('')
-  const [selectedArrivalStation, setSelectedArrivalStation] = useState('')
-  const [selectedTrain, setSelectedTrain] = useState('')
-  const [selectedDate, setSelectedDate] = useState('')
-  const [selectedReservation, setSelectedReservation] = useState('')
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
 
-  const getAllTrains = () => {}
+  const ableToDeleteEdit = (id) => {
+    const reservation = filteredData.filter((data) => data.id === id)
+
+    const reservationDate = new Date(reservation.dateTime)
+    const today = new Date()
+    const timeDifference = today - reservationDate
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24)
+
+    if (daysDifference >= 5) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const deleteReservation = async (id) => {
+    if (ableToDeleteEdit(id)) {
+      const response = await ReservationsAPIService.deleteReservation(id)
+      if (response) {
+        alert('Reservation deleted')
+        getAllReservations()
+      } else {
+        alert('Something went wrong')
+      }
+    } else {
+      alert(
+        'Reservation date must be 5 days or more earlier to eligilble to edit or delete',
+      )
+      const response = await ReservationsAPIService.deleteReservation(id)
+      // if (response) {
+      //     alert("Reservation deleted");
+      //     getAllReservations();
+      // } else {
+      //     alert("Something went wrong")
+      // }
+    }
+  }
+
   const getAllReservations = async () => {
+    setDataLoading(true)
     try {
       const payload = {
-        // searchText: searchText,
-        // status: filterByStatus,
-        // availableDay: selectedAvailability,
-        // passengerClass: selectedPassenger,
-        // currentPage: currentPage,
-        reservationNumber: selectedReservation,
-        fromDate: '2023-10-01',
-        toDate: '2023-10-12',
-        trainId: selectedTrain,
-        destinationStationId: selectedDestination,
-        arrivalStationId: selectedArrivalStation,
-        status: filterByStatus,
+        reservationNumber: searchText || '',
+        fromDate: fromDate,
+        toDate: toDate,
+        trainId: '',
+        destinationStationId: '',
+        arrivalStationId: '',
+        status: 0,
         currentPage: currentPage,
         pageSize: 10,
       }
@@ -84,22 +103,13 @@ export default function BookingsList() {
       }
     } catch (e) {
     } finally {
+      setDataLoading(false)
     }
   }
 
   useEffect(() => {
-    //getAllTrains()
     getAllReservations()
-  }, [
-    currentPage,
-    searchText,
-    filterByStatus,
-    selectedDestination,
-    selectedArrivalStation,
-    selectedTrain,
-    selectedDate,
-    selectedReservation,
-  ])
+  }, [currentPage, searchText, fromDate, toDate])
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -121,53 +131,22 @@ export default function BookingsList() {
 
   const handleEditClick = (id) => {
     console.log(`Edit clicked for ID: ${id}`)
-    setSettings({
-      openDialog: true,
-      action: 'edit',
-      parentData: { id },
-    })
+    if (ableToDeleteEdit(id)) {
+      setSettings({
+        openDialog: true,
+        action: 'edit',
+        parentData: { id },
+      })
+    } else {
+      alert(
+        'Reservation date must be 5 days or more earlier to eligilble to edit or delete',
+      )
+    }
   }
 
   const handleDeleteClick = (id) => {
+    deleteReservation(id)
     console.log(`Delete clicked for ID: ${id}`)
-  }
-
-  const handleStatusChange = (itemId) => {
-    setSelectedStatus(itemId)
-    setShowStatuConfirmationDialog(true)
-  }
-
-  const handleConfirmStatusChange = async () => {
-    selectedIds.forEach(async (tId) => {
-      const payload = {
-        id: tId,
-        status: selectedStatus,
-      }
-      const response = await TrainsAPIService.updateTrainStatus(payload)
-      if (response) {
-        await getAllTrains()
-        await setSelectedIds([])
-      }
-      console.log(response)
-    })
-
-    setShowStatuConfirmationDialog(false)
-  }
-
-  const handleCloseConfirmationDialog = () => {
-    setShowStatuConfirmationDialog(false)
-  }
-
-  const handleStatusFilter = (itemId) => {
-    setFilterByStatus(itemId)
-  }
-
-  const handleAvailabilityFilter = (itemId) => {
-    setSelectedAvailability(itemId)
-  }
-
-  const handlePassengerFilter = (itemId) => {
-    setSelectedPassenger(itemId)
   }
 
   const handlePageChange = (newPage) => {
@@ -195,7 +174,7 @@ export default function BookingsList() {
         <InputGroup>
           <Form.Control
             type="text"
-            placeholder="Search Trains"
+            placeholder="Search Reservations"
             value={searchText}
             onChange={(e) => handleSearchInputChange(e)}
             style={{
@@ -223,88 +202,52 @@ export default function BookingsList() {
         >
           <FaPlus /> Add
         </Button>
-        {selectedIds?.length > 0 ? (
-          <DropdownStyledButton
-            dropdownTitle={'Change status'}
-            items={STATUS_LIST.filter((status) => status.showOnChange === true)}
-            handleChange={handleStatusChange}
-            selectedStatus={selectedStatus}
-            changeMode={true}
-          />
-        ) : (
-          <>
-            <DropdownStyledButton
-              dropdownTitle={'Filter by Status'}
-              items={STATUS_LIST}
-              handleChange={handleStatusFilter}
-              selectedStatus={filterByStatus}
-              changeMode={false}
-            />
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-autoclose-true"
-                style={{
-                  backgroundColor: '#8428E2',
-                  width: '200px',
-                  height: '46px',
-                  border: 'none',
-                  borderRadius: '46px',
-                }}
-              >
-                {selectedAvailability
-                  ? TRAIN_AVAILABLE_DAYS.filter(
-                      (d) => d.id === selectedAvailability,
-                    )
-                      .map((selectedClass) => selectedClass.name)
-                      .join(', ')
-                  : 'Availability'}
-              </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                {TRAIN_AVAILABLE_DAYS?.map((item) => (
-                  <Dropdown.Item
-                    eventKey={item?.id}
-                    onClick={() => handleAvailabilityFilter(item?.id)}
-                  >
-                    {item?.name}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+        <label
+          htmlFor="dateInputFrom"
+          style={{ color: 'black', padding: '10px 0px' }}
+        >
+          From:
+        </label>
 
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-autoclose-true"
-                style={{
-                  backgroundColor: '#8428E2',
-                  width: '150px',
-                  height: '46px',
-                  border: 'none',
-                  borderRadius: '46px',
-                }}
-              >
-                {selectedPassenger
-                  ? TRAIN_PASSENGER_CLASSES.filter(
-                      (d) => d.id === selectedPassenger,
-                    )
-                      .map((selectedClass) => selectedClass.name)
-                      .join(', ')
-                  : 'Passenger'}
-              </Dropdown.Toggle>
+        <input
+          type="date"
+          id="dateInputFrom"
+          onChange={(e) => setFromDate(e.target.value)}
+          value={fromDate}
+          style={{
+            backgroundColor: '#8428E2',
+            height: '46px',
+            border: 'none',
+            borderRadius: '46px',
+            padding: '10px',
+            color: 'white',
+            width: '300px',
+          }}
+        />
 
-              <Dropdown.Menu>
-                {TRAIN_PASSENGER_CLASSES?.map((item) => (
-                  <Dropdown.Item
-                    eventKey={item?.id}
-                    onClick={() => handlePassengerFilter(item?.id)}
-                  >
-                    {item?.name}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </>
-        )}
+        <label
+          htmlFor="dateInputTo"
+          style={{ color: 'black', padding: '10px 0px' }}
+        >
+          To:
+        </label>
+
+        <input
+          type="date"
+          id="dateInputTo"
+          onChange={(e) => setToDate(e.target.value)}
+          value={toDate}
+          style={{
+            backgroundColor: '#8428E2',
+            height: '46px',
+            border: 'none',
+            borderRadius: '46px',
+            padding: '10px',
+            color: 'white',
+            width: '300px',
+          }}
+        />
       </div>
     )
   }
@@ -312,21 +255,20 @@ export default function BookingsList() {
   return (
     <MainLayout loading={true} loadingTime={2000}>
       <div className="trains-container">
-        <ConfirmationDialog
-          title="Confirm Status Change"
-          message={`Are you sure you want to change the status to ${
-            STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
-            'Unknown'
-          }?`}
-          show={showStatuConfirmationDialog}
-          onHide={handleCloseConfirmationDialog}
-          onConfirm={handleConfirmStatusChange}
-          leftButton="Cancel"
-          rightButton="Confirm"
-        />
+        {/* <ConfirmationDialog
+                    title="Confirm Status Change"
+                    message={`Are you sure you want to change the status to ${STATUS_LIST.find((d) => d.id === selectedStatus)?.dropLabel ||
+                        'Unknown'
+                        }?`}
+                    show={showStatuConfirmationDialog}
+                    onHide={handleCloseConfirmationDialog}
+                    onConfirm={handleConfirmStatusChange}
+                    leftButton="Cancel"
+                    rightButton="Confirm"
+                /> */}
         <LayoutHeader
-          title="Bookings"
-          subtitle="Booking Management"
+          title="Reservations"
+          subtitle="Reservation Management"
           buttonComponent={buttonComp()}
         />
         <StyledTable
@@ -338,11 +280,13 @@ export default function BookingsList() {
           onCheckboxChange={handleCheckboxChange}
           onSelectAllChange={handleSelectAllChange}
           editEnabled={true}
-          deleteEnabled={false}
+          deleteEnabled={true}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
           handlePageChange={handlePageChange}
           currentPage={currentPage}
+          isLoadingEnabaled={true}
+          isLoading={dataLoading}
         />
         <div>
           {settings.openDialog && (
@@ -350,7 +294,7 @@ export default function BookingsList() {
               settings={settings}
               onClose={onCloseDialog}
               onSave={onCloseDialog}
-              callBackData={getAllTrains}
+              callBackData={getAllReservations}
             />
           )}
         </div>

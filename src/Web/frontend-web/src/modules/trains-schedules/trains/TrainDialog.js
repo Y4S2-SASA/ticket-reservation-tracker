@@ -1,3 +1,8 @@
+/*
+ * File: TrainDialog.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'

@@ -1,3 +1,8 @@
+/*
+ * File: TMConfirmationDialog.js
+ * Author: Dunusinghe A.V./IT20025526
+ */
+
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 

@@ -47,7 +47,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
                 totalRecordCount = (int)await _trainQueryRepository.CountDocumentsAsync(query);
 
                 var availableData = await _trainQueryRepository.GetPaginatedDataAsync
-                                   (query,
+                                   (   query,
                                        request.PageSize,
                                        request.CurrentPage,
                                        cancellationToken

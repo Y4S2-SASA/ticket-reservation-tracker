@@ -1,16 +1,13 @@
+/*
+ * File: BookingDialog.js
+ * Author: Bartholomeusz S.V/IT20274702
+ */
+
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
-import Tab from 'react-bootstrap/Tab'
-import Tabs from 'react-bootstrap/Tabs'
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import {
-  ROLES,
-  TRAIN_AVAILABLE_DAYS,
-  TRAIN_PASSENGER_CLASSES,
-} from '../../configs/static-configs'
-import TrainsAPIService from '../../api-layer/trains'
-import Select, { components } from 'react-select'
+import { TRAIN_PASSENGER_CLASSES } from '../../configs/static-configs'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -25,7 +22,6 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   const { openDialog, action, parentData } = settings
   const [data, setData] = useState(null)
   const [dataLoading, setDataLoading] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
   const [formDataDestination, setFormDataDestination] = useState({})
   const [formDataOrigin, setFormDataOrigin] = useState({})
   const [formDataStartDate, setFormDataStartDate] = useState(new Date())
@@ -64,14 +60,15 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         label: station.name,
         id: station.id,
       }))
-      setStations(_stations)
+      console.log('setting stations')
+      await setStations(_stations)
+      return _stations
     } catch (error) {
       console.log(error)
-      setStations([])
+      // setStations([]);
     } finally {
       setStationsLoading(false)
     }
-    return stations
   }
 
   const checkPrice = async () => {
@@ -97,16 +94,21 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     }
   }
 
-  const checkTrainAvailability = async () => {
+  const checkTrainAvailability = async (_req) => {
     try {
       const reqObj = {
-        destinationStationId: formDataDestination[0].id,
-        startPointStationId: formDataOrigin[0].id,
-        dateTime: formDataStartDate.toLocaleDateString('en-CA'),
-        passengerClass: parseInt(formDataselectedPClass),
+        destinationStationId:
+          _req?.destinationStationId || formDataDestination[0]?.id,
+        startPointStationId: _req?.startPointStationId || formDataOrigin[0]?.id,
+        dateTime:
+          _req?.dateTime || formDataStartDate.toLocaleDateString('en-CA'),
+        passengerClass:
+          _req?.passengerClass || parseInt(formDataselectedPClass),
       }
+      console.log(reqObj)
       setSchedulesLoading(true)
       const _schedules = await ScheduleAPIService.getScheduleTrainsData(reqObj)
+      console.log(_schedules)
       if (Array.isArray(_schedules) && _schedules.length > 0) {
         setShedulesAvailability(true)
       } else {
@@ -123,20 +125,48 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   }
 
   useEffect(() => {
-    getAllStations()
     const getById = async () => {
       setDataLoading(true)
-      const response = await TrainsAPIService.getTrainById({
-        id: parentData?.id,
-      })
+      const response = await ReservationsAPIService.getReservation(
+        parentData.id,
+      )
       if (response) {
         await setData(response)
-        await setDataLoading(false)
+        const _stations = await getAllStations()
+        await setPrice(response.price)
+        await setFormDataDestination(
+          _stations.filter(
+            (station) => station.id === response.destinationStationId,
+          ),
+        )
+        await setFormDataOrigin(
+          _stations.filter(
+            (station) => station.id === response.arrivalStationId,
+          ),
+        )
+        await setPriceLoading(false)
+        await setShedulesAvailability(true)
+        await setSchedulesLoading(false)
+        await setReadyToSubmit(true)
+        await setFormDataSelectedPclass(response.passengerClass)
+        await setFormDataStartDate(new Date(response.dateTime))
+        await checkTrainAvailability({
+          destinationStationId: response.destinationStationId,
+          startPointStationId: response.arrivalStationId,
+          dateTime: new Date(response.dateTime).toLocaleDateString('en-CA'),
+          passengerClass: parseInt(response.passengerClass),
+        })
       }
+      setTimeout(async () => {
+        await setDataLoading(false)
+      }, 1000)
+      // await setDataLoading(false)
       console.log(response)
     }
     if (action === 'edit') {
       getById()
+    } else {
+      getAllStations()
     }
   }, [action])
 
@@ -150,14 +180,19 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   })
 
   const initialValues = {
-    trainName: action === 'add' ? '' : data?.trainName,
-    seatCapacity: action === 'add' ? '' : data?.seatCapacity,
-    availableDays: action === 'add' ? '' : data?.availableDays,
-    passengerClasses: action === 'add' ? [] : data?.passengerClasses || [],
+    id: action === 'edit' ? data?.id : '',
+    referenceNumber: action === 'edit' ? data?.referenceNumber : '',
+    trainName: action === 'edit' ? data?.trainName : '',
+    passengerClass: action === 'edit' ? data?.passengerClass : '',
+    destinationStationName:
+      action === 'edit' ? data?.destinationStationName : '',
+    arrivalStationName: action === 'edit' ? data?.arrivalStationName : '',
+    dateTime: action === 'edit' ? data?.dateTime : '',
+    seatCapacity: action === 'edit' ? data?.noOfPassengers : '',
+    price: action === 'edit' ? data?.price : '',
   }
 
   const handleSubmit = async (formData) => {
-    console.log('submitting')
     try {
       const payload = {
         id: action === 'edit' ? parentData.id : '',
@@ -167,7 +202,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
         destinationStationId: formDataDestination[0].id,
         arrivalStationId: formDataOrigin[0].id,
         dateTime: formDataStartDate,
-        noOfPassengers: passengerCount,
+        noOfPassengers: parseInt(passengerCount),
         price: price,
       }
       const response = await ReservationsAPIService.saveReservation(payload)
@@ -201,8 +236,8 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
       const response = await ReservationsAPIService.saveReservation(payload)
       if (response) {
         console.log(response)
-        // await callBackData()
-        // await onClose()
+        callBackData()
+        onClose()
       } else {
         console.log(response)
       }
@@ -249,7 +284,13 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                       <Form.Group>
                         <Form.Label>Destination station*</Form.Label>
                         <Typeahead
+                          clearButton
                           id="des"
+                          defaultSelected={stations.filter(
+                            (station) =>
+                              station.id === formDataDestination[0]?.id,
+                          )}
+                          name="destinationStationName"
                           onChange={(destination) =>
                             setFormDataDestination(destination)
                           }
@@ -264,7 +305,12 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                       <Form.Group>
                         <Form.Label>Origin station*</Form.Label>
                         <Typeahead
+                          clearButton
                           id="ori"
+                          defaultSelected={stations.filter(
+                            (station) => station.id === formDataOrigin[0]?.id,
+                          )}
+                          name="arrivalStationName"
                           onChange={(_origin) => setFormDataOrigin(_origin)}
                           isLoading={isStationsLoading}
                           disabled={isStationsLoading}
@@ -304,9 +350,10 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                       <Form.Group style={{}}>
                         <Form.Label>Booking date*</Form.Label>
                         <DatePicker
+                          name="dateTime"
                           selected={formDataStartDate}
                           onChange={(date) => setFormDataStartDate(date)}
-                          minDate={new Date()}
+                          // minDate={new Date()}
                           maxDate={new Date().setDate(
                             new Date().getDate() + 30,
                           )}
@@ -381,8 +428,10 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                         <Col sm={6}>
                           <Form.Group style={{}}>
                             <Form.Label>Train</Form.Label>
-
-                            <Form.Control value={getTrainObj('trainName')} />
+                            <Form.Control
+                              name="trainName"
+                              value={getTrainObj('trainName')}
+                            />
                           </Form.Group>
                         </Col>
                       </Row>
@@ -438,7 +487,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                             <Form.Group style={{}}>
                               <Form.Label>Price</Form.Label>
 
-                              <Form.Control value={price} />
+                              <Form.Control name="price" value={price} />
                             </Form.Group>
                           </Col>
                         </Row>
@@ -479,7 +528,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                               borderRadius: '46px',
                             }}
                           >
-                            Saveo
+                            Save
                           </Button>
                         </Col>
                       </Row>

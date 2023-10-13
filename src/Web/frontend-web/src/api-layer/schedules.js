@@ -1,3 +1,8 @@
+/*
+ * File: schedules.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import HttpServiceConfig from '../configs/http-service-config'
 
 class ScheduleAPIService {
@@ -103,6 +108,26 @@ class ScheduleAPIService {
     return new Promise((resolve, reject) => {
       HttpServiceConfig.get(
         `/api/Schedule/getScheduleById?id=${req.id}`,
+        headers,
+      )
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  updateScheduleStatus = (req, headers = {}) => {
+    const formattedReq = {
+      id: req.id,
+      status: req.status,
+    }
+    return new Promise((resolve, reject) => {
+      HttpServiceConfig.put(
+        '/api/Schedule/changeStatusSchedule',
+        formattedReq,
         headers,
       )
         .then((data) => {

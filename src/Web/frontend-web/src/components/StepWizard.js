@@ -1,3 +1,8 @@
+/*
+ * File: StepWizard.js
+ * Author: Perera M.S.D/IT20020262
+ */
+
 import React from 'react'
 
 const StepWizard = ({ currentActive, leftStepperTitle, rightStepperTitle }) => {

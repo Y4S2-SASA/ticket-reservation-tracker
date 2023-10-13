@@ -23,7 +23,7 @@ export const NAVBAR_ITEMS = [
   {
     id: 3,
     pathUrl: '/bookings',
-    icon: '/images/icons/train.png',
+    icon: '/images/icons/schedule.png',
     label: 'Bookings',
     entitlementRoles: ['Back Office'],
   },

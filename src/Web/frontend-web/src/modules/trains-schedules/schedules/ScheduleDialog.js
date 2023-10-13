@@ -1,3 +1,8 @@
+/*
+ * File: ScheduleDialog.js
+ * Author: Jayathilake S.M.D.A.R./IT20037338
+ */
+
 import React, { useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner, Table } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'
@@ -32,14 +37,18 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
   const [selectedArrivalStation, setSelectedArrivalStation] = useState(null)
   const [subStationArrivalTime, setSubStationArrivalTime] = useState(new Date())
   const [subStationDetails, setSubStationDetails] = useState([])
+  const [isStationsLoading, setStationsLoading] = useState(true)
 
   useEffect(() => {
     const getStations = async () => {
       try {
+        setStationsLoading(true)
         const res = await MasterDataAPIService.getAllStationMasterData()
         setStations(res)
+        setStationsLoading(false)
       } catch (e) {
         console.log(e)
+        setStationsLoading(false)
       }
     }
     const getTrains = async () => {
@@ -90,7 +99,7 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
           })
         setTimeout(() => {
           setDataLoading(false)
-        }, 5000)
+        }, 100)
       }
     }
     if (action === 'edit') {
@@ -259,6 +268,8 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
                         selected={selectedDepartureStation}
                         onChange={handleChangeDepartureStation}
                         placeholder="Select options..."
+                        isLoading={isStationsLoading}
+                        disabled={isStationsLoading}
                       />
                     </Form.Group>
                   </Col>
@@ -289,6 +300,8 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
                         selected={selectedArrivalStation}
                         onChange={handleChangeArrivalStation}
                         placeholder="Select options..."
+                        isLoading={isStationsLoading}
+                        disabled={isStationsLoading}
                       />
                     </Form.Group>
                   </Col>
@@ -330,6 +343,8 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
                           selected={selectedStations}
                           onChange={handleChangeStations}
                           placeholder="Select options..."
+                          isLoading={isStationsLoading}
+                          disabled={isStationsLoading}
                         />
                         <ErrorMessage
                           name="passengerClasses"
