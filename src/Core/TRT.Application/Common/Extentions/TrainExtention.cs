@@ -1,6 +1,11 @@
 ﻿using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Domain.Entities;
+/*
+ * File: TrainExtention.cs
+ * Purpose: Handle Object Mapping for trains
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 
 namespace System
 {

@@ -1,6 +1,10 @@
 ﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 using TRT.Application.Common.Interfaces;
+/*
+ * File: LoggingBehaviour.cs
+ * Author: Perera M.S.D/IT20020262
+ */
 
 namespace TRT.Application.Common.Behaviours
 {
@@ -14,6 +18,7 @@ namespace TRT.Application.Common.Behaviours
             _logger = logger;
             _currentUserService = currentUserService;
         }
+        //loggin Behaviour
         public async Task Process(TRequest request, CancellationToken cancellationToken)
         {
             var requestName = typeof(TRequest).Name;

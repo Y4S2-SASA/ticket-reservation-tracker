@@ -5,20 +5,25 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TRT.API.Services;
 using TRT.Application.Common.Interfaces;
-
+/*
+ * File: ConfigureServices.cs
+ * Purpose: DependencyInjection WebAPIServices
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ConfigureServices
     {
         public static IServiceCollection AddWebAPIServices(this IServiceCollection services, IConfiguration configuration)
         {
-           
 
+            //AddHttpContextAccessor DI Container
             services.AddHttpContextAccessor();
 
-           services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            //CurrentUserService DI Container
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
-
+            //SwaggerGen DI Container
             services.AddSwaggerGen(options =>
             {
 
@@ -53,6 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 });
             });
 
+            //AddAuthentication DI Container
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -76,6 +82,7 @@ namespace Microsoft.Extensions.DependencyInjection
                    };
                });
 
+            //FormOptions DI Container
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
@@ -89,22 +96,6 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.MaxModelBindingCollectionSize = int.MaxValue;
             });
-
-            /*var allowedOrigins = new List<string>();
-
-            var allowOrigins = configuration.GetValue<string>("AllowedHosts")
-                .Split(",");
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "CorsPolicy",
-                          builder => builder.WithOrigins(allowOrigins)
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                         );
-            });*/
-
-
 
             return services;
         }

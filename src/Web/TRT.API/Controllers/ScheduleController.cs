@@ -12,23 +12,33 @@ using TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsByDestinationId;
 using TRT.Application.Pipelines.Schedules.Queries.GetScheduleTrainsData;
 using TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId;
-using TRT.Domain.Entities;
-
+/*
+ * File: ScheduleController.cs
+ * Purpose: Controller for managing the Schedules.
+ * Author: Perera M.S.D/1IT20020262
+*/
 namespace TRT.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ScheduleController : ControllerBase
     {
         private readonly ILogger<ScheduleController> _logger;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="mediator">The mediator.</param>
         public ScheduleController(ILogger<ScheduleController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
         }
+
 
         [HttpPost("saveSchedule")]
         public async Task<IActionResult> SaveSchedule([FromBody] ScheduleDTO scheduleDTO)

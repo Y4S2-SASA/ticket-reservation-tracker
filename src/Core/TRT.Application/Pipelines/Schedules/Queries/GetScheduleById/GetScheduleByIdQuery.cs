@@ -3,13 +3,16 @@ using Microsoft.Extensions.Logging;
 using TRT.Application.DTOs.ScheduleDTOs;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: GetScheduleByIdQuery.cs
+ * Purpose: Handle GetScheduleById
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleById
 {
-    public record GetScheduleByIdQuery(string id) : IRequest<ScheduleDTO>
-    {
-
-    }
-
+    
+    public record GetScheduleByIdQuery(string id) : IRequest<ScheduleDTO>;
+  
     public class GetScheduleByIdQueryHandler : IRequestHandler<GetScheduleByIdQuery, ScheduleDTO>
     {
         private readonly IScheduleQueryRepository _scheduleQueryRepository;
@@ -24,6 +27,13 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetScheduleById
             this._scheduleQueryRepository = scheduleQueryRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle GetScheduleById.
+        /// </summary>
+        /// <param name="request">>Contains Schedule id</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Schedule details</returns>
         public async Task<ScheduleDTO> Handle(GetScheduleByIdQuery request, CancellationToken cancellationToken)
         {
             try

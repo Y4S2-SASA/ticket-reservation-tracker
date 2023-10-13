@@ -1,7 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using TRT.Domain.Enums;
-
+/*
+ * File: Reservation.cs
+ * Author:Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Domain.Entities
 {
     public class Reservation

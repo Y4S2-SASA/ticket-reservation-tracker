@@ -5,7 +5,11 @@ using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.UserDTOs;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Command;
-
+/*
+ * File: SaveUserCommand.cs
+ * Purpose: Save User 
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
 {
     public record SaveUserCommand(UserDTO UserData) : IRequest<ResultDTO>;
@@ -24,6 +28,13 @@ namespace TRT.Application.Pipelines.Users.Commands.SaveUserCommand
             this._userCommandRepository = userCommandRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Save User 
+        /// </summary>
+        /// <param name="request">>Contains user details </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(SaveUserCommand request, CancellationToken cancellationToken)
         {
             try

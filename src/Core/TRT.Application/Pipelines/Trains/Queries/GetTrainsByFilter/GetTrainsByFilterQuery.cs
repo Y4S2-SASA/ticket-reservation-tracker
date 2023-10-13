@@ -7,7 +7,11 @@ using TRT.Application.DTOs.TrainDTOs;
 using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetTrainsByFilterQuery.cs
+ * Purpose: Handle GetTrainsByFilterQuery
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
 {
     public record GetTrainsByFilterQuery : IRequest<PaginatedListDTO<TrainDetailDTO>>
@@ -34,6 +38,13 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
             _trainQueryRepository = trainQueryRepository;
             _logger = logger;
         }
+
+        /// <summary>
+        /// Handle Save and update TrainCommand.
+        /// </summary>
+        /// <param name="request">>Contains trains filter parameters </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Paginated train list</returns>
         public async Task<PaginatedListDTO<TrainDetailDTO>> Handle(GetTrainsByFilterQuery request, CancellationToken cancellationToken)
         {
             try
@@ -47,7 +58,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
                 totalRecordCount = (int)await _trainQueryRepository.CountDocumentsAsync(query);
 
                 var availableData = await _trainQueryRepository.GetPaginatedDataAsync
-                                   (query,
+                                   (   query,
                                        request.PageSize,
                                        request.CurrentPage,
                                        cancellationToken
@@ -73,6 +84,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter
         }
 
         #region Private Methods
+        //check filter conditions according to parameter values
         private Expression<Func<Train, bool>> ConfigureFilter(Expression<Func<Train, bool>> query, GetTrainsByFilterQuery request)
         {
             if (!string.IsNullOrEmpty(request.SearchText))

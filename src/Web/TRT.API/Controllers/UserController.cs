@@ -5,12 +5,15 @@ using TRT.Application.DTOs.UserDTOs;
 using TRT.Application.Pipelines.Users.Commands.ChangeUserStatus;
 using TRT.Application.Pipelines.Users.Commands.SaveUserCommand;
 using TRT.Application.Pipelines.Users.Commands.UpdateUserCommand;
-using TRT.Application.Pipelines.Users.Queries.GetAllUsers;
 using TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter;
 using TRT.Application.Pipelines.Users.Queries.GetUserById;
 using TRT.Application.Pipelines.Users.Queries.ValidateUserNIC;
 using TRT.Domain.Constants;
-
+/*
+ * File: UserController.cs
+ * Purpose: Controller for managing the User.
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
@@ -21,6 +24,11 @@ namespace TRT.API.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="mediator">The mediator.</param>
         public UserController(ILogger<UserController> logger, IMediator mediator)
         {
             _logger = logger;

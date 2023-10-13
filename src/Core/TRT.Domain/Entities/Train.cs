@@ -1,7 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using TRT.Domain.Enums;
-
+/*
+ * File: Train.cs
+ * Author:Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Domain.Entities
 {
     public class Train

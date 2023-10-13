@@ -14,6 +14,10 @@ namespace TRT.Domain.Enums
         Deactivated =3,
 
         [Description("Deleted")]
-        Deleted =4
+        Deleted =4,
+
+        [Description("Completed")]
+        Completed = 4,
+
     }
 }

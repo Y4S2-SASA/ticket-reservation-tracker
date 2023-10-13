@@ -1,3 +1,8 @@
+/*
+ * File: http-service-config.js
+ * Author: Jayathilake S.M.D.A.R./IT20037338
+ */
+
 import axios from 'axios'
 
 const token = JSON.parse(localStorage.getItem('auth'))?.token

@@ -3,6 +3,11 @@ using TRT.Application.DTOs.Common;
 using TRT.Application.Pipelines.Stations.Queries.GetStatusByIdQuery;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: GetSchudulesSubStationsByTrainIdQuery.cs
+ * Purpose: Handle Get Schudules SubStations By TrainId
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByTrainId
 {
     public record GetSchudulesSubStationsByTrainIdQuery(string trainId) : IRequest<List<DropDownCoreDTO>>
@@ -25,6 +30,13 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchudulesSubStationsByT
             this._scheduleQueryRepository = scheduleQueryRepository;
             this._mediator = mediator;
         }
+
+        /// <summary>
+        /// Handle Get Schudules Sub Stations.
+        /// </summary>
+        /// <param name="request">>Contains train  id</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>SubStations master data</returns>
         public async Task<List<DropDownCoreDTO>> Handle(GetSchudulesSubStationsByTrainIdQuery request, CancellationToken cancellationToken)
         {
             var subStations = new List<DropDownCoreDTO>();

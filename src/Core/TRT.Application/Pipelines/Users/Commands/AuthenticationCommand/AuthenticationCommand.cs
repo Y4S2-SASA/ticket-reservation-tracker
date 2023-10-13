@@ -10,7 +10,11 @@ using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.AuthenticationDTOs;
 using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: AuthenticationCommand.cs
+ * Purpose: Handle Authentication user
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
 {
     public class AuthenticationCommand : IRequest<UserAuthenticationResponseDTO>
@@ -36,6 +40,13 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             this._configuration = configuration;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Authentication user
+        /// </summary>
+        /// <param name="request">>Contains user credentials </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>UserAuthenticationResponseDTO</returns>
         public async Task<UserAuthenticationResponseDTO> Handle(AuthenticationCommand request, CancellationToken cancellationToken)
         {
             try
@@ -54,11 +65,11 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
                     return UserAuthenticationResponseDTO.NotSuccess(ResponseMessageConstant.PASSWORD_INCORRECT_RESPONSE);
                 }
 
-                var userAthunticationResponse = await ConfigureJwtToken(user, cancellationToken);
+                var authenticationResponse = await ConfigureJwtToken(user, cancellationToken);
 
-                if (userAthunticationResponse.IsLoginSuccess)
+                if (authenticationResponse.IsLoginSuccess)
                 {
-                    return userAthunticationResponse;
+                    return authenticationResponse;
                 }
                 else
                 {
@@ -74,6 +85,7 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             }
         }
 
+        //Method of handle jwt token and response details
         private async Task<UserAuthenticationResponseDTO> ConfigureJwtToken(User user, CancellationToken cancellationToken)
         {
             var key = _configuration["Tokens:Key"];
@@ -99,7 +111,7 @@ namespace TRT.Application.Pipelines.Users.Commands.AuthenticationCommand
             (
                 issuer: issuer,
                 claims: claims,
-                expires: nowDate.AddYears(1),
+                expires: nowDate.AddDays(NumberConstant.ONE),
                 signingCredentials: credentials
             );
 

@@ -19,5 +19,22 @@ namespace TRT.Application.Common.Extentions
 
             return reservation;
         }
+
+        public static ReservationDTO ToDto(this Reservation reservation, ReservationDTO? dto = null)
+        {
+            if (dto is null) dto = new ReservationDTO();
+
+            dto.Id = reservation.Id;
+            dto.ReferenceNumber = reservation.ReferenceNumber;
+            dto.PassengerClass = reservation.PassengerClass;
+            dto.DestinationStationId = reservation.DestinationStationId;
+            dto.TrainId = reservation.TrainId;
+            dto.ArrivalStationId = reservation.ArrivalStationId;
+            dto.DateTime = reservation.DateTime;
+            dto.NoOfPassengers = reservation.NoOfPassengers;
+            dto.Price = reservation.Price;
+
+            return dto;
+        }
     }
 }

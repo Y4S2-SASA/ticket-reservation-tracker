@@ -48,13 +48,13 @@
 
         #region Train
         public const string TRAIN_SAVE_SUCCESS_RESPONSE_MESSAGE =
-                             "Train details saved has been successfull";
+                             "Train details saved has been successfully";
 
         public const string TRAIN_UPDATE_SUCCESS_RESPONSE_MESSAGE =
-                            "Train details Updated has been successfull";
+                            "Train details Updated has been successfully";
 
         public const string TRAIN_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
-                             "{0} {1} has been successfull";
+                             "{0} {1} has been successfully";
 
         public const string TRAIN_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Train details Not found please try again";
@@ -62,13 +62,13 @@
 
         #region Schedule
         public const string SCHEDULE_SAVE_SUCCESS_RESPONSE_MESSAGE =
-                             "Schedule details saved has been successfull";
+                             "Schedule details saved has been successfully";
 
         public const string SCHEDULE_UPDATE_SUCCESS_RESPONSE_MESSAGE =
-                            "Schedule details Updated has been successfull";
+                            "Schedule details Updated has been successfully";
 
         public const string SCHEDULE_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
-                             "Schedule status has been successfull";
+                             "Schedule status has been changed successfully";
 
         public const string SCHEDULE_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Schedule details Not found please try again";
@@ -76,7 +76,22 @@
 
         #region Reservation
         public const string RESERVATION_SAVE_SUCCESS_RESPONSE_MESSAGE =
-                            "Reservation details saved has been successfull."; 
+                            "Reservation details saved has been successfully.";
+
+        public const string UNABLE_TO_UPDATE_RESERVATION = 
+            "Unable to Update Reservation\", \"We regret to inform you that we are unable to update your reservation as it is less than 5 days before the reservation date.";
+
+        public const string RESERVATION_UPDATE_SUCCESS_RESPONSE_MESSAGE =
+                           "Reservation details updated has been successfully.";
+
+        public const string RESERVATION_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE =
+                           "Reservation status has been changed successfully.";
+
+        public const string RESERVATION_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
+                          "Reservation details Not found please try again.";
+
+        public const string RESERVATION_DELETE_SUCCESS_RESPONSE_MESSAGE =
+            "Reservation details deleted has been successfully.";
         #endregion
     }
 }

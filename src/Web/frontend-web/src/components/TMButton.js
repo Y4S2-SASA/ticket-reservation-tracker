@@ -1,3 +1,8 @@
+/*
+ * File: TMButton.js
+ * Author: Bartholomeusz S.V/IT20274702
+ */
+
 import React from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 

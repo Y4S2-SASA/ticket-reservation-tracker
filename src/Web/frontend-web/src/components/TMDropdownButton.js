@@ -1,3 +1,8 @@
+/*
+ * File: BookingDialog.js
+ * Author: Bartholomeusz S.V/IT20274702
+ */
+
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 
