@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
@@ -18,33 +16,45 @@ import com.sasa.ticketreservationapp.config.ApiInterface;
 import com.sasa.ticketreservationapp.handlers.AuthHandler;
 import com.sasa.ticketreservationapp.request.LoginRequest;
 import com.sasa.ticketreservationapp.response.LoginResponse;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+/*
+ * File: LoginActivity.java
+ * Purpose: Handle the Traveller Login Functionality
+ * Author: Bartholomeusz S.V/IT20274702
+ * Description: This activity is responsible of handling the logging in functionality of the traveller
+ */
 
+public class LoginActivity extends AppCompatActivity {
     private EditText usernameField, passwordField;
     private Button signInBtn;
-
     private TextView signUpTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize the varaibles
         usernameField = findViewById(R.id.usernameField);
         passwordField = findViewById(R.id.passwordField);
         signInBtn = findViewById(R.id.signInBtn);
         signUpTxt = findViewById(R.id.signUpTxt);
 
+        // Handle Sign up
         signUpTxt.setOnClickListener(v->{
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
         });
 
+        // Handle sign in
+        /// <summary>
+        /// Handles logging in functionality of the traveller
+        /// </summary>
+        /// <param name="request">loginRequest Object containing the necessary data</param>
+        /// <returns>Object of LoginResponse data</returns>
         signInBtn.setOnClickListener(v -> {
 
             String username = usernameField.getText().toString();
@@ -70,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                             AuthHandler.persistLoginData(loginDb, editor, nic, token, displayName);
 
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, CurrentBookingsActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, CurrentReservationsActivity.class);
                             startActivity(intent);
                             finish();
                         }else{

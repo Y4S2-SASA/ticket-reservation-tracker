@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +25,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+ * File: ProfileActivity.java
+ * Purpose: Handle profile activity management functionalities
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+ * Description: This activity is responsible of handling the profile management functionalities of the traveller.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView displayName, emailField, mobileNoField, firstNameField, lastNameField, nicField;
@@ -33,8 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private String id, token;
     private Button saveChangesBtn, deactivateAccountBtn, logoutButton;
-    private UserModel userModel;
-    private UserModel currentUser;
+    private UserModel userModel, currentUser;
     private Integer accStatus;
 
     @Override
@@ -42,14 +46,20 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class); // Initialize apiClient
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){ // Verify the logged in user details
             prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
+            if(prefs.getString("nic", "") != null){
+                id = prefs.getString("nic", "");
+                token = prefs.getString("token", "");
+                fetchUserData(token, id);
+            }
         }else{
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
-        // Initialize your EditText fields
+        // Initialize variables
         emailField = findViewById(R.id.emailField);
         mobileNoField = findViewById(R.id.mobileNoField);
         firstNameField = findViewById(R.id.firstNameField);
@@ -60,16 +70,11 @@ public class ProfileActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logoutBtn);
         saveChangesBtn = findViewById(R.id.saveBtn);
 
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
         String fullName = "WELCOME " + prefs.getString("displayName", "") + " !";
         displayName.setText(fullName);
-        if(prefs.getString("nic", "") != null){
-            id = prefs.getString("nic", "");
-            token = prefs.getString("token", "");
-            fetchUserData(token, id);
-            Log.d("TAG", id);
-        }
 
+        // Handle save changes related functionality
         saveChangesBtn.setOnClickListener(v -> {
             if(userModel != null){
                 currentUser = userModel;
@@ -83,10 +88,11 @@ public class ProfileActivity extends AppCompatActivity {
                 currentUser.setUserName(userModel.getUserName());
                 updateUserData(currentUser);
             }else{
-                Log.d("TAG", "userModel.getEmail()");
+                Log.d("TAG", "No Data");
             }
         });
 
+        // Handle Logout
         logoutButton.setOnClickListener(v -> {
                 AuthHandler.clearLoginData(new LoginDatabaseHelper(ProfileActivity.this), getSharedPreferences("userCredentials", MODE_PRIVATE).edit());
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
@@ -94,6 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
         });
 
+        // Handle deactivate user account
         deactivateAccountBtn.setOnClickListener(v -> {
             updateAccountStatus(id, 3);
         });
@@ -110,11 +117,11 @@ public class ProfileActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.home) {
-                    startActivity(new Intent(getApplicationContext(), CurrentBookingsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), CurrentReservationsActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.history)
-                    startActivity(new Intent(getApplicationContext(), BookingHistoryActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ReservationHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -122,6 +129,13 @@ public class ProfileActivity extends AppCompatActivity {
 
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
     }
+
+    /// <summary>
+    /// Handles fetching the user data based on the parameters
+    /// </summary>
+    /// <param name="request">Passes the users id</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns>UserModel object</returns>
     private void fetchUserData(String token, String id){
         Call<UserModel> call = apiInterface.getUserById("Bearer " + token, id);
         call.enqueue(new Callback<UserModel>() {
@@ -129,7 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     userModel = response.body();
-                    Log.d("TAG", userModel.getUserName());
                     // Populate the EditText fields
                     emailField.setText(userModel.getEmail());
                     mobileNoField.setText(userModel.getMobileNumber());
@@ -145,6 +158,12 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /// <summary>
+    /// Handles updating the user details based on the parameters
+    /// </summary>
+    /// <param name="request">UserModel Object containing the necessary data</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns></returns>
     private void updateUserData(UserModel updatedUser) {
         apiInterface.updateUser("Bearer " + token, updatedUser).enqueue(new Callback<Void>() {
             @Override
@@ -165,6 +184,12 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /// <summary>
+    /// Handles updating of user account status from the travellers end
+    /// </summary>
+    /// <param name="request">Passes AccountStatusRequest to the parameters</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns></returns>
     private void updateAccountStatus(String nic, int status) {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
@@ -184,10 +209,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("TAG", t.toString());
+                Log.e("TAG", "Error: " + t.toString());
             }
         });
     }
-
 }

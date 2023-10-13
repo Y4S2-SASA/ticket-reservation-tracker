@@ -1,5 +1,4 @@
 package com.sasa.ticketreservationapp.activities;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,10 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sasa.ticketreservationapp.R;
 import com.sasa.ticketreservationapp.config.ApiClient;
@@ -30,35 +27,36 @@ import com.sasa.ticketreservationapp.request.ViewSummaryRequest;
 import com.sasa.ticketreservationapp.response.ScheduleResponse;
 import com.sasa.ticketreservationapp.response.StationResponse;
 import com.sasa.ticketreservationapp.util.DateTimeConverter;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+* File: CreateReservationActivity.java
+* Purpose: Handle Reservation Creation Functionality
+* Author: Perera M. S. D/IT20020262
+* Description: This activity is responsible of handling the reservation creation related functionality from the travellers end.
+*/
+
 public class CreateReservationActivity extends AppCompatActivity {
-    private Spinner pClassSpinner;
-    private Spinner reservedTimeSpinner;
-    private ApiInterface apiInterface;
-    private Integer pClass;
-    private String id, token, selectedDestinationId, selectedSubStationId, reservedDate, convertedReservedDate, convertedTime, selectedTrainName, selectedScheduleId, selectedTrainId, selectedArrivalTime, selectedDestinationName, selectedSubStationName;
     private SharedPreferences prefs;
-    private Integer availableSeatCount, newTicketPrice, passengerCount;
+    private ApiInterface apiInterface;
     private EditText reservedDateField, passengersField, trainNoField, priceField;
     private TextView incrementBtn, decrementBtn;
-    private AutoCompleteTextView searchDestinationField;
-    private AutoCompleteTextView searchSubStationField;
+    private AutoCompleteTextView searchDestinationField, searchSubStationField;
+    private Spinner pClassSpinner,reservedTimeSpinner;
+    private String id, token, selectedDestinationId, selectedSubStationId, reservedDate, convertedReservedDate, convertedTime, selectedTrainName, selectedScheduleId, selectedTrainId, selectedArrivalTime, selectedDestinationName, selectedSubStationName;
+    private Integer availableSeatCount, newTicketPrice, passengerCount, pClass;
     private Calendar calendar;
     private List<StationResponse> stations;
     private List<ScheduleResponse> schedules;
-    private Button viewSummaryBtn, getTrainsBtn;
+    private Button viewSummaryBtn, getTrainsBtn, backBtn;
     private Integer[] pClassTypes = {1, 2, 3};
-    private String[] arrivalTime = {"No data available"};
     private List<String> stationList = new ArrayList<>();
     private List<String> scheduleList = new ArrayList<>();
     private ScheduleRequest scheduleRequest;
@@ -67,8 +65,9 @@ public class CreateReservationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_reservation);
 
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class); // Initialization of apiClient
+
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){// Verifying the logged in userDetails
             prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
             if(prefs.getString("nic", "") != null){
                 id = prefs.getString("nic", "");
@@ -80,6 +79,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        // Initialize variables
         priceField = findViewById(R.id.priceField);
         trainNoField = findViewById(R.id.trainNoField);
         passengersField = findViewById(R.id.passengerCount);
@@ -92,11 +92,15 @@ public class CreateReservationActivity extends AppCompatActivity {
         getTrainsBtn = findViewById(R.id.fetchTrainsBtn);
         decrementBtn = findViewById(R.id.decrementBtn);
         incrementBtn = findViewById(R.id.incrementBtn);
+        backBtn = findViewById(R.id.backBtn);
+
+        // Disable the fields
+        reservedTimeSpinner.setEnabled(false);
 
         // ArrayAdapter using the stationList ArrayList
         ArrayAdapter<String> destinationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, stationList);
-        // Set the adapter to the AutoCompleteTextView
-        searchDestinationField.setAdapter(destinationAdapter);
+        searchDestinationField.setAdapter(destinationAdapter);// Set the adapter to the AutoCompleteTextView
+        // Search Destination Stations with autocomplete
         searchDestinationField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,8 +117,10 @@ public class CreateReservationActivity extends AppCompatActivity {
             }
         });
 
+        // ArrayAdapter using the stationList ArrayList
         ArrayAdapter<String> subStationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, stationList);
-        searchSubStationField.setAdapter(subStationAdapter);
+        searchSubStationField.setAdapter(subStationAdapter);// Set the adapter to the AutoCompleteTextView
+        // Search Sub Stations with autocomplete
         searchSubStationField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,6 +136,9 @@ public class CreateReservationActivity extends AppCompatActivity {
         });
 
         calendar = Calendar.getInstance();
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.add(Calendar.DAY_OF_MONTH, 30);
+
         reservedDateField.setOnClickListener(view -> showDatePickerDialog());
         reservedDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -140,16 +149,19 @@ public class CreateReservationActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize Passenger Class Spinner
         ArrayAdapter<Integer> pClassAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, pClassTypes);
         pClassAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pClassSpinner.setAdapter(pClassAdapter);
 
+        // Handle Get Train Schedules function
         getTrainsBtn.setOnClickListener( v -> {
             reservedDate = reservedDateField.getText().toString();
             convertedReservedDate = DateTimeConverter.convertDate(reservedDate);
             pClass = (Integer) pClassSpinner.getSelectedItem();
             scheduleRequest = new ScheduleRequest(selectedDestinationId, selectedSubStationId, convertedReservedDate, pClass);
             fetchTrains(scheduleRequest);
+            reservedTimeSpinner.setEnabled(true);
         });
 
         reservedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -171,17 +183,17 @@ public class CreateReservationActivity extends AppCompatActivity {
                             if(availableSeatCount != null){
                                 break;
                             }else{
-                                Log.d("TAG", "No count" );
+                                Log.d("TAG", "No Seat Count" );
                             }
                         }
                     }
                 }else{
-                    Log.d("TAG", "Empty");
+                    Log.d("TAG", "Empty List");
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TAG", "Nothing selected");
+                Log.d("TAG", "No Item Selected");
             }
         });
 
@@ -194,7 +206,7 @@ public class CreateReservationActivity extends AppCompatActivity {
                 if (passengerCount <= availableSeatCount) {
                     passengersField.setText(String.valueOf(passengerCount));
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
-                    calculateTicketPrice(priceRequest);
+                    calculateTicketPrice(priceRequest); // Handle Price calculation
                 } else {
                     Toast.makeText(CreateReservationActivity.this, "Maximum passenger count reached", Toast.LENGTH_SHORT).show();
                 }
@@ -207,23 +219,31 @@ public class CreateReservationActivity extends AppCompatActivity {
             if(availableSeatCount != null) {
                 passengersField.setText(String.valueOf(passengerCount));
                 PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
-                calculateTicketPrice(priceRequest);
+                calculateTicketPrice(priceRequest); // Handle Price calculation
             }else{
-                Toast.makeText(CreateReservationActivity.this, "Maximum passenger count reached", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateReservationActivity.this, "Minimum passenger count reached", Toast.LENGTH_SHORT).show();
             }
         });
 
+        // Handle View Summary function
         viewSummaryBtn.setOnClickListener(v ->{
             double ticketPrice = (double) newTicketPrice;
             String dateTime = convertedReservedDate + "T" + selectedArrivalTime;
+            Log.d("DATE", dateTime);
             ViewSummaryRequest viewSummaryRequest = new ViewSummaryRequest("", "", pClass, selectedDestinationId, selectedDestinationName, selectedTrainId, selectedTrainName, selectedSubStationId, selectedSubStationName, dateTime, convertedReservedDate, convertedTime, passengerCount, ticketPrice);
             Intent intent = new Intent(CreateReservationActivity.this, ReservationSummaryActivity.class);
             intent.putExtra("viewSummaryRequest", viewSummaryRequest);
+            intent.putExtra("Method", "CREATE");
             startActivity(intent);
         });
 
+        // Handle Navigate Back functionality
+        backBtn.setOnClickListener(v ->{
+            Intent intent = new Intent(CreateReservationActivity.this, CurrentReservationsActivity.class);
+            startActivity(intent);
+        });
 
-//-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
+//-------------------------------------------------------Bottom App BAR FUNCTION-----------------------------------------------------------------
         //Initialize variables and assign them
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -236,11 +256,11 @@ public class CreateReservationActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.home) {
-                    startActivity(new Intent(getApplicationContext(), CurrentBookingsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), CurrentReservationsActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.history)
-                    startActivity(new Intent(getApplicationContext(), BookingHistoryActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ReservationHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -248,8 +268,13 @@ public class CreateReservationActivity extends AppCompatActivity {
 //-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
     }
 
+
     private void showDatePickerDialog() {
-        new DatePickerDialog(
+        Calendar currentDate = Calendar.getInstance();
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.add(Calendar.DAY_OF_MONTH, 30);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, year, month, dayOfMonth) -> {
                     calendar.set(Calendar.YEAR, year);
@@ -260,15 +285,27 @@ public class CreateReservationActivity extends AppCompatActivity {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-        ).show();
+        );
+        // Set the minimum date to the current date
+        datePickerDialog.getDatePicker().setMinDate(currentDate.getTimeInMillis());
+        // Set the maximum date to 30 days from the current date
+        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+        datePickerDialog.show();
     }
 
+    // Updates the date field
     private void updateDateField() {
         String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         reservedDateField.setText(sdf.format(calendar.getTime()));
     }
 
+    /// <summary>
+    /// Handles fetching all the available stations details
+    /// </summary>
+    /// <param name="request">></param>
+    /// <param name="authorization">>Authorization token of the user</param>
+    /// <returns>List of StationResponse Objects</returns>
     private void fetchStations() {
         Call<List<StationResponse>> call = apiInterface.getStations("Bearer " + token);
         call.enqueue(new Callback<List<StationResponse>>() {
@@ -290,6 +327,12 @@ public class CreateReservationActivity extends AppCompatActivity {
         });
     };
 
+    /// <summary>
+    /// Handles fetching the schedules based on the parameters
+    /// </summary>
+    /// <param name="request">ScheduleRequest Object containing the necessary data</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns>List of ScheduleResponse Objects</returns>
     private void fetchTrains(ScheduleRequest scheduleRequest) {
         Call<List<ScheduleResponse>> call = apiInterface.getScheduleTrainsData("Bearer " + token, scheduleRequest);
         call.enqueue(new Callback<List<ScheduleResponse>>() {
@@ -300,7 +343,6 @@ public class CreateReservationActivity extends AppCompatActivity {
                     schedules = response.body();
                     if(schedules.size() != 0){
                         // Populate the dropdown menu with arrival times.
-                        // Assuming scheduleList is your list of arrival times
                         for (ScheduleResponse schedule : schedules) {
                            convertedTime = DateTimeConverter.convertTime(schedule.getArrivalTime());
                            scheduleList.add(convertedTime.toString());
@@ -323,6 +365,12 @@ public class CreateReservationActivity extends AppCompatActivity {
         });
     };
 
+    /// <summary>
+    /// Handles fetching the available seat count based on the parameters
+    /// </summary>
+    /// <param name="request">AvailableSeatRequest Object containing the necessary data</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns>An Integer representing the no of available seats</returns>
     private void fetchAvailableSeatCount(AvailableSeatRequest availableSeatRequest) {
 
         Call<Integer> call = apiInterface.getAvailableTrainSeatCount("Bearer " + token, availableSeatRequest);
@@ -337,11 +385,17 @@ public class CreateReservationActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                Log.d("TAG", t.toString());
+                Log.e("TAG", "Error: " + t.toString());
             }
         });
     };
 
+    /// <summary>
+    /// Handles calculating the ticket prices based on the parameters
+    /// </summary>
+    /// <param name="request">PriceRequest Object containing the necessary data</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns>An Integer representing the price</returns>
     private void calculateTicketPrice(PriceRequest priceRequest) {
 
         Call<Integer> call = apiInterface.getSchedulePrice("Bearer " + token, priceRequest);
@@ -354,7 +408,7 @@ public class CreateReservationActivity extends AppCompatActivity {
                     if(newTicketPrice != null){
                         priceField.setText(newTicketPrice.toString());
                     }else{
-                        Log.e("TAG", "Calculation Failed ");
+                        Log.e("TAG", "Calculation Failed with: ");
                     }
                 } else {
                     Log.d("TAG", "Response not successful: " + response.message());

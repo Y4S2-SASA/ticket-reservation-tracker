@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TicketReservationApp</string>
     <string name="logotxt">LOGO</string>
-    <string name="intro_txt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
+    <string name="intro_txt">Experience effortless travel planning with our comprehensive ticket reservation system.Easily book your tickets, access flexible options and enjoy round the clock customer support. Stay informed with real-time updates and manage your reservations with ease. Your journey starts here.</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="remember_me_txt">Remember me</string>

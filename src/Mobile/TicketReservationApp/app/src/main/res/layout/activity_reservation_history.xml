@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:weightSum="9"
     android:layout_height="match_parent"
-    tools:context=".activities.CurrentBookingsActivity">
+    tools:context=".activities.ReservationHistoryActivity">
 
     <LinearLayout
         android:layout_weight="1"
@@ -23,40 +23,25 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="40dp">
 
         <TextView
             android:id="@+id/currentBookingsTxt"
-            android:layout_width="206dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="50dp"
-            android:text="@string/current_bookings_title"
+            android:text="RESERVATION HISTORY"
             android:textColor="@color/dark_purple"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/createReservationBtn"
-            android:layout_width="58dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="95dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/light_purple"
-            android:text="+"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </LinearLayout>
     <ProgressBar
@@ -64,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -81,9 +67,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
                 android:theme="@style/recyclerView" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/BottomNavigationViewStyle"

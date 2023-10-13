@@ -1,7 +1,9 @@
 package com.sasa.ticketreservationapp.request;
 
-import java.io.Serializable;
-
+/*
+ * File: ReservationRequest.java
+ * Purpose: Acts as a request class for creating reservationRequest objects
+ */
 public class ReservationRequest {
     private String id;
     private String referenceNumber;

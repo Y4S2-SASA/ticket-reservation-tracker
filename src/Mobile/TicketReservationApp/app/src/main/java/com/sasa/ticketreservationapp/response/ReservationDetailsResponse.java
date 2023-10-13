@@ -1,28 +1,20 @@
-
-package com.sasa.ticketreservationapp.models;
-
-
-import java.io.Serializable;
+package com.sasa.ticketreservationapp.response;
 
 /*
- * File: ReservationModel.java
- * Purpose: Acts as a model class for the reservation objects
+ * File: ReservationDetailsResponse.java
+ * Purpose: Acts as a response class for creating reservationDetailsResponse objects
  */
-public class ReservationModel implements Serializable {
+public class ReservationDetailsResponse {
     private String id;
     private String referenceNumber;
-    private String passengerClass;
+    private int passengerClass;
     private String destinationStationId;
-    private String destinationStationName;
     private String trainId;
-    private String trainName;
     private String arrivalStationId;
-    private String arrivalStationName;
     private String dateTime;
     private int noOfPassengers;
     private double price;
 
-    // Getters and setters for the fields
     public String getId() {
         return id;
     }
@@ -38,11 +30,12 @@ public class ReservationModel implements Serializable {
     public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
     }
-    public String getPassengerClass() {
+
+    public int getPassengerClass() {
         return passengerClass;
     }
 
-    public void setPassengerClass(String passengerClass) {
+    public void setPassengerClass(int passengerClass) {
         this.passengerClass = passengerClass;
     }
 
@@ -53,6 +46,7 @@ public class ReservationModel implements Serializable {
     public void setDestinationStationId(String destinationStationId) {
         this.destinationStationId = destinationStationId;
     }
+
     public String getTrainId() {
         return trainId;
     }
@@ -68,6 +62,7 @@ public class ReservationModel implements Serializable {
     public void setArrivalStationId(String arrivalStationId) {
         this.arrivalStationId = arrivalStationId;
     }
+
     public String getDateTime() {
         return dateTime;
     }
@@ -90,25 +85,5 @@ public class ReservationModel implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getDestinationStationName() {
-        return destinationStationName;
-    }
-
-    public void setDestinationStationName(String destinationStationName) {
-        this.destinationStationName = destinationStationName;
-    }
-    public String getArrivalStationName() {
-        return arrivalStationName;
-    }
-    public void setArrivalStationName(String arrivalStationName) {
-        this.arrivalStationName = arrivalStationName;
-    }
-    public String getTrainName() {
-        return trainName;
-    }
-    public void setTrainName(String trainName) {
-        this.trainName = trainName;
     }
 }

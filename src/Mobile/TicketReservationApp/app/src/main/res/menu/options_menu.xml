@@ -4,7 +4,6 @@
         android:id="@+id/menu_update"
         android:title="Update"/>
     <item
-        android:id="@+id/menu_delete"
-        android:title="Delete"/>
-
+        android:id="@+id/menu_cancel"
+        android:title="Cancel Reservation"/>
 </menu>

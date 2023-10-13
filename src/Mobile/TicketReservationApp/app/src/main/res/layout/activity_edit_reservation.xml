@@ -4,26 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EditReservationActivity">
+    tools:context=".activities.CreateReservationActivity">
 
-    <EditText
-        android:id="@+id/reservedTimeField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="36dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/reserved_time_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:text="12-11-2023, 10:00:00"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/cancelBtn"
+    <View
+        android:id="@+id/view3"
+        android:layout_width="110dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="261dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="9dp"
+        android:background="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/passengerCountTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="5dp"
+        android:text="Passenger Count"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/trainNoField" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="110dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/reservedTimeSpinner"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/trainDetailsTxt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/train_details_txt"
+        android:textColor="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/reservedTimeSpinner"
+        app:layout_constraintEnd_toStartOf="@+id/view2"
+        app:layout_constraintStart_toEndOf="@+id/view" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="110dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/light_purple"
+        app:layout_constraintBottom_toTopOf="@+id/reservedTimeSpinner"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/fetchTrainsBtn"
+        android:layout_width="144dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/light_purple"
+        android:text="Get Trains"
+        app:layout_constraintBottom_toTopOf="@+id/trainDetailsTxt2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/pClassSpinner" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/light_purple"
+        android:text="@string/back_btn"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -36,88 +102,68 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cancelBtn"
-        android:layout_width="215dp"
+        android:id="@+id/viewSummaryBtn"
+        android:layout_width="208dp"
         android:layout_height="48dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/white"
-        android:text="@string/update_booking_btn"
+        android:text="@string/view_summary_btn"
         android:textColor="@color/dark_purple"
         app:layout_constraintBottom_toTopOf="@+id/backBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/dark_purple"
         app:strokeWidth="1dp" />
 
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="215dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/light_purple"
-        android:text="@string/back_btn"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/trainDetailsTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="11dp"
-        android:text="@string/train_details_txt"
-        android:textColor="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/trainNoField"
-        app:layout_constraintEnd_toStartOf="@+id/view12" />
-
-    <View
-        android:id="@+id/view11"
-        android:layout_width="110dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="21dp"
-        android:background="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/trainNoField"
-        app:layout_constraintEnd_toStartOf="@+id/trainDetailsTxt"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:id="@+id/view12"
-        android:layout_width="110dp"
-        android:layout_height="1dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="21dp"
-        android:background="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/priceField"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <EditText
-        android:id="@+id/stationNameField"
+        android:id="@+id/reservedDateField"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:clickable="true"
+        android:ems="10"
+        android:focusable="true"
+        android:foregroundTint="#0330065F"
+        android:hint="Reserved Date"
+        android:inputType="text"
+        android:paddingLeft="25dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/pClassSpinner"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="51dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/fetchTrainsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchSubStationField"
+        app:srcCompat="@drawable/ic_calendar"
+        app:tint="@color/dark_purple" />
+    <EditText
+        android:id="@+id/priceField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
         android:foregroundTint="#0330065F"
-        android:hint="@string/station_name_hint"
+        android:hint="@string/price_hint"
         android:inputType="text"
         android:paddingLeft="25dp"
-        android:text="Fort Station"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/reservedTimeField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -125,165 +171,135 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext_with_border"
         android:ems="10"
         android:foregroundTint="#0330065F"
-        android:hint="@string/train_no_hint"
+        android:hint="Train Name"
         android:inputType="text"
         android:paddingLeft="25dp"
-        android:text="T001"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
-        app:layout_constraintEnd_toStartOf="@+id/priceField"
+        app:layout_constraintBottom_toTopOf="@+id/priceField"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/priceField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="137dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="31dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/price_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:text="Rs.5000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/stationNameField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trainNoField" />
-
-    <TextView
-        android:id="@+id/generalDetailsTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/general_details_txt"
-        android:textColor="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/nameField"
-        app:layout_constraintEnd_toStartOf="@+id/view8" />
-
-    <View
-        android:id="@+id/view5"
-        android:layout_width="100dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="26dp"
-        android:background="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/nameField"
-        app:layout_constraintEnd_toStartOf="@+id/generalDetailsTxt"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:id="@+id/view8"
-        android:layout_width="100dp"
-        android:layout_height="1dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="26dp"
-        android:background="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/nameField"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/orTxt4"
-        android:layout_width="106dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="62dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="41dp"
-        android:text="@string/passengers_txt"
-        android:textColor="@color/light_purple"
-        app:layout_constraintBottom_toTopOf="@+id/view12"
+        android:orientation="horizontal"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/viewSummaryBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/passengersField" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/priceField">
 
-    <TextView
-        android:id="@+id/resID"
-        android:layout_width="77dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="30dp"
-        android:text="@string/res_id"
-        android:textColor="@color/dark_purple"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/view8"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/decrementBtn"
+            android:layout_marginTop="5dp"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:text="-"
+            android:textColor="@color/light_purple"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/passengerCount"
+            android:layout_width="50dp"
+            android:layout_height="46dp"
+            android:background="@drawable/rounded_edittext_with_border"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="@color/dark_purple"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/incrementBtn"
+            android:layout_width="44dp"
+            android:textColor="@color/light_purple"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:text="+"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/editReservationTxt"
-        android:layout_width="251dp"
+        android:layout_width="216dp"
         android:layout_height="27dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/edit_reservation_title"
+        android:layout_marginBottom="32dp"
+        android:text="EDIT RESERVATION"
         android:textColor="@color/dark_purple"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/generalDetailsTxt"
-        app:layout_constraintEnd_toStartOf="@+id/resID"
+        app:layout_constraintBottom_toTopOf="@+id/searchDestinationField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/reservedTimeSpinner"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:foregroundTint="#0330065F"
+        android:paddingStart="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/trainNoField"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/nameField"
-        android:layout_width="0dp"
+    <Spinner
+        android:id="@+id/pClassSpinner"
+        android:layout_width="170dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_edittext_with_border"
+        android:foregroundTint="#0330065F"
+        android:paddingStart="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/trainDetailsTxt2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/searchDestinationField"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/name_hint"
-        android:inputType="text"
+        android:hint="Destination"
         android:paddingLeft="25dp"
-        android:text="John Smith"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/destinationField"
+        app:layout_constraintBottom_toTopOf="@+id/searchSubStationField"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/passengersField"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/no_of_passengers_hint"
-        android:inputType="text"
-        android:paddingLeft="25dp"
-        android:text="03"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/trainDetailsTxt"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/destinationField"
-        android:layout_width="0dp"
+    <AutoCompleteTextView
+        android:id="@+id/searchSubStationField"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext_with_border"
-        android:ems="10"
-        android:foregroundTint="#0330065F"
-        android:hint="@string/destination_hint"
-        android:inputType="text"
+        android:hint="Starting station"
         android:paddingLeft="25dp"
-        android:text="Matara"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/passengersField"
+        app:layout_constraintBottom_toTopOf="@+id/reservedDateField"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
