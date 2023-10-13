@@ -10,14 +10,18 @@ using TRT.Application.Pipelines.Users.Queries.GetUserById;
 using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetReservationsByFilterQuery.cs
+ * Purpose: Handle Get ReservationsBy Filter 
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
 {
     public record GetReservationsByFilterQuery : IRequest<PaginatedListDTO<ReservationDetailDTO>>
     {
         public string? ReservationNumber { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string? TrainId { get; set; }
         public string? DestinationStationId { get; set; }
         public string? ArrivalStationId { get; set; }
@@ -41,6 +45,13 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
             this._mediator = mediator;
             this._reservationQueryRepository = reservationQueryRepository;
         }
+
+        /// <summary>
+        /// Handle  Get ReservationsBy Filter 
+        /// </summary>
+        /// <param name="request">>Contains Reservation filter paramaters </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>paginated reservation details</returns>
         public async Task<PaginatedListDTO<ReservationDetailDTO>> Handle(GetReservationsByFilterQuery request, CancellationToken cancellationToken)
         {
             var totalRecordCount = NumberConstant.ZERO;
@@ -92,11 +103,10 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
                      );
         }
 
+        //Set Reservation Filter conditions
         private Expression<Func<Reservation, bool>> ConfigureReservationFilter(Expression<Func<Reservation, bool>> query, GetReservationsByFilterQuery request)
         {
-            var startDate = request.FromDate; 
-            var endDate = request.ToDate.AddDays(NumberConstant.ONE)
-                                  .AddSeconds(NumberConstant.MINUSONE);
+            
 
             if(!string.IsNullOrEmpty(request.ReservationNumber))
             {
@@ -105,7 +115,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
 
             if(request.FromDate != null && request.ToDate != null)
             {
-                query = x => x.DateTime >= request.FromDate && x.DateTime <= request.ToDate;
+                query = x => x.DateTime >= request.FromDate && x.DateTime <= request.ToDate.Value.AddDays(NumberConstant.ONE)
+                                  .AddSeconds(NumberConstant.MINUSONE); ;
             }
 
             if(!string.IsNullOrEmpty(request.TrainId))

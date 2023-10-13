@@ -89,6 +89,9 @@
 
         public const string RESERVATION_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                           "Reservation details Not found please try again.";
+
+        public const string RESERVATION_DELETE_SUCCESS_RESPONSE_MESSAGE =
+            "Reservation details deleted has been successfully.";
         #endregion
     }
 }

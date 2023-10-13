@@ -4,7 +4,10 @@ using TRT.Application.Common.Interfaces;
 using TRT.Domain.Entities;
 using TRT.Infrastructure.Common.Constants;
 using TRT.Infrastructure.Data.Configuration;
-
+/*
+ * File: TRTContext.cs
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Infrastructure.Data
 {
     public class TRTContext : ITRTContext

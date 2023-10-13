@@ -6,7 +6,11 @@ using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: ChangeUserStatusCommand.cs
+ * Purpose: Handle Change User Status
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
 {
     public record ChangeUserStatusCommand : IRequest<ResultDTO>
@@ -22,7 +26,7 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
         private readonly ILogger<ChangeUserStatusCommandHandler> _logger;
         public ChangeUserStatusCommandHandler
         (
-            IUserCommandRepository userCommandRepository, 
+            IUserCommandRepository userCommandRepository,
             IUserQueryRepository userQueryRepository,
             ILogger<ChangeUserStatusCommandHandler> logger
         )
@@ -31,6 +35,12 @@ namespace TRT.Application.Pipelines.Users.Commands.ChangeUserStatus
             this._userQueryRepository = userQueryRepository;
             this._logger = logger;
         }
+        /// <summary>
+        /// Handle Change User Status
+        /// </summary>
+        /// <param name="request">>Contains status change details </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(ChangeUserStatusCommand request, CancellationToken cancellationToken)
         {
             try

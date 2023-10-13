@@ -2,6 +2,10 @@
 using MediatR;
 using System.Reflection;
 using TRT.Application.Common.Behaviours;
+/*
+ * File: ConfigureServices.cs
+ * Author: Perera M.S.D/IT20020262
+ */
 
 namespace Microsoft.Extensions.DependencyInjection
 {

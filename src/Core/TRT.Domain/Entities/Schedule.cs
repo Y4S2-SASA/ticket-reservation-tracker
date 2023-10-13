@@ -1,7 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using TRT.Domain.Enums;
-
+/*
+ * File: Schedule.cs
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Domain.Entities
 {
     public class Schedule

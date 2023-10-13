@@ -6,17 +6,26 @@ using TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus;
 using TRT.Application.Pipelines.Trains.Commands.SaveTrain;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainsByFilter;
-
+/*
+ * File: TrainController.cs
+ * Purpose: Controller for managing the trains.
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TrainController : ControllerBase
     {
         private readonly ILogger<TrainController> _logger;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrainController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="mediator">The mediator.</param>
         public TrainController(ILogger<TrainController> logger, IMediator mediator)
         {
             _logger = logger;

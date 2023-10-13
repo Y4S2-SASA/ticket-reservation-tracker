@@ -1,7 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using TRT.Domain.Enums;
-
+/*
+ * File: User.cs
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Domain.Entities
 {
     public class User 

@@ -1,10 +1,16 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.Common;
 using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Query;
 
+/*
+ * File: GetTrainMasterDataByNameQuery.cs
+ * Purpose: Handle GetScheduleById
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName
 {
     public class GetTrainMasterDataByNameQuery : IRequest<List<DropDownCoreDTO>>
@@ -25,6 +31,12 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName
             this._trainQueryRepository = trainQueryRepository;
             this._logger = _logger;
         }
+        /// <summary>
+        /// Handle Get Train Master Data By Name Query
+        /// </summary>
+        /// <param name="request">></param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>List<DropDownCoreDTO></returns>
         public async Task<List<DropDownCoreDTO>> Handle(GetTrainMasterDataByNameQuery request, CancellationToken cancellationToken)
         {
             try
@@ -37,7 +49,7 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainMasterDataByName
                 }
 
                 var trains = (await _trainQueryRepository.Query(query))
-                            .Take(10).ToList();
+                            .Take(NumberConstant.TEN).ToList();
 
                 return trains.Select(x => new DropDownCoreDTO()
                 {

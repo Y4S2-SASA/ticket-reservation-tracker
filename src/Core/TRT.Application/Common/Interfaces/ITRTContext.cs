@@ -1,6 +1,9 @@
 ﻿using MongoDB.Driver;
 using TRT.Domain.Entities;
-
+/*
+ * File: ITRTContext.cs
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Common.Interfaces
 {
     public interface ITRTContext

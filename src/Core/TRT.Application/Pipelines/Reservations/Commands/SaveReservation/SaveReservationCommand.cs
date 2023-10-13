@@ -6,11 +6,14 @@ using TRT.Application.Common.Helpers;
 using TRT.Application.Common.Interfaces;
 using TRT.Application.DTOs.ReservationDTOs;
 using TRT.Application.DTOs.ResponseDTOs;
-using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: SaveReservationCommand.cs
+ * Purpose: Handle Save / update reservation
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Commands.SaveReservation
 {
     public record SaveReservationCommand : IRequest<ResultDTO>
@@ -37,6 +40,13 @@ namespace TRT.Application.Pipelines.Reservations.Commands.SaveReservation
             this._currentUserService = currentUserService;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Save and update Reservation.
+        /// </summary>
+        /// <param name="request">>Contains Reservation Details</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(SaveReservationCommand request, CancellationToken cancellationToken)
         {
             try
@@ -73,6 +83,8 @@ namespace TRT.Application.Pipelines.Reservations.Commands.SaveReservation
                     if (dateTimeDifference.Days >= NumberConstant.FIVE)
                     {
                         exsistingReservation = request.Reservation.ToEntity(exsistingReservation);
+
+                        await _reservationCommandRepository.UpdateAsync(exsistingReservation, cancellationToken);
                     }
 
                     return ResultDTO.Success(ResponseMessageConstant.RESERVATION_UPDATE_SUCCESS_RESPONSE_MESSAGE);

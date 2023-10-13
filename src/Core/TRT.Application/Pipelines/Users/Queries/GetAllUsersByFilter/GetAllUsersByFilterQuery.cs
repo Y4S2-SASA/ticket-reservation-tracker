@@ -9,7 +9,11 @@ using TRT.Application.DTOs.UserDTOs;
 using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetAllUsersByFilterQuery.cs
+ * Purpose: Handle Get All Users By Filter 
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
 {
     public record GetAllUsersByFilterQuery : IRequest<PaginatedListDTO<UserDetailDTO>>
@@ -34,6 +38,13 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
             this._userQueryRepository = userQueryRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Get All Users By Filter user
+        /// </summary>
+        /// <param name="request">>Contains filter parameters </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Paginated user list</returns>
         public async Task<PaginatedListDTO<UserDetailDTO>> Handle(GetAllUsersByFilterQuery request, CancellationToken cancellationToken)
         {
             try
@@ -44,9 +55,9 @@ namespace TRT.Application.Pipelines.Users.Queries.GetAllUsersByFilter
 
                 if (!string.IsNullOrEmpty(request.SearchText))
                 {
-                   query = x=>x.FirstName.Contains(request.SearchText) || 
-                                    x.LastName.Contains(request.SearchText) ||
-                                    x.UserName.Contains(request.SearchText);
+                    query = x => x.FirstName.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()) ||
+                                 x.LastName.ToLower().Trim().Contains(request.SearchText.ToLower().Trim()) ||
+                                 x.UserName.ToLower().Trim().Contains(request.SearchText.ToLower().Trim());
                 }
 
                 if(request.Status > NumberConstant.ZERO)

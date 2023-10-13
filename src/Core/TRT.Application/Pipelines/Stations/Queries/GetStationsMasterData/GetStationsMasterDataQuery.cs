@@ -4,7 +4,11 @@ using System.Linq.Expressions;
 using TRT.Application.DTOs.Common;
 using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetStationsMasterDataQuery.cs
+ * Purpose: Handle StationsMasterData
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData
 {
     public record GetStationsMasterDataQuery : IRequest<List<DropDownCoreDTO>>
@@ -26,6 +30,13 @@ namespace TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData
             this._stationQueryRepository = stationQueryRepository;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle Save and update TrainCommand.
+        /// </summary>
+        /// <param name="request">>Contains search text</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>List<DropDownCoreDTO></returns>
         public async Task<List<DropDownCoreDTO>> Handle(GetStationsMasterDataQuery request, CancellationToken cancellationToken)
         {
             try

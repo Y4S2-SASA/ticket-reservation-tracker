@@ -3,6 +3,10 @@ using TRT.Domain.Repositories.Query;
 using TRT.Infrastructure.Data;
 using TRT.Infrastructure.Repositories.Query.Base;
 
+/*
+ * File: TrainQueryRepository.cs
+ * Author: Perera M.S.D/IT20020262
+*/
 namespace TRT.Infrastructure.Repositories.Query
 {
     public class TrainQueryRepository : QueryRepository<Train>, ITrainQueryRepository

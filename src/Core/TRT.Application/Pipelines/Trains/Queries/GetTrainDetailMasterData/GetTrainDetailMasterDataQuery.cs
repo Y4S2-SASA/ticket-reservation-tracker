@@ -1,10 +1,15 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using TRT.Application.Common.Constants;
 using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.Common;
 using TRT.Application.DTOs.TrainDTOs;
 using TRT.Domain.Enums;
-
+/*
+ * File: GetTrainDetailMasterDataQuery.cs
+ * Purpose: Handle Get Train Detail Master Data
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+*/
 namespace TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData
 {
     public class GetTrainDetailMasterDataQuery : IRequest<TrainMasterDataDTO>
@@ -24,6 +29,13 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData
             this._mediator = mediator;
             this._logger = logger;
         }
+
+        /// <summary>
+        /// Handle  Get Train Detail Master Data
+        /// </summary>
+        /// <param name="request">></param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>Train Maste rData</returns>
         public async Task<TrainMasterDataDTO> Handle(GetTrainDetailMasterDataQuery request, CancellationToken cancellationToken)
         {
             try
@@ -59,13 +71,13 @@ namespace TRT.Application.Pipelines.Trains.Queries.GetTrainDetailMasterData
 
                 var defaultValue = new DropDownDTO()
                 {
-                    Id = 0,
+                    Id = NumberConstant.ZERO,
                     Name = "-All-"
                 };
 
-                trainDetailMasterData.Status.Insert(0, defaultValue);
-                trainDetailMasterData.AvailableDays.Insert(0, defaultValue);
-                trainDetailMasterData.PassengerClasses.Insert(0, defaultValue);
+                trainDetailMasterData.Status.Insert(NumberConstant.ZERO, defaultValue);
+                trainDetailMasterData.AvailableDays.Insert(NumberConstant.ZERO, defaultValue);
+                trainDetailMasterData.PassengerClasses.Insert(NumberConstant.ZERO, defaultValue);
               
                 return trainDetailMasterData;
 
