@@ -43,12 +43,14 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ReservationsHandler vhc = (ReservationsHandler) holder;
         ReservationModel req = list.get(position);
-        String reservedTime = req.getReservedTime();
-        String destination = req.getDestination();
-        String prefix = req.getTrainNo();
+        String reservedTime = req.getDateTime();
+        String destination = req.getDestinationStationName();
+        String departure = req.getArrivalStationName();
+        String prefix = (req.getDestinationStationName().substring(0, 2)).toUpperCase();
         vhc.tv_reservedTime.setText(reservedTime);
         vhc.tv_destination.setText(destination);
         vhc.tv_reqPrefix.setText(prefix);
+        vhc.tv_departure.setText(departure);
         vhc.txt_option.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, vhc.txt_option);
             popupMenu.inflate(R.menu.options_menu);

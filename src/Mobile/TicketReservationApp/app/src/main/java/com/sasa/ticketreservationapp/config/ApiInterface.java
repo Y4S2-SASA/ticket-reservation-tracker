@@ -7,6 +7,7 @@ import com.sasa.ticketreservationapp.request.AccountStatusRequest;
 import com.sasa.ticketreservationapp.request.PriceRequest;
 import com.sasa.ticketreservationapp.request.ReservationRequest;
 import com.sasa.ticketreservationapp.request.ScheduleRequest;
+import com.sasa.ticketreservationapp.response.ReservationResponse;
 import com.sasa.ticketreservationapp.response.ScheduleResponse;
 import com.sasa.ticketreservationapp.response.StationResponse;
 import com.sasa.ticketreservationapp.response.LoginResponse;
@@ -52,5 +53,8 @@ public interface ApiInterface {
 
     @POST("/api/Reservation/saveReservation")
     Call<Void> saveReservation(@Header("Authorization") String authorization, @Body ReservationRequest request);
+
+    @GET("api/Reservation/getTraverlerReservation")
+    Call<List<ReservationResponse>> getTraverlerReservation(@Header("Authorization") String authorization);
 
 }

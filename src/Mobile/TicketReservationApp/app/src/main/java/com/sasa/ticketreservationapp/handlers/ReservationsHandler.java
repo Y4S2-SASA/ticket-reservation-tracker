@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sasa.ticketreservationapp.R;
 
 public class ReservationsHandler extends RecyclerView.ViewHolder{
-    public TextView tv_reqPrefix, tv_destination, tv_reservedTime, txt_option;
+    public TextView tv_reqPrefix, tv_destination, tv_reservedTime, tv_departure, txt_option;
 
     public ReservationsHandler(@NonNull View itemView) {
         super(itemView);
@@ -18,6 +18,7 @@ public class ReservationsHandler extends RecyclerView.ViewHolder{
         tv_reqPrefix = itemView.findViewById(R.id.tv_reqPrefix);
         tv_destination = itemView.findViewById(R.id.tv_destination);
         tv_reservedTime = itemView.findViewById(R.id.tv_reservedTime);
+        tv_departure = itemView.findViewById(R.id.tv_departure);
         txt_option = itemView.findViewById(R.id.txt_option);
     }
 }
