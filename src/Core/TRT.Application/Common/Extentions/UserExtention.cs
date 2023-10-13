@@ -1,7 +1,11 @@
 ﻿using TRT.Application.Common.Helpers;
 using TRT.Application.DTOs.UserDTOs;
 using TRT.Domain.Entities;
-
+/*
+ * File: UserExtention.cs
+ * Purpose: Handle user details mappings
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace System
 {
     public static class UserExtention

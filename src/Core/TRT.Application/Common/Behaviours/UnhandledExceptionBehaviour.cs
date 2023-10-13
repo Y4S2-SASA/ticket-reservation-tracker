@@ -1,5 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+/*
+ * File: UnhandledExceptionBehaviour.cs
+ * Author: Bartholomeusz S.V/IT20274702
+ */
 
 namespace TRT.Application.Common.Behaviours
 {
@@ -11,7 +15,7 @@ namespace TRT.Application.Common.Behaviours
         {
             _logger = logger;
         }
-
+        //UnhandledExceptionBehaviour
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             try

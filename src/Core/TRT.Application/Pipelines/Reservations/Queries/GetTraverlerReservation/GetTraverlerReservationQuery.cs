@@ -8,7 +8,11 @@ using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
 using TRT.Application.Pipelines.Users.Queries.GetUserById;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetTraverlerReservationQuery.cs
+ * Purpose: Handle Get Traverler Reservation
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation
 {
     public record GetTraverlerReservationQuery(int Status) : IRequest<List<ReservationDetailDTO>>
@@ -32,6 +36,13 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation
             this._currentUserService = currentUserService;
             this._reservationQueryRepository = reservationQueryRepository;
         }
+
+        /// <summary>
+        /// Handle  Get Traverler Reservation
+        /// </summary>
+        /// <param name="request">>Contains status parameter</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>list of reservation details</returns>
         public async Task<List<ReservationDetailDTO>> Handle(GetTraverlerReservationQuery request, CancellationToken cancellationToken)
         {
             var reservations = new List<ReservationDetailDTO>();

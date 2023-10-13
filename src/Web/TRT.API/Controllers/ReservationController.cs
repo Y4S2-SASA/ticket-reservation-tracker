@@ -9,7 +9,11 @@ using TRT.Application.Pipelines.Reservations.Queries.GetReservationById;
 using TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter;
 using TRT.Application.Pipelines.Reservations.Queries.GetTraverlerReservation;
 using TRT.Domain.Constants;
-
+/*
+ * File: ReservationController.cs
+ * Purpose: Controller for managing the Reservations.
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
@@ -20,6 +24,11 @@ namespace TRT.API.Controllers
         private readonly ILogger<ReservationController> _logger;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReservationController"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="mediator">The mediator.</param>
         public ReservationController(ILogger<ReservationController> logger, IMediator mediator)
         {
             this._logger = logger;

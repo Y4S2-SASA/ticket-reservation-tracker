@@ -3,7 +3,11 @@ using TRT.Application.Common.Constants;
 using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: DeleteReservationCommand.cs
+ * Purpose: Delete reservation
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Commands.DeleteReservation
 {
     public record DeleteReservationCommand(string id) : IRequest<ResultDTO>
@@ -20,6 +24,13 @@ namespace TRT.Application.Pipelines.Reservations.Commands.DeleteReservation
             this._reservationQueryRepository = reservationQueryRepository;
             this._reservationCommandRepository = reservationCommandRepository;
         }
+
+        /// <summary>
+        /// Handle Delete reservation
+        /// </summary>
+        /// <param name="request">>Contains Reservation Id</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(DeleteReservationCommand request, CancellationToken cancellationToken)
         {
             var reservation = await _reservationQueryRepository.GetById(request.id, cancellationToken);

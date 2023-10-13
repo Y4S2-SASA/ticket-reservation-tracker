@@ -1,6 +1,10 @@
 ﻿using System.Security.Claims;
 using TRT.Application.Common.Interfaces;
-
+/*
+ * File: CurrentUserService.cs
+ * Purpose: Handle Current user
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.API.Services
 {
     public class CurrentUserService : ICurrentUserService

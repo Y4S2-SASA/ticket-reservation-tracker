@@ -3,6 +3,10 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using TRT.Application.Common.Constants;
 using TRT.Application.Common.Interfaces;
+/*
+ * File: PerformanceBehaviour.cs
+ * Author: Jayathilake S.M.D.A.R/IT20037338
+ */
 
 namespace TRT.Application.Common.Behaviours
 {
@@ -23,7 +27,7 @@ namespace TRT.Application.Common.Behaviours
             _logger = logger;
             _currentUserService = currentUserService;
         }
-
+        //handle PerformanceBehaviour
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             _timer.Start();

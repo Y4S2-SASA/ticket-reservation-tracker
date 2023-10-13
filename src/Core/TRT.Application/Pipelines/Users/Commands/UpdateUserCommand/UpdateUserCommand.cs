@@ -5,7 +5,11 @@ using TRT.Application.DTOs.ResponseDTOs;
 using TRT.Application.DTOs.UserDTOs;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: Update User Command.cs
+ * Purpose: Handle Update User
+ * Author: Dunusinghe A.V/IT20025526
+*/
 namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
 {
     public record UpdateUserCommand(UserDTO UserDetail) : IRequest<ResultDTO>;
@@ -26,6 +30,12 @@ namespace TRT.Application.Pipelines.Users.Commands.UpdateUserCommand
             this._userQueryRepository = userQueryRepository;
             this._logger = logger;
         }
+        /// <summary>
+        /// Handle  Update User
+        /// </summary>
+        /// <param name="request">>Contains userdetails </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<ResultDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             try

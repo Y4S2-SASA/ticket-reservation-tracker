@@ -3,11 +3,10 @@ using TRT.Application.Common.Constants;
 using TRT.Application.Pipelines.Trains.Queries.GetTrainById;
 using TRT.Domain.Repositories.Query;
 /*
- * File: example.cs
- * Purpose: [Purpose]
- * Author: [Your Name]
- * Description: [Description]
- */
+ * File: GetAvailableTrainSeatCountQuery.cs
+ * Purpose: Get Available Train Seat Count
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCount
 {
     public record GetAvailableTrainSeatCountQuery : IRequest<int>
@@ -34,11 +33,11 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCo
             this._mediator = mediator;
         }
         /// <summary>
-        /// Handles the query to get the available train seat count.
+        /// Handle Save and update Reservation.
         /// </summary>
-        /// <param name="request">The query request containing necessary information.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The number of available train seats.</returns>
+        /// <param name="request">>Contains filter params</param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>ResultDTO</returns>
         public async Task<int> Handle(GetAvailableTrainSeatCountQuery request, CancellationToken cancellationToken)
         {
             var reservedSeatCount = NumberConstant.ZERO;

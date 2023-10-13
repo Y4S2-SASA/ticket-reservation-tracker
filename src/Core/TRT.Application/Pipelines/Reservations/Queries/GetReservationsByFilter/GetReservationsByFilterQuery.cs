@@ -10,7 +10,11 @@ using TRT.Application.Pipelines.Users.Queries.GetUserById;
 using TRT.Domain.Entities;
 using TRT.Domain.Enums;
 using TRT.Domain.Repositories.Query;
-
+/*
+ * File: GetReservationsByFilterQuery.cs
+ * Purpose: Handle Get ReservationsBy Filter 
+ * Author: Bartholomeusz S.V /IT20274702
+*/
 namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
 {
     public record GetReservationsByFilterQuery : IRequest<PaginatedListDTO<ReservationDetailDTO>>
@@ -41,6 +45,13 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
             this._mediator = mediator;
             this._reservationQueryRepository = reservationQueryRepository;
         }
+
+        /// <summary>
+        /// Handle  Get ReservationsBy Filter 
+        /// </summary>
+        /// <param name="request">>Contains Reservation filter paramaters </param>
+        /// <param name="cancellationToken">>The token to monitor for cancellation requests</param>
+        /// <returns>paginated reservation details</returns>
         public async Task<PaginatedListDTO<ReservationDetailDTO>> Handle(GetReservationsByFilterQuery request, CancellationToken cancellationToken)
         {
             var totalRecordCount = NumberConstant.ZERO;
@@ -92,6 +103,7 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetReservationsByFilter
                      );
         }
 
+        //Set Reservation Filter conditions
         private Expression<Func<Reservation, bool>> ConfigureReservationFilter(Expression<Func<Reservation, bool>> query, GetReservationsByFilterQuery request)
         {
             
