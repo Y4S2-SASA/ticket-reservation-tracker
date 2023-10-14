@@ -120,23 +120,22 @@
 
     <EditText
         android:id="@+id/reservedDateField"
-        android:focusable="true"
-        android:clickable="true"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_edittext_with_border"
+        android:clickable="true"
         android:ems="10"
+        android:focusable="true"
         android:foregroundTint="#0330065F"
         android:hint="Reserved Date"
         android:inputType="text"
         android:paddingLeft="25dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/pClassSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -199,7 +198,7 @@
         <EditText
             android:id="@+id/passengerCount"
             android:layout_width="50dp"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:background="@drawable/rounded_edittext_with_border"
             android:text="0"
             android:textAlignment="center"
@@ -226,45 +225,13 @@
         android:layout_width="216dp"
         android:layout_height="27dp"
         android:layout_marginStart="28dp"
-        android:layout_marginEnd="50dp"
         android:layout_marginBottom="32dp"
         android:text="@string/create_reservation_title"
         android:textColor="@color/dark_purple"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/searchDestinationField"
-        app:layout_constraintEnd_toStartOf="@+id/resID"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/resID"
-        android:layout_width="77dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="28dp"
-        android:text="@string/res_id"
-        android:textColor="@color/dark_purple"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/searchDestinationField"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--    <EditText-->
-<!--        android:id="@+id/reservedTimeField"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_marginStart="28dp"-->
-<!--        android:layout_marginEnd="28dp"-->
-<!--        android:background="@drawable/rounded_edittext_with_border"-->
-<!--        android:ems="10"-->
-<!--        android:foregroundTint="#0330065F"-->
-<!--        android:hint="Reserved Time"-->
-<!--        android:inputType="text"-->
-<!--        android:paddingLeft="25dp"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="1.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        tools:layout_editor_absoluteY="353dp" />-->
 
     <Spinner
         android:id="@+id/reservedTimeSpinner"
@@ -281,24 +248,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-<!--    <TextView-->
-<!--        android:id="@+id/orTxt4"-->
-<!--        android:layout_width="106dp"-->
-<!--        android:layout_height="20dp"-->
-<!--        android:layout_marginStart="62dp"-->
-<!--        android:layout_marginEnd="28dp"-->
-<!--        android:text="@string/passengers_txt"-->
-<!--        android:textColor="@color/light_purple"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/passengersField"-->
-<!--        tools:layout_editor_absoluteY="483dp" />-->
-
     <Spinner
         android:id="@+id/pClassSpinner"
         android:layout_width="170dp"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:layout_marginStart="28dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_edittext_with_border"
@@ -306,21 +259,6 @@
         android:paddingStart="20dp"
         app:layout_constraintBottom_toTopOf="@+id/trainDetailsTxt2"
         app:layout_constraintStart_toStartOf="parent" />
-
-<!--    <EditText-->
-<!--        android:id="@+id/passengersField"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_marginEnd="28dp"-->
-<!--        android:background="@drawable/rounded_edittext_with_border"-->
-<!--        android:ems="10"-->
-<!--        android:foregroundTint="#0330065F"-->
-<!--        android:hint="@string/no_of_passengers_hint"-->
-<!--        android:inputType="text"-->
-<!--        android:paddingLeft="25dp"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        tools:layout_editor_absoluteY="429dp" />-->
 
     <AutoCompleteTextView
         android:id="@+id/searchDestinationField"
@@ -363,5 +301,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_navigation" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="51dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/fetchTrainsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchSubStationField"
+        app:srcCompat="@drawable/ic_calendar"
+        app:tint="@color/dark_purple" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.sasa.ticketreservationapp.request;
 
-
+/*
+ * File: ScheduleRequest.java
+ * Purpose: Acts as a request class for creating scheduleRequest objects
+ */
 public class ScheduleRequest {
     private String destinationStationId;
 

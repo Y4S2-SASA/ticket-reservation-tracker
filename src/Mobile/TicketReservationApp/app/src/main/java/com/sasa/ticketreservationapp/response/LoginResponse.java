@@ -1,5 +1,9 @@
 package com.sasa.ticketreservationapp.response;
 
+/*
+ * File: LoginResponse.java
+ * Purpose: Acts as a response class for creating loginResponse objects
+ */
 public class LoginResponse {
     private boolean isLoginSuccess;
     private String token;

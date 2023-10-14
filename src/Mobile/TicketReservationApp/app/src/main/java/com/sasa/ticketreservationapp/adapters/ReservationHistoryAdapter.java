@@ -1,6 +1,5 @@
 package com.sasa.ticketreservationapp.adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,44 +11,40 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.sasa.ticketreservationapp.activities.CurrentReservationsActivity;
-import com.sasa.ticketreservationapp.activities.EditReservationActivity;
 import com.sasa.ticketreservationapp.R;
+import com.sasa.ticketreservationapp.activities.ReservationHistoryActivity;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
-import com.sasa.ticketreservationapp.handlers.ReservationsHandler;
+import com.sasa.ticketreservationapp.handlers.ReservationHistoryHandler;
 import com.sasa.ticketreservationapp.models.ReservationModel;
 import com.sasa.ticketreservationapp.request.StatusChangeRequest;
 import com.sasa.ticketreservationapp.response.BasicReservationResponse;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /*
- * File: ReservationsAdapter.java
- * Purpose: Handles the population functionality of the fetched ReservationObjects to the reservation Item layout
- * Author: Dunusinghe A.V/IT20025526
- * Description: This activity is responsible of handling the reservation object population in the listview
+ * File: ReservationHistoryAdapter.java
+ * Purpose: Handles the population functionality of the fetched ReservationHistoryObjects to the reservation Item layout
+ * Author: Perera M. S. D/IT20020262
+ * Description: This activity is responsible of handling the reservationHistory object population in the listview
  */
-public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ReservationHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    //Initializing variables
     private Context context;
-    private SharedPreferences prefs;
-    private ApiInterface apiInterface;
     private ArrayList<ReservationModel> list = new ArrayList<>();
+    private ApiInterface apiInterface;
+    private SharedPreferences prefs;
     private String token;
 
-    public ReservationsAdapter(Context ctx, SharedPreferences prefs, CurrentReservationsActivity currentReservationsActivity) {
+    // Constructor accepting Context and SharedPreferences
+    public ReservationHistoryAdapter(Context ctx, SharedPreferences prefs) {
         this.context = ctx;
         this.prefs = prefs;
     }
-
     public void setItems(ArrayList<ReservationModel> req){
         list.addAll(req);
     }
@@ -58,12 +53,12 @@ public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.reservation_item, parent, false);
-        return new ReservationsHandler(view);
+        return new ReservationHistoryHandler(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ReservationsHandler vhc = (ReservationsHandler) holder;
+        ReservationHistoryHandler vhc = (ReservationHistoryHandler) holder;
         ReservationModel req = list.get(position);
         String reservedTime = req.getDateTime();
         String destination = req.getDestinationStationName();
@@ -75,25 +70,19 @@ public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vhc.tv_departure.setText(departure);
         vhc.txt_option.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, vhc.txt_option);
-            popupMenu.inflate(R.menu.options_menu);
+            popupMenu.inflate(R.menu.more_options_menu);
 
             /// <summary>
-            /// Handles navigation to the EditReservationActivity or updating the reservation status to canceled.
+            /// Handles updating the status of the reservation to deleted
             /// </summary>
             /// <param name="request">StatusChangeRequest Object containing the necessary data</param>
             /// <param name="authorization">Authorization token of the user</param>
             /// <returns>A BasicReservationResponse Object</returns>
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.menu_update) {
-                    Intent intentU = new Intent(context, EditReservationActivity.class);
-                    intentU.putExtra("reservationModel", req);
-                    intentU.putExtra("reservationId", req.getId());
-                    context.startActivity(intentU);// Return true to indicate that the click has been handled
-                }
-                else if (item.getItemId() == R.id.menu_cancel) {
-                    ((CurrentReservationsActivity) context).toggleOverlay(true); // Enable Overlay
+                if (item.getItemId() == R.id.menu_delete) {
+                    ((ReservationHistoryActivity) context).toggleOverlay(true); // Enable overlay
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    View dialogView = LayoutInflater.from(context).inflate(R.layout.cancel_reservation_dialog_layout, null);
+                    View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_reservation_dialog_layout, null);
                     builder.setView(dialogView);
 
                     Button positiveButton = dialogView.findViewById(R.id.deleteReservationBtn);
@@ -102,14 +91,13 @@ public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     AlertDialog dialog = builder.create();
 
                     positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
                         public void onClick(View v) {
                             // Handle positive button click
                             if(prefs.getString("nic", "") != null){
                                 token = prefs.getString("token", "");
                             }
-                            StatusChangeRequest request = new StatusChangeRequest(req.getId(), 3);
-                            Log.d("REQ", request.getId());
-                            Log.d("REQ", String.valueOf(request.getStatus()));
+                            StatusChangeRequest request = new StatusChangeRequest(String.valueOf(req.getId()), 4);
 
                             apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
                             Call<BasicReservationResponse> call = apiInterface.changeReservationStatus("Bearer " + token, request);
@@ -117,32 +105,33 @@ public class ReservationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 @Override
                                 public void onResponse(Call<BasicReservationResponse> call, Response<BasicReservationResponse> response) {
                                     if (response.isSuccessful()) {
-                                        Log.d("CANCEL", "Reservation Cancelled Successfully!");
-                                        Intent intent = new Intent(context, CurrentReservationsActivity.class);
+                                        Log.d("DELETE", "Reservation Deleted Successfully!");
+                                        Intent intent = new Intent(context, ReservationHistoryActivity.class);
                                         context.startActivity(intent);
-                                        Toast.makeText(context, "Reservation Cancelled Successfully!", Toast.LENGTH_SHORT).show(); // Display Toast
+                                        Toast.makeText(context, "Reservation Deleted Successfully!", Toast.LENGTH_SHORT).show(); // Display Toast
                                     } else {
-                                        Log.d("ERROR", response.toString());
+                                        Log.d("ERROR", "Reservation Delete Failed!");
                                     }
                                     dialog.dismiss();
                                 }
                                 @Override
                                 public void onFailure(Call<BasicReservationResponse> call, Throwable t) {
                                     // Handle failure
-                                    Log.d("ERROR", t.toString());
+                                    Log.e("TAG", "Error: " + t.toString());
                                     dialog.dismiss();
                                 }
                             });
-                            ((CurrentReservationsActivity) context).toggleOverlay(false); // Disable Overlay
+                            ((ReservationHistoryActivity) context).toggleOverlay(false); // Remove overlay
 
                             dialog.dismiss();
                         }
                     });
+
                     negativeButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             // Handle negative button click
-                            ((CurrentReservationsActivity) context).toggleOverlay(false);
+                            ((ReservationHistoryActivity) context).toggleOverlay(false);
                             dialog.dismiss();
                         }
                     });

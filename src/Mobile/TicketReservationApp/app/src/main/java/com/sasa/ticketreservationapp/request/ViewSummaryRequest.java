@@ -2,6 +2,10 @@ package com.sasa.ticketreservationapp.request;
 
 import java.io.Serializable;
 
+/*
+ * File: ViewSummaryRequest.java
+ * Purpose: Acts as a request class for creating viewSummaryRequest objects
+ */
 public class ViewSummaryRequest implements Serializable {
     private String id;
     private String referenceNumber;

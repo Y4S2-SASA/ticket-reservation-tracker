@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/*
+ * File: LoginDatabaseHelper.java
+ * Purpose: Handles the presist login details in SQLite database
+ */
 public class LoginDatabaseHelper extends SQLiteOpenHelper {
-
     private static final String DATABASE_NAME = "UserData.db";
     private static final int DATABASE_VERSION = 1;
-
     public static final String TABLE_USER = "user";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_TOKEN = "token";
@@ -75,8 +77,6 @@ public class LoginDatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
-
-       // db.close();
         return isLoggedIn;
     }
 
