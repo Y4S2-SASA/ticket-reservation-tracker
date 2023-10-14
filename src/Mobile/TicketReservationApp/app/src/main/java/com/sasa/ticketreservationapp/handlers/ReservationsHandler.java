@@ -8,6 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sasa.ticketreservationapp.R;
 
+/*
+ * File: ReservationsHandler.java
+ * Purpose: Handles the initialization of the reservationItem layout for the population of reservationObjects
+ * Author: Dunusinghe A.V/IT20025526
+ * Description: This activity is responsible of initializing the reservation item layout for populating the reservation objects fetched
+ */
 public class ReservationsHandler extends RecyclerView.ViewHolder{
     public TextView tv_reqPrefix, tv_destination, tv_reservedTime, tv_departure, txt_option;
 

@@ -1,5 +1,9 @@
 package com.sasa.ticketreservationapp.request;
 
+/*
+ * File: PriceRequest.java
+ * Purpose: Acts as a request class for creating priceRequest objects
+ */
 public class PriceRequest {
         private String selectedTrainId;
         private String departureStationId;

@@ -21,7 +21,7 @@
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.BookingHistoryActivity"
+            android:name=".activities.ReservationHistoryActivity"
             android:exported="false" />
         <activity
             android:name=".activities.EditReservationActivity"
@@ -42,7 +42,7 @@
             android:name=".activities.CreateReservationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CurrentBookingsActivity"
+            android:name=".activities.CurrentReservationsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

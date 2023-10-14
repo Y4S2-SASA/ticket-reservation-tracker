@@ -1,5 +1,9 @@
 package com.sasa.ticketreservationapp.request;
 
+/*
+ * File: AvailableSeatRequest.java
+ * Purpose: Acts as a request class for creating availableSeatRequest objects
+ */
 public class AvailableSeatRequest {
     private String trainId;
     private String destinationStationId;
@@ -28,7 +32,6 @@ public class AvailableSeatRequest {
     public void setDestinationStationId(String destinationStationId) {
         this.destinationStationId = destinationStationId;
     }
-
     public String getArrivalStationId() {
         return arrivalStationId;
     }
@@ -36,7 +39,6 @@ public class AvailableSeatRequest {
     public void setArrivalStationId(String arrivalStationId) {
         this.arrivalStationId = arrivalStationId;
     }
-
     public String getReservationDate() {
         return reservationDate;
     }

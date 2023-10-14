@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.R;
+import com.sasa.ticketreservationapp.adapters.ReservationHistoryAdapter;
 import com.sasa.ticketreservationapp.adapters.ReservationsAdapter;
 import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
@@ -33,67 +33,57 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CurrentBookingsActivity extends AppCompatActivity {
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
-    ReservationsAdapter adapter;
-    boolean isLoading = false;
-    String key = null;
-    Button createReservationBtn;
-    SharedPreferences prefs;
-    private String id, token;
+/*
+ * File: ReservationHistoryActivity.java
+ * Purpose: Handles the viewing of the Canceled/Past reservations of the user
+ * Author: Perera M. S. D/IT20020262
+ * Description: This activity is responsible of handling the listing of the Canceled/Past reservations of the user
+ */
+public class ReservationHistoryActivity extends AppCompatActivity {
     private ApiInterface apiInterface;
+    private SharedPreferences prefs;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private ReservationHistoryAdapter adapter;
+    boolean isLoading = false;
+    private String key = null;
+    private String id, token;
     private boolean isOverlayVisible = false;
     private List<ReservationResponse> reservations;
     private ProgressBar progressBar;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_bookings);
+        setContentView(R.layout.activity_reservation_history);
 
+        // Call progressbar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        LoginDatabaseHelper loginDb = new LoginDatabaseHelper(CurrentBookingsActivity.this);
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){
+        LoginDatabaseHelper loginDb = new LoginDatabaseHelper(ReservationHistoryActivity.this);
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class); // Initialize apiClient
+
+        if(getSharedPreferences("userCredentials", MODE_PRIVATE) != null){ // Verify logged in user details
             prefs = getSharedPreferences("userCredentials", MODE_PRIVATE);
             if(prefs.getString("nic", "") != null){
                 id = prefs.getString("nic", "");
                 token = prefs.getString("token", "");
+                loadData();
             }
         }else{
-            Intent intent = new Intent(CurrentBookingsActivity.this, LoginActivity.class);
+            Intent intent = new Intent(ReservationHistoryActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-        loadData();
 
-//      Sets up the recycler view
+        //Sets up the recycler view
         swipeRefreshLayout = findViewById(R.id.swipereservation);
         recyclerView = findViewById(R.id.recyclerviewreservation);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        adapter = new ReservationsAdapter(this);
+        adapter = new ReservationHistoryAdapter(this, prefs);
         recyclerView.setAdapter(adapter);
-
-        recyclerView.addOnScrollListener((new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalItem = linearLayoutManager.getItemCount();
-                int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (totalItem < lastVisible + 3) {
-                    if (!isLoading) {
-                        isLoading = true;
-                    }
-                }
-            }
-
-        }));
 
 //-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
         //Initialize variables and assign them
@@ -108,33 +98,26 @@ public class CurrentBookingsActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.home) {
-                    startActivity(new Intent(getApplicationContext(), CurrentBookingsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), CurrentReservationsActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 }else if (menuItem.getItemId() == R.id.history)
-                    startActivity(new Intent(getApplicationContext(), BookingHistoryActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ReservationHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             }
         });
-//-------------------------------------------------------Bottom App BAR FUNCTION--------------------------------------------
-    createReservationBtn = findViewById(R.id.createReservationBtn);
-
-
-        createReservationBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(CurrentBookingsActivity.this, CreateReservationActivity.class);
-            startActivity(intent);
-            finish();
-        });
+//-------------------------------------------------------Bottom App BAR FUNCTION---------------------------------------------
     }
 
-    void toggleOverlay(boolean show) {
+    // Toggles an overlay in the background
+    public void toggleOverlay(boolean show) {
         if (show && !isOverlayVisible) {
             View overlayView = LayoutInflater.from(this).inflate(R.layout.overlay_layout, null);
             ((ViewGroup) getWindow().getDecorView().getRootView()).addView(overlayView);
             isOverlayVisible = true;
         } else if (!show && isOverlayVisible) {
-            View overlayView = getWindow().getDecorView().findViewById(R.id.overlay); // Assuming you have a view with id overlay in overlay_layout.xml
+            View overlayView = getWindow().getDecorView().findViewById(R.id.overlay);
             if (overlayView != null) {
                 ((ViewGroup) overlayView.getParent()).removeView(overlayView);
                 isOverlayVisible = false;
@@ -142,9 +125,14 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         }
     }
 
+    /// <summary>
+    /// Handles fetching the all deactivated/canceled reservations based relating to the user.
+    /// </summary>
+    /// <param name="request">3</param>
+    /// <param name="authorization">Authorization token of the user</param>
+    /// <returns>List of ReservationResponse Objects</returns>
     private void loadData() {
-        Call<List<ReservationResponse>> call = apiInterface.getTraverlerReservation("Bearer " + token);
-
+        Call<List<ReservationResponse>> call = apiInterface.getTraverlerReservation("Bearer " + token, 3);
         call.enqueue(new Callback<List<ReservationResponse>>() {
             @Override
             public void onResponse(Call<List<ReservationResponse>> call, Response<List<ReservationResponse>> response) {
@@ -160,7 +148,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
             }
-
             @Override
             public void onFailure(Call<List<ReservationResponse>> call, Throwable t) {
                 // Handle failure
@@ -172,6 +159,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         });
     }
 
+    // Converts the fetched data to a Reservation Model object
     private ReservationModel convertToModel(ReservationResponse response) {
         ReservationModel model = new ReservationModel();
 
@@ -190,6 +178,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         return model;
     }
 
+    // Processes the Reservation Response data and adds the converted reservation model objects to a list
     private void processReservations(List<ReservationResponse> reservations) {
         ArrayList<ReservationModel> reservationModels = new ArrayList<>();
         for (ReservationResponse response : reservations) {
@@ -200,30 +189,4 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         adapter.setItems(reservationModels);
         adapter.notifyDataSetChanged();
     }
-
 }
-//    private void loadData() {
-//        swipeRefreshLayout.setRefreshing(true);
-//        dao.get(key).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ArrayList<ReqModel> reqs = new ArrayList<>();
-//                for (DataSnapshot data : snapshot.getChildren()) {
-//                    ReqModel req = data.getValue(ReqModel.class);
-//                    req.setKey(data.getKey());
-//                    reqs.add(req);
-//                    key = data.getKey();
-//                }
-//                adapter.setItems(reqs);
-//                adapter.notifyDataSetChanged();
-//                isLoading = false;
-//                swipeRefreshLayout.setRefreshing(false);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                swipeRefreshLayout.setRefreshing(false);
-//            }
-//        });
-//    }
-//}

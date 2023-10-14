@@ -17,6 +17,12 @@ import com.sasa.ticketreservationapp.config.ApiClient;
 import com.sasa.ticketreservationapp.config.ApiInterface;
 import com.sasa.ticketreservationapp.models.UserModel;
 
+/*
+ * File: RegisterActivity.java
+ * Purpose: Handles the user Registration functionality
+ * Author: Bartholomeusz S.V/IT20274702
+ * Description: This activity is responsible of handling the registration funcitonality of the traveller
+ */
 public class RegisterActivity extends AppCompatActivity {
     private EditText firstNameField, lastNameField, nicField, emailField, mobileNumberField, regUsernameField, regPasswordField;
     private TextView signInTxt;
@@ -27,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // Initialize variables
         firstNameField = findViewById(R.id.firstNameField);
         lastNameField = findViewById(R.id.lastNameField);
         nicField = findViewById(R.id.nicField);
@@ -37,12 +44,20 @@ public class RegisterActivity extends AppCompatActivity {
         signInTxt = findViewById(R.id.signInTxt);
         signUpBtn = findViewById(R.id.signUpBtn);
 
+        // Handle Sign in funcitonality
         signInTxt.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });
 
+        // Handle signUp functionality
+        /// <summary>
+        /// Handles the sign up related functionality
+        /// </summary>
+        /// <param name="request">UserModel Object containing the necessary data</param>
+        /// <param name="authorization"></param>
+        /// <returns></returns>
         signUpBtn.setOnClickListener(v -> {
             String name = firstNameField.getText().toString();
             String lastName = lastNameField.getText().toString();
@@ -53,9 +68,9 @@ public class RegisterActivity extends AppCompatActivity {
             String password = regPasswordField.getText().toString();
             Integer role = 3;
 
-            UserModel userModel = new UserModel(name, lastName, nic, email, mobileNumber, username, password, role);
+            UserModel userModel = new UserModel(name, lastName, nic, email, mobileNumber, username, password, role); // initialize userModel
 
-            ApiInterface api = ApiClient.getApiClient().create(ApiInterface.class);
+            ApiInterface api = ApiClient.getApiClient().create(ApiInterface.class); // Initialize apiClient
 
             Call<Void> call = api.saveUser(userModel);
             call.enqueue(new Callback<Void>() {
@@ -70,10 +85,9 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Error saving data", Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Log.d("TAG", t.toString());
+                    Log.e("TAG", "Error: " + t.toString());
                     Toast.makeText(RegisterActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 }
             });

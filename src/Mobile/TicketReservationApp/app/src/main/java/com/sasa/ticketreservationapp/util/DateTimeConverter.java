@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/*
+ * File: DateTimeConverter.java
+ * Purpose: Acts as a util class for converting date time value formats
+ */
 public class DateTimeConverter {
 
     public static String convertDate(String inputDate) {
@@ -31,4 +35,5 @@ public class DateTimeConverter {
             return null;
         }
     }
+
 }

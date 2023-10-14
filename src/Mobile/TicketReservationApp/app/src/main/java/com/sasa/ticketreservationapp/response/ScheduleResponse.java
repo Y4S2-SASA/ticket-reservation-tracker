@@ -1,5 +1,9 @@
 package com.sasa.ticketreservationapp.response;
 
+/*
+ * File: ScheduleResponse.java
+ * Purpose: Acts as a response class for creating scheduleResponse objects
+ */
 public class ScheduleResponse {
     private String trainId;
 

@@ -1,10 +1,10 @@
 package com.sasa.ticketreservationapp.models;
 
-import android.widget.EditText;
-
+/*
+ * File: UserModel.java
+ * Purpose: Acts as a model class for the user objects
+ */
 public class UserModel {
-
-
     private String firstName;
 
     private String lastName;

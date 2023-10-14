@@ -1,5 +1,9 @@
 package com.sasa.ticketreservationapp.response;
 
+/*
+ * File: StationResponse.java
+ * Purpose: Acts as a response class for creating stationResponse objects
+ */
 public class StationResponse {
     private String id;
     private String name;

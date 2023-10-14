@@ -9,6 +9,11 @@ import android.util.Log;
 import com.sasa.ticketreservationapp.DBHelper.LoginDatabaseHelper;
 import com.sasa.ticketreservationapp.activities.LoginActivity;
 
+/*
+ * File: AuthHandler.java
+ * Purpose: Handle Authentication functionality of the SQLite persist login credentials
+ * Author: Bartholomeusz S.V/IT20274702
+ */
 public class AuthHandler {
 
     public static void persistLoginData(LoginDatabaseHelper db, SharedPreferences.Editor editor, String nic, String token, String displayName) {

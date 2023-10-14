@@ -1,5 +1,10 @@
 package com.sasa.ticketreservationapp.request;
 
+
+/*
+ * File: AccountStatusRequest.java
+ * Purpose: Acts as a request class for creating accountStatus objects
+ */
 public class AccountStatusRequest {
     private String nic;
     private int status;
