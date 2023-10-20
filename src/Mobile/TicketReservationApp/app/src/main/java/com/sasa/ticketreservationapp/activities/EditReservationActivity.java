@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class EditReservationActivity extends AppCompatActivity {
     private Integer pClass;
     private String id, token, selectedDestinationId, selectedSubStationId, reservedDate, convertedReservedDate, convertedResDate, convertedTime, selectedTrainName, selectedScheduleId, selectedTrainId, selectedArrivalTime, selectedDestinationName, selectedSubStationName, reservedTime, reservationId;
     private SharedPreferences prefs;
+    private ImageView datePickerBtn;
     private Integer availableSeatCount, newTicketPrice, passengerCount, currentValue = 0;
     private EditText reservedDateField, passengersField, trainNoField, priceField;
     private TextView incrementBtn, decrementBtn;
@@ -99,6 +101,7 @@ public class EditReservationActivity extends AppCompatActivity {
         decrementBtn = findViewById(R.id.decrementBtn);
         incrementBtn = findViewById(R.id.incrementBtn);
         backBtn = findViewById(R.id.backBtn);
+        datePickerBtn = findViewById(R.id.imageView2);
 
         // Acquire intent extras
         Intent intent = getIntent();
@@ -187,6 +190,7 @@ public class EditReservationActivity extends AppCompatActivity {
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.DAY_OF_MONTH, 30);
         reservedDateField.setOnClickListener(view -> showDatePickerDialog());
+        datePickerBtn.setOnClickListener(view -> showDatePickerDialog());
         reservedDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
