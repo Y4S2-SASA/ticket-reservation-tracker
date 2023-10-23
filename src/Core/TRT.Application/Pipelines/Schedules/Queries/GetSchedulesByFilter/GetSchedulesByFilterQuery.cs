@@ -64,35 +64,37 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
 
                 Expression<Func<Schedule, bool>> query = x => true;
 
-                if(!string.IsNullOrEmpty(request.TrainId))
+
+                var availableData = (await _scheduleQueryRepository.Query(x=>x.TrainId == request.TrainId))
+                                    .ToList();
+
+                if (!string.IsNullOrEmpty(request.ArrivalStationId))
                 {
-                    query = x => x.TrainId == request.TrainId;
+                    availableData = (await _scheduleQueryRepository.Query(x => x.TrainId == request.TrainId &&
+                                    x.ArrivalStationId == request.ArrivalStationId))
+                                    .ToList();
                 }
 
                 if(!string.IsNullOrEmpty(request.DepartureStationId))
                 {
-                    query = x => x.DepartureStationId == request.DepartureStationId;
+                    availableData = (await _scheduleQueryRepository.Query(x => x.TrainId == request.TrainId &&
+                                   x.DepartureStationId == request.DepartureStationId))
+                                   .ToList();
                 }
 
-                if (!string.IsNullOrEmpty(request.ArrivalStationId))
+                if(!string.IsNullOrEmpty(request.ArrivalStationId) && !string.IsNullOrEmpty(request.DepartureStationId))
                 {
-                    query = x => x.ArrivalStationId == request.ArrivalStationId;
+                    availableData = (await _scheduleQueryRepository.Query(x => x.TrainId == request.TrainId &&
+                                     x.DepartureStationId == request.DepartureStationId && 
+                                     x.ArrivalStationId == request.ArrivalStationId))
+                                  .ToList();
                 }
 
-                if(request.Status > NumberConstant.ZERO)
-                {
-                    query = x => x.Status == request.Status;
-                }
+                totalRecordCount = (int)availableData.Count();
 
-                totalRecordCount = (int)await _scheduleQueryRepository.CountDocumentsAsync(query);
-
-                var availableData = await _scheduleQueryRepository.GetPaginatedDataAsync
-                                   (
-                                       query,
-                                       request.PageSize,
-                                       request.CurrentPage,
-                                       cancellationToken
-                                   );
+                availableData = availableData.Skip(request.CurrentPage * request.PageSize)
+                                            .Take(request.PageSize)
+                                            .ToList();
 
                 foreach (var item in availableData ) 
                 {
@@ -127,7 +129,13 @@ namespace TRT.Application.Pipelines.Schedules.Queries.GetSchedulesByFilter
             {
                 _logger.LogError(ex.Message);
 
-                throw;
+                return new PaginatedListDTO<ScheduleDetailDTO>
+                       (
+                           new List<ScheduleDetailDTO>(),
+                           NumberConstant.ZERO,
+                           NumberConstant.ZERO,
+                           NumberConstant.ZERO
+                       );
             }
         }
     }

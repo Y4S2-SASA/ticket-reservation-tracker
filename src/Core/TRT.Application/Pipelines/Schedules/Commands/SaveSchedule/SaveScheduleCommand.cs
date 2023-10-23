@@ -7,7 +7,7 @@ using TRT.Domain.Entities;
 using TRT.Domain.Repositories.Command;
 using TRT.Domain.Repositories.Query;
 /*
- * File: aveScheduleCommand.cs
+ * File: SaveScheduleCommand.cs
  * Purpose: Handle SaveScheduleCommand
  * Author: Perera M.S.D/1IT20020262
 */
@@ -60,14 +60,15 @@ namespace TRT.Application.Pipelines.Schedules.Commands.SaveSchedule
 
                     schedule.SubStationDetails.Add(new SubStationDetail()
                     {
-                        StationId = request.ScheduleDTO.DepartureStationId,
-                        ArrivalTime = request.ScheduleDTO.DepartureTime,
+                       
+                        StationId = request.ScheduleDTO.ArrivalStationId,
+                        ArrivalTime = request.ScheduleDTO.ArrivalTime,
                     });
 
                     schedule.SubStationDetails.Insert(NumberConstant.ZERO, new SubStationDetail()
                     {
-                        StationId = request.ScheduleDTO.ArrivalStationId,
-                        ArrivalTime = request.ScheduleDTO.ArrivalTime,
+                        StationId = request.ScheduleDTO.DepartureStationId,
+                        ArrivalTime = request.ScheduleDTO.DepartureTime,
                     });
 
 

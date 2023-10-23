@@ -23,16 +23,19 @@ namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
     {
         private readonly ITrainQueryRepository _trainQueryRepository;
         private readonly ITrainCommandRepository _trainCommandRepository;
+        private readonly IReservationQueryRepository _reservationQueryRepository;
         private readonly ILogger<ChangeTrainStatusCommandHandler> _logger;
         public ChangeTrainStatusCommandHandler
         (
             ITrainQueryRepository trainQueryRepository,
             ITrainCommandRepository trainCommandRepository,
+            IReservationQueryRepository reservationQueryRepository,
             ILogger<ChangeTrainStatusCommandHandler> logger
         )
         {
             this._trainQueryRepository = trainQueryRepository;
             this._trainCommandRepository = trainCommandRepository;
+            this._reservationQueryRepository = reservationQueryRepository;
             this._logger = logger;
         }
 
@@ -49,16 +52,30 @@ namespace TRT.Application.Pipelines.Trains.Commands.ChangeTrainStatus
 
                 if (train != null)
                 {
-                    train.Status = request.Status;
+                    var reservations = (await _reservationQueryRepository.Query(x => x.TrainId == request.Id)).ToList();
+                    
+                    if(reservations.Count > NumberConstant.ONE)
+                    {
+                        return ResultDTO.Failure(new List<string>()
+                        {
+                            ResponseMessageConstant.CANNOT_TRAIN_STATUS_CHANGE
+                        });
+                    }
+                    else
+                    {
+                        train.Status = request.Status;
 
-                    await _trainCommandRepository.UpdateAsync(train, cancellationToken);
+                        await _trainCommandRepository.UpdateAsync(train, cancellationToken);
 
-                    return ResultDTO.Success
+                        return ResultDTO.Success
                         (
                           string.Format(ResponseMessageConstant.TRAIN_STATUS_CHANGE_SUCCESS_RESPONSE_MESSAGE,
                                 train.TrainName,
                                 EnumHelper.GetEnumDescription(request.Status)
                          ));
+                    }
+
+                    
                 }
                 else
                 {
