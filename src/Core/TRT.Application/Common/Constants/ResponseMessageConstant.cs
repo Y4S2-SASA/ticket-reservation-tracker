@@ -58,6 +58,9 @@
 
         public const string TRAIN_NOT_EXSISTING_THE_SYSTEM_RESPONSE_MESSAGE =
                               "Train details Not found please try again";
+
+        public const string CANNOT_TRAIN_STATUS_CHANGE =
+                              "Cannot change train status";
         #endregion
 
         #region Schedule
