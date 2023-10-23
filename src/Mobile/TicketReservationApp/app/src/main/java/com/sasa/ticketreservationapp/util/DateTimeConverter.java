@@ -1,5 +1,7 @@
 package com.sasa.ticketreservationapp.util;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,14 +26,21 @@ public class DateTimeConverter {
         }
     }
     public static String convertTime(String inputTime) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
         SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
         try {
             Date date = inputFormat.parse(inputTime);
-           return outputFormat.format(date);
+            if (date != null) {
+                Log.d("TRY TIME", outputFormat.format(date));
+                return outputFormat.format(date);
+            } else {
+                Log.d("DATE IS NULL", inputTime);
+                return null;
+            }
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.d("ERROR", e.toString());
+            Log.d("CATCH", inputTime);
             return null;
         }
     }

@@ -202,6 +202,10 @@ public class ProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.d("TAG", "Worked");
+                    AuthHandler.clearLoginData(new LoginDatabaseHelper(ProfileActivity.this), getSharedPreferences("userCredentials", MODE_PRIVATE).edit());
+                    Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                     Toast.makeText(ProfileActivity.this, "Account Deactivated Successfully!", Toast.LENGTH_SHORT);
                 }else{
                     Log.d("TAG", response.toString());
