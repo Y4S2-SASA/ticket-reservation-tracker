@@ -1,17 +1,19 @@
+import jwt_decode from 'jwt-decode'
+
 export const NAVBAR_ITEMS = [
   {
     id: 1,
     pathUrl: '/dashboard',
     icon: '/images/icons/dashboard.png',
     label: 'Dashboard',
-    entitlementRoles: ['Back Office'],
+    entitlementRoles: ['Back Office', 'Travel Agent'],
   },
   {
     id: 2,
     pathUrl: '/users',
     icon: '/images/icons/users.png',
     label: 'Users',
-    entitlementRoles: ['Back Office'],
+    entitlementRoles: ['Back Office', 'Travel Agent'],
   },
   {
     id: 3,
@@ -25,7 +27,7 @@ export const NAVBAR_ITEMS = [
     pathUrl: '/bookings',
     icon: '/images/icons/schedule.png',
     label: 'Bookings',
-    entitlementRoles: ['Back Office'],
+    entitlementRoles: ['Travel Agent'],
   },
 ]
 
@@ -138,3 +140,20 @@ export function getObjectById(id, array) {
   const foundObject = array.find((item) => item.id === id)
   return foundObject ? [foundObject] : []
 }
+
+const authStorage = localStorage.getItem('auth')
+
+export function authDetails() {
+  const parsedAuth = JSON.parse(authStorage)
+  const authObj = {
+    details: jwt_decode(parsedAuth?.token),
+    role: parsedAuth?.role,
+    userId: parsedAuth?.userId,
+    displayName: parsedAuth?.displayName,
+  }
+
+  return authObj
+}
+console.log('authDetails', authDetails())
+
+export const strongPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/

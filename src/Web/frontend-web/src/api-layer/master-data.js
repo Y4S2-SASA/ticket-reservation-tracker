@@ -1,3 +1,8 @@
+/*
+ * File: master-data.js
+ * Author: Jayathilake S.M.D.A.R./IT20037338
+ */
+
 import HttpServiceConfig from '../configs/http-service-config'
 
 class MasterDataAPIService {
@@ -23,18 +28,6 @@ class MasterDataAPIService {
         formatterReq,
         headers,
       )
-        .then((data) => {
-          resolve(data)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
-  }
-
-  getAllStationMasterData = (headers = {}) => {
-    return new Promise((resolve, reject) => {
-      HttpServiceConfig.get('/api/MasterData/getAllStationMasterData', headers)
         .then((data) => {
           resolve(data)
         })

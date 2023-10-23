@@ -12,6 +12,7 @@ const DropdownStyledButton = ({
   handleChange,
   selectedStatus,
   changeMode,
+  role,
 }) => {
   const [itemLabel, setItemLabel] = useState(null)
 
@@ -42,7 +43,9 @@ const DropdownStyledButton = ({
           <Dropdown.Item
             eventKey={item?.id}
             onClick={() => handleChange(item?.id)}
-            disabled={changeMode && item?.isDisabled}
+            disabled={
+              (changeMode && item?.isDisabled) || item?.isDisabledToRole
+            }
           >
             {item?.dropLabel}
           </Dropdown.Item>

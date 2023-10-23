@@ -1,6 +1,6 @@
 /*
  * File: schedules.js
- * Author: Perera M.S.D/IT20020262
+ * Author: Jayathilake S.M.D.A.R./IT20037338
  */
 
 import HttpServiceConfig from '../configs/http-service-config'

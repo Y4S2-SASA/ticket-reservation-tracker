@@ -9,7 +9,7 @@ import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import TMButton from '../../components/TMButton'
 import UserAPIService from '../../api-layer/users'
-import { ROLES } from '../../configs/static-configs'
+import { ROLES, strongPasswordRegex } from '../../configs/static-configs'
 
 const UserDialog = ({ userSettings, onClose, onSave, callBackUsers }) => {
   const { openDialog, action, parentData } = userSettings
@@ -39,11 +39,16 @@ const UserDialog = ({ userSettings, onClose, onSave, callBackUsers }) => {
     userName: Yup.string().required('Username is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     role: Yup.number().required('Role is required'),
-    password: action === 'add' && Yup.string().required('Password is required'),
+    password:
+      action === 'add' &&
+      Yup.string()
+        .matches(strongPasswordRegex, 'Password must be strong')
+        .required('Password is required'),
     confirmPassword:
       action === 'add' &&
       Yup.string()
         .required('Confirm Password is required')
+        .matches(strongPasswordRegex, 'Password must be strong')
         .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   })
 
@@ -261,7 +266,9 @@ const UserDialog = ({ userSettings, onClose, onSave, callBackUsers }) => {
                       <Form.Group>
                         <Form.Label>Password*</Form.Label>
                         <Field name="password" type="password">
-                          {({ field }) => <Form.Control {...field} />}
+                          {({ field }) => (
+                            <Form.Control {...field} type="password" />
+                          )}
                         </Field>
                         <ErrorMessage
                           name="password"
@@ -274,7 +281,9 @@ const UserDialog = ({ userSettings, onClose, onSave, callBackUsers }) => {
                       <Form.Group>
                         <Form.Label>Confirm Password*</Form.Label>
                         <Field name="confirmPassword" type="password">
-                          {({ field }) => <Form.Control {...field} />}
+                          {({ field }) => (
+                            <Form.Control {...field} type="password" />
+                          )}
                         </Field>
                         <ErrorMessage
                           name="confirmPassword"
