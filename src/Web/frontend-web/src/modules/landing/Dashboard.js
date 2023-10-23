@@ -41,6 +41,9 @@ export default function Dashboard() {
     MasterDataAPIService.getDashboardData().then((data) => {
       setDashboardData(data)
     })
+    // const trainMdRes = MasterDataAPIService.getTrainMasterData()
+    // const strigifiedMasterData = JSON.stringify(trainMdRes)
+    // localStorage.setItem('train-masterdata', strigifiedMasterData)
   }, [])
 
   return (

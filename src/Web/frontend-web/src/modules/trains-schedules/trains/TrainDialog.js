@@ -3,7 +3,7 @@
  * Author: Perera M.S.D/IT20020262
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -12,6 +12,7 @@ import {
   TRAIN_PASSENGER_CLASSES,
 } from '../../../configs/static-configs'
 import TrainsAPIService from '../../../api-layer/trains'
+import { ToastContainer, toast } from 'react-toastify'
 
 const TrainDialog = ({ settings, onClose, onSave, callBackData }) => {
   const { openDialog, action, parentData } = settings
@@ -65,10 +66,14 @@ const TrainDialog = ({ settings, onClose, onSave, callBackData }) => {
       }
       const response = await TrainsAPIService.createTrain(payload)
       if (response) {
+        await toast.success(
+          response?.successMessage || 'Train Created Successfully',
+        )
         console.log(response)
         await callBackData()
         await onClose()
       } else {
+        toast.error(response?.message || 'Error try Again')
         console.log(response)
       }
     } catch (e) {
@@ -77,174 +82,177 @@ const TrainDialog = ({ settings, onClose, onSave, callBackData }) => {
   }
 
   return (
-    <Modal
-      show={openDialog}
-      onHide={onClose}
-      backdrop="static"
-      keyboard={false}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {action === 'edit' ? 'Edit Train' : 'Add Train'}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {action === 'edit' && dataLoading ? (
-          <center>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </center>
-        ) : (
-          <Formik
-            initialValues={
-              action === 'edit'
-                ? { ...initialValues, ...parentData }
-                : initialValues
-            }
-            validationSchema={userSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isValid, handleSubmit, values, setFieldValue }) => (
-              <Form onSubmit={handleSubmit}>
-                <Row>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Train Name*</Form.Label>
-                      <Field name="trainName">
-                        {({ field }) => <Form.Control {...field} />}
-                      </Field>
-                      <ErrorMessage
-                        name="trainName"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Seating Capacity*</Form.Label>
-                      <Field name="seatCapacity">
-                        {({ field }) => <Form.Control {...field} />}
-                      </Field>
-                      <ErrorMessage
-                        name="seatCapacity"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: '10px' }}>
-                  <Col sm={12}>
-                    <Form.Group style={{}}>
-                      <Form.Label>Available Day/s*</Form.Label>
-                      <Field
-                        name="availableDays"
-                        as="select"
-                        style={{
-                          width: '100%',
-                          height: '37px',
-                          border: '1px solid #dee2e6',
-                          borderRadius: '0.375rem',
-                        }}
-                      >
-                        {TRAIN_AVAILABLE_DAYS.map((item, index) => (
-                          <option key={index} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
-                      </Field>
-                      <ErrorMessage
-                        name="availableDays"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row style={{ marginTop: '20px' }}>
-                  <Col sm={12}>
-                    <Form.Group style={{}}>
-                      <Form.Label>Passenger Classes*</Form.Label>
-                      {TRAIN_PASSENGER_CLASSES.filter((d) => d.id !== 0).map(
-                        (item, index) => (
-                          <div key={index}>
-                            <label>
-                              <input
-                                type="checkbox"
-                                name="passengerClasses"
-                                value={item.id}
-                                checked={values.passengerClasses.includes(
-                                  item.id,
-                                )}
-                                onChange={(e) => {
-                                  const isChecked = e.target.checked
-                                  const newValue = isChecked
-                                    ? [...values.passengerClasses, item.id]
-                                    : values.passengerClasses.filter(
-                                        (id) => id !== item.id,
-                                      )
-                                  setFieldValue('passengerClasses', newValue)
-                                }}
-                              />
-                              {item.name}
-                            </label>
-                          </div>
-                        ),
-                      )}
-                      <ErrorMessage
-                        name="passengerClasses"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px',
-                  }}
-                >
+    <Fragment>
+      <ToastContainer />
+      <Modal
+        show={openDialog}
+        onHide={onClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {action === 'edit' ? 'Edit Train' : 'Add Train'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {action === 'edit' && dataLoading ? (
+            <center>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </center>
+          ) : (
+            <Formik
+              initialValues={
+                action === 'edit'
+                  ? { ...initialValues, ...parentData }
+                  : initialValues
+              }
+              validationSchema={userSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isValid, handleSubmit, values, setFieldValue }) => (
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Col sm={6}>
-                      <Button
-                        variant="secondary"
-                        onClick={onClose}
-                        style={{
-                          border: 'none',
-                          borderRadius: '46px',
-                          marginLeft: '10px',
-                        }}
-                      >
-                        Cancel
-                      </Button>
+                      <Form.Group>
+                        <Form.Label>Train Name*</Form.Label>
+                        <Field name="trainName">
+                          {({ field }) => <Form.Control {...field} />}
+                        </Field>
+                        <ErrorMessage
+                          name="trainName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </Form.Group>
                     </Col>
                     <Col sm={6}>
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        disabled={!isValid}
-                        style={{
-                          backgroundColor: '#8428E2',
-                          border: 'none',
-                          borderRadius: '46px',
-                        }}
-                      >
-                        Save
-                      </Button>
+                      <Form.Group>
+                        <Form.Label>Seating Capacity*</Form.Label>
+                        <Field name="seatCapacity">
+                          {({ field }) => <Form.Control {...field} />}
+                        </Field>
+                        <ErrorMessage
+                          name="seatCapacity"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </Form.Group>
                     </Col>
                   </Row>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </Modal.Body>
-    </Modal>
+                  <Row style={{ marginTop: '10px' }}>
+                    <Col sm={12}>
+                      <Form.Group style={{}}>
+                        <Form.Label>Available Day/s*</Form.Label>
+                        <Field
+                          name="availableDays"
+                          as="select"
+                          style={{
+                            width: '100%',
+                            height: '37px',
+                            border: '1px solid #dee2e6',
+                            borderRadius: '0.375rem',
+                          }}
+                        >
+                          {TRAIN_AVAILABLE_DAYS.map((item, index) => (
+                            <option key={index} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name="availableDays"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: '20px' }}>
+                    <Col sm={12}>
+                      <Form.Group style={{}}>
+                        <Form.Label>Passenger Classes*</Form.Label>
+                        {TRAIN_PASSENGER_CLASSES.filter((d) => d.id !== 0).map(
+                          (item, index) => (
+                            <div key={index}>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="passengerClasses"
+                                  value={item.id}
+                                  checked={values.passengerClasses.includes(
+                                    item.id,
+                                  )}
+                                  onChange={(e) => {
+                                    const isChecked = e.target.checked
+                                    const newValue = isChecked
+                                      ? [...values.passengerClasses, item.id]
+                                      : values.passengerClasses.filter(
+                                          (id) => id !== item.id,
+                                        )
+                                    setFieldValue('passengerClasses', newValue)
+                                  }}
+                                />
+                                {item.name}
+                              </label>
+                            </div>
+                          ),
+                        )}
+                        <ErrorMessage
+                          name="passengerClasses"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      marginTop: '20px',
+                    }}
+                  >
+                    <Row>
+                      <Col sm={6}>
+                        <Button
+                          variant="secondary"
+                          onClick={onClose}
+                          style={{
+                            border: 'none',
+                            borderRadius: '46px',
+                            marginLeft: '10px',
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </Col>
+                      <Col sm={6}>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          disabled={!isValid}
+                          style={{
+                            backgroundColor: '#8428E2',
+                            border: 'none',
+                            borderRadius: '46px',
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          )}
+        </Modal.Body>
+      </Modal>
+    </Fragment>
   )
 }
 

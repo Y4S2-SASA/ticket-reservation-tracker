@@ -24,6 +24,7 @@ import ConfirmationDialog from '../../../components/TMConfirmationDialog'
 import { useHistory } from 'react-router-dom'
 import ScheduleAPIService from '../../../api-layer/schedules'
 import MasterDataAPIService from '../../../api-layer/master-data'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function ScheduleList({ handleStep, trainData }) {
   const history = useHistory()
@@ -58,7 +59,9 @@ export default function ScheduleList({ handleStep, trainData }) {
     const getStations = async () => {
       try {
         const res = await MasterDataAPIService.getAllStationMasterData()
-        setStations(res)
+        const newStation = { id: '', name: 'All' }
+        const updatedStations = [newStation, ...res]
+        setStations(updatedStations)
       } catch (e) {
         console.log(e)
       }
@@ -70,10 +73,9 @@ export default function ScheduleList({ handleStep, trainData }) {
     try {
       const payload = {
         trainId: trainData?.id,
-        departureStationId:
-          selectedAvailability > 0 ? selectedAvailability : '',
+        departureStationId: selectedAvailability ? selectedAvailability : '',
         status: filterByStatus,
-        arrivalStationId: selectedPassenger > 0 ? selectedPassenger : '',
+        arrivalStationId: selectedPassenger ? selectedPassenger : '',
         currentPage: currentPage,
         pageSize: 10,
       }
@@ -144,6 +146,9 @@ export default function ScheduleList({ handleStep, trainData }) {
       }
       const response = await ScheduleAPIService.updateScheduleStatus(payload)
       if (response) {
+        await toast.success(
+          response?.successMessage || 'Successfully changed the status',
+        )
         await getAllSchedules()
         await setSelectedIds([])
       }
@@ -159,14 +164,21 @@ export default function ScheduleList({ handleStep, trainData }) {
 
   const handleStatusFilter = (itemId) => {
     setFilterByStatus(itemId)
+    toast.success('Successfully filtered by Status')
   }
 
   const handleDepartureFilter = (itemId) => {
     setSelectedAvailability(itemId)
+    if (!selectedPassenger) {
+      toast.info('Please choose an Arrival Destination. It is required!')
+    }
   }
 
   const handleArrivalFilter = (itemId) => {
     setSelectedPassenger(itemId)
+    if (!selectedAvailability) {
+      toast.info('Please choose an Departure Destination. It is required!')
+    }
   }
 
   const handlePageChange = (newPage) => {
@@ -295,6 +307,7 @@ export default function ScheduleList({ handleStep, trainData }) {
 
   return (
     <div className="trains-container">
+      <ToastContainer />
       <ConfirmationDialog
         title="Confirm Status Change"
         message={`Are you sure you want to change the status to ${
@@ -354,7 +367,7 @@ export default function ScheduleList({ handleStep, trainData }) {
             <Button
               variant="primary"
               type="button"
-              onClick={() => handleStep('train')}
+              onClick={() => (window.location.href = '/trains')}
               style={{
                 backgroundColor: '#8428E2',
                 border: 'none',

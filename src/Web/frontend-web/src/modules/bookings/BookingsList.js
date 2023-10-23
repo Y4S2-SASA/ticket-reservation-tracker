@@ -13,6 +13,7 @@ import { FaPlus } from 'react-icons/fa'
 import { RESERVATION_HEADERS } from '../../configs/dataConfig'
 import BookingDialog from './BookingDialog'
 import ReservationsAPIService from '../../api-layer/reservations'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function BookingsList() {
   const [dataLoading, setDataLoading] = useState([])
@@ -36,31 +37,38 @@ export default function BookingsList() {
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
 
-  const ableToDeleteEdit = (id) => {
-    const reservation = filteredData.filter((data) => data.id === id)
+  const ableToDeleteEdit = async (id) => {
+    const reservation = await filteredData.filter((data) => data.id === id)
 
-    const reservationDate = new Date(reservation.dateTime)
-    const today = new Date()
-    const timeDifference = today - reservationDate
-    const daysDifference = timeDifference / (1000 * 60 * 60 * 24)
-
-    if (daysDifference >= 5) {
-      return true
+    if (reservation) {
+      const reservationDate = await new Date(reservation[0]?.dateTime)
+      const today = new Date()
+      const timeDifference = today - reservationDate
+      const daysDifference = timeDifference / (1000 * 60 * 60 * 24)
+      console.log(daysDifference)
+      if (daysDifference >= 5) {
+        return true
+      } else {
+        return false
+      }
     } else {
+      toast.info('Error. Try Again')
       return false
     }
   }
+
   const deleteReservation = async (id) => {
     if (ableToDeleteEdit(id)) {
       const response = await ReservationsAPIService.deleteReservation(id)
       if (response) {
-        alert('Reservation deleted')
+        await toast.success('Reservation deleted')
         getAllReservations()
       } else {
+        toast.error('Something went wrong')
         alert('Something went wrong')
       }
     } else {
-      alert(
+      toast.info(
         'Reservation date must be 5 days or more earlier to eligilble to edit or delete',
       )
       const response = await ReservationsAPIService.deleteReservation(id)
@@ -138,7 +146,7 @@ export default function BookingsList() {
         parentData: { id },
       })
     } else {
-      alert(
+      toast.info(
         'Reservation date must be 5 days or more earlier to eligilble to edit or delete',
       )
     }
@@ -165,8 +173,6 @@ export default function BookingsList() {
       parentData: null,
     })
   }
-
-  console.log('TRAIN_AVAILABLE_DAYS', TRAIN_AVAILABLE_DAYS)
 
   const buttonComp = () => {
     return (
@@ -254,6 +260,7 @@ export default function BookingsList() {
 
   return (
     <MainLayout loading={true} loadingTime={2000}>
+      <ToastContainer />
       <div className="trains-container">
         {/* <ConfirmationDialog
                     title="Confirm Status Change"

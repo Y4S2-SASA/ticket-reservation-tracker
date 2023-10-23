@@ -3,15 +3,11 @@
  * Author: Jayathilake S.M.D.A.R./IT20037338
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner, Table } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import {
-  TRAIN_AVAILABLE_DAYS,
-  TRAIN_PASSENGER_CLASSES,
-  getObjectById,
-} from '../../../configs/static-configs'
+import { getObjectById } from '../../../configs/static-configs'
 import TrainsAPIService from '../../../api-layer/trains'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import DatePicker from 'react-datepicker'
@@ -21,6 +17,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.bs5.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import MasterDataAPIService from '../../../api-layer/master-data'
 import ScheduleAPIService from '../../../api-layer/schedules'
+import { ToastContainer, toast } from 'react-toastify'
 
 const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
   const { openDialog, action, parentData } = settings
@@ -84,22 +81,10 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
       })
       if (response) {
         await setData(response)
-        await setSelectedDepartureStation(
-          getObjectById(response?.departureStationId, stations),
-        )
-        await setSelectedDepartureStation(
-          getObjectById(response?.arrivalStationId, stations),
-        )
-        processSubStationDetails(response)
-          .then(async (updatedArray) => {
-            await setSubStationDetails(updatedArray)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
+
         setTimeout(() => {
           setDataLoading(false)
-        }, 100)
+        }, 1000)
       }
     }
     if (action === 'edit') {
@@ -107,14 +92,46 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
     }
   }, [action])
 
+  useEffect(() => {
+    if (action === 'edit') {
+      setEditData()
+    }
+  }, [action, stations, data])
+
+  const setEditData = async () => {
+    try {
+      setDataLoading(true)
+      await setSelectedDepartureStation(
+        getObjectById(data?.departureStationId, stations),
+      )
+      await setSelectedArrivalStation(
+        getObjectById(data?.arrivalStationId, stations),
+      )
+      await processSubStationDetails(data).then(async (updatedArray) => {
+        await setSubStationDetails(updatedArray)
+      })
+      await setArrivalTime(new Date(data?.arrivalTime))
+      await setDepartureTime(new Date(data?.departureTime))
+
+      setTimeout(() => {
+        setDataLoading(false)
+      }, 1000)
+    } catch (e) {
+      console.log(e)
+      setTimeout(() => {
+        setDataLoading(false)
+      }, 1000)
+    }
+  }
+
   async function processSubStationDetails(response) {
     const updatedArray = await Promise.all(
       response.subStationDetails.map(async (detail) => {
         const stationObject = await getObjectById(detail.stationId, stations)
-        console.log('stationObject', stationObject)
+        console.log('stationObject', detail.arrivalTime)
         if (stationObject) {
           return {
-            arrivalTime: detail.arrivalTime,
+            arrivalTime: new Date(detail.arrivalTime),
             stations: stationObject,
           }
         }
@@ -125,7 +142,6 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
     return updatedArray.filter((item) => item !== null)
   }
 
-  console.log('subStationDetails', subStationDetails)
   const userSchema = Yup.object().shape({
     trainId: Yup.string(),
     departureStationId: Yup.string(),
@@ -150,7 +166,7 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
       arrivalTime: item.arrivalTime.toISOString(),
     }))
     const payload = {
-      id: '',
+      id: action === 'edit' ? parentData?.id : '',
       trainId: trainData.id,
       departureStationId: selectedDepartureStation[0].id,
       arrivalStationId: selectedArrivalStation[0].id,
@@ -158,23 +174,22 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
       arrivalTime: arrivalTime.toISOString(),
       subStationDetails: modifiedSubStationData,
     }
-    console.log(payload)
+
     try {
       const response = await ScheduleAPIService.createSchedule(payload)
       if (response) {
-        console.log(response)
+        await toast.success(
+          response?.successMessage || 'Schedule Created Successfully',
+        )
         await callBackData()
         await onClose()
       } else {
         console.log(response)
+        toast.error(response?.message || 'Error try again')
       }
     } catch (e) {
       console.log(e)
     }
-  }
-
-  const handleChangeTrains = (selected) => {
-    setSelectedTrain(selected)
   }
 
   const handleChangeDepartureStation = (selected) => {
@@ -209,39 +224,41 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
   }
 
   return (
-    <Modal
-      show={openDialog}
-      onHide={onClose}
-      backdrop="static"
-      size="lg"
-      centered
-      keyboard={false}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {action === 'edit' ? 'Edit Schedule' : 'Add Schedule'}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {action === 'edit' && dataLoading ? (
-          <center>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </center>
-        ) : (
-          <Formik
-            initialValues={
-              action === 'edit'
-                ? { ...initialValues, ...parentData }
-                : initialValues
-            }
-            validationSchema={userSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
-                {/* <Row>
+    <Fragment>
+      <ToastContainer />
+      <Modal
+        show={openDialog}
+        onHide={onClose}
+        backdrop="static"
+        size="lg"
+        centered
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {action === 'edit' ? 'Edit Schedule' : 'Add Schedule'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {action === 'edit' && dataLoading ? (
+            <center>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </center>
+          ) : (
+            <Formik
+              initialValues={
+                action === 'edit'
+                  ? { ...initialValues, ...parentData }
+                  : initialValues
+              }
+              validationSchema={userSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ handleSubmit }) => (
+                <Form onSubmit={handleSubmit}>
+                  {/* <Row>
                   <Col sm={12}>
                     <Form.Group>
                       <Form.Label>Train</Form.Label>
@@ -257,100 +274,69 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
                   </Col>
                 </Row> */}
 
-                <Row style={{ marginTop: '10px' }}>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Departure Station*</Form.Label>
-                      <Typeahead
-                        id="departureStationId"
-                        labelKey="name"
-                        options={stations}
-                        selected={selectedDepartureStation}
-                        onChange={handleChangeDepartureStation}
-                        placeholder="Select options..."
-                        isLoading={isStationsLoading}
-                        disabled={isStationsLoading}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Departure Time*</Form.Label>
-                      <br />
-                      <DatePicker
-                        showTimeSelect
-                        selected={departureTime}
-                        onChange={(date) => setDepartureTime(date)}
-                        dateFormat="Pp"
-                        minDate={new Date()}
-                        maxDate={new Date().setDate(new Date().getDate() + 30)}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row style={{ marginTop: '10px' }}>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Arrival Station*</Form.Label>
-                      <Typeahead
-                        id="arrivalStationId"
-                        labelKey="name"
-                        options={stations}
-                        selected={selectedArrivalStation}
-                        onChange={handleChangeArrivalStation}
-                        placeholder="Select options..."
-                        isLoading={isStationsLoading}
-                        disabled={isStationsLoading}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col sm={6}>
-                    <Form.Group>
-                      <Form.Label>Arrival Time*</Form.Label>
-                      <br />
-                      <DatePicker
-                        showTimeSelect
-                        selected={arrivalTime}
-                        onChange={(date) => setArrivalTime(date)}
-                        dateFormat="Pp"
-                        minDate={new Date()}
-                        maxDate={new Date().setDate(new Date().getDate() + 30)}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <div
-                  style={{
-                    border: '1px solid #8428E2',
-                    marginTop: '20px',
-                    padding: '10px',
-                    borderRadius: '10px',
-                  }}
-                >
-                  <h6 style={{ fontWeight: 700 }}>Sub Station/s Details</h6>
-                  <hr />
-                  <Row style={{}}>
+                  <Row style={{ marginTop: '10px' }}>
                     <Col sm={6}>
-                      <Form.Group style={{}}>
-                        <Form.Label>Sub Station*</Form.Label>
+                      <Form.Group>
+                        <Form.Label>Departure Station*</Form.Label>
                         <Typeahead
-                          id="subStationDetails"
+                          id="departureStationId"
                           labelKey="name"
-                          // multiple
-                          options={filteredStations}
-                          selected={selectedStations}
-                          onChange={handleChangeStations}
+                          options={stations}
+                          selected={selectedDepartureStation}
+                          onChange={handleChangeDepartureStation}
                           placeholder="Select options..."
                           isLoading={isStationsLoading}
                           disabled={isStationsLoading}
                         />
-                        <ErrorMessage
-                          name="passengerClasses"
-                          component="div"
-                          className="text-danger"
+                        {!selectedDepartureStation && (
+                          <div style={{ color: 'red', fontSize: '14px' }}>
+                            Departure station is Required!
+                          </div>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col sm={6}>
+                      <Form.Group>
+                        <Form.Label>Departure Time*</Form.Label>
+                        <br />
+                        <DatePicker
+                          showTimeSelect
+                          selected={departureTime}
+                          onChange={(date) => setDepartureTime(date)}
+                          dateFormat="Pp"
+                          minDate={new Date()}
+                          maxDate={new Date().setDate(
+                            new Date().getDate() + 30,
+                          )}
                         />
+                        {!departureTime && (
+                          <div style={{ color: 'red', fontSize: '14px' }}>
+                            Departure time is Required!
+                          </div>
+                        )}
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: '10px' }}>
+                    <Col sm={6}>
+                      <Form.Group>
+                        <Form.Label>Arrival Station*</Form.Label>
+                        <Typeahead
+                          id="arrivalStationId"
+                          labelKey="name"
+                          options={stations}
+                          selected={selectedArrivalStation}
+                          onChange={handleChangeArrivalStation}
+                          placeholder="Select options..."
+                          isLoading={isStationsLoading}
+                          disabled={isStationsLoading}
+                        />
+                        {!selectedArrivalStation && (
+                          <div style={{ color: 'red', fontSize: '14px' }}>
+                            Arrival station is Required!
+                          </div>
+                        )}
                       </Form.Group>
                     </Col>
                     <Col sm={6}>
@@ -359,108 +345,174 @@ const ScheduleDialog = ({ settings, onClose, trainData, callBackData }) => {
                         <br />
                         <DatePicker
                           showTimeSelect
-                          selected={subStationArrivalTime}
-                          onChange={(date) => setSubStationArrivalTime(date)}
+                          selected={arrivalTime}
+                          onChange={(date) => setArrivalTime(date)}
                           dateFormat="Pp"
                           minDate={new Date()}
                           maxDate={new Date().setDate(
                             new Date().getDate() + 30,
                           )}
                         />
+                        {!arrivalTime && (
+                          <div style={{ color: 'red', fontSize: '14px' }}>
+                            Arrival time is Required!
+                          </div>
+                        )}
                       </Form.Group>
                     </Col>
-                    <Button
-                      onClick={handleAddButtonClick}
-                      style={{
-                        width: '200px',
-                        marginTop: '10px',
-                        alignSelf: 'right',
-                        marginLeft: '10px',
-                        backgroundColor: '#7E5AE9',
-                        border: 'none',
-                      }}
-                      disabled={selectedStations?.length === 0}
-                    >
-                      Add
-                    </Button>
                   </Row>
-                </div>
 
-                {subStationDetails.length > 0 && (
-                  <Table striped bordered hover style={{ marginTop: '20px' }}>
-                    <thead>
-                      <tr>
-                        <th>Station Name</th>
-                        <th>Arrival Time</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {subStationDetails.map((subStation, index) => (
-                        <tr key={index}>
-                          <td>
-                            {subStation.stations
-                              .map((station) => station.name)
-                              .join(', ')}
-                          </td>
-                          <td>{subStation.arrivalTime.toLocaleString()}</td>
-                          <td>
-                            <Button
-                              variant="danger"
-                              onClick={() => handleRemoveButtonClick(index)}
-                            >
-                              X
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                )}
-
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px',
-                  }}
-                >
-                  <Row>
-                    <Col sm={6}>
+                  <div
+                    style={{
+                      border: '1px solid #8428E2',
+                      marginTop: '20px',
+                      padding: '10px',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <h6 style={{ fontWeight: 700 }}>Sub Station/s Details</h6>
+                    <hr />
+                    <Row style={{}}>
+                      <Col sm={6}>
+                        <Form.Group style={{}}>
+                          <Form.Label>Sub Station*</Form.Label>
+                          <Typeahead
+                            id="subStationDetails"
+                            labelKey="name"
+                            // multiple
+                            options={filteredStations}
+                            selected={selectedStations}
+                            onChange={handleChangeStations}
+                            placeholder="Select options..."
+                            isLoading={isStationsLoading}
+                            disabled={isStationsLoading}
+                          />
+                          <ErrorMessage
+                            name="passengerClasses"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={6}>
+                        <Form.Group>
+                          <Form.Label>Arrival Time*</Form.Label>
+                          <br />
+                          <DatePicker
+                            showTimeSelect
+                            selected={subStationArrivalTime}
+                            onChange={(date) => setSubStationArrivalTime(date)}
+                            dateFormat="Pp"
+                            minDate={new Date()}
+                            maxDate={new Date().setDate(
+                              new Date().getDate() + 30,
+                            )}
+                          />
+                        </Form.Group>
+                      </Col>
+                      {subStationDetails?.length === 0 && (
+                        <div style={{ color: 'red', fontSize: '14px' }}>
+                          Atleast one Sub Station should be assigned to the
+                          schedule!
+                        </div>
+                      )}
                       <Button
-                        variant="secondary"
-                        onClick={onClose}
+                        onClick={handleAddButtonClick}
                         style={{
-                          border: 'none',
-                          borderRadius: '46px',
+                          width: '200px',
+                          marginTop: '10px',
+                          alignSelf: 'right',
                           marginLeft: '10px',
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </Col>
-                    <Col sm={6}>
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        // disabled={!isValid}
-                        style={{
-                          backgroundColor: '#8428E2',
+                          backgroundColor: '#7E5AE9',
                           border: 'none',
-                          borderRadius: '46px',
                         }}
+                        disabled={selectedStations?.length === 0}
                       >
-                        Save
+                        Add
                       </Button>
-                    </Col>
-                  </Row>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </Modal.Body>
-    </Modal>
+                    </Row>
+                  </div>
+
+                  {subStationDetails.length > 0 && (
+                    <Table striped bordered hover style={{ marginTop: '20px' }}>
+                      <thead>
+                        <tr>
+                          <th>Station Name</th>
+                          <th>Arrival Time</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {subStationDetails.map((subStation, index) => (
+                          <tr key={index}>
+                            <td>
+                              {subStation.stations
+                                .map((station) => station.name)
+                                .join(', ')}
+                            </td>
+                            <td>{subStation.arrivalTime.toLocaleString()}</td>
+                            <td>
+                              <Button
+                                variant="danger"
+                                onClick={() => handleRemoveButtonClick(index)}
+                              >
+                                X
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      marginTop: '20px',
+                    }}
+                  >
+                    <Row>
+                      <Col sm={6}>
+                        <Button
+                          variant="secondary"
+                          onClick={onClose}
+                          style={{
+                            border: 'none',
+                            borderRadius: '46px',
+                            marginLeft: '10px',
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </Col>
+                      <Col sm={6}>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          disabled={
+                            !selectedDepartureStation ||
+                            !selectedArrivalStation ||
+                            subStationDetails?.length === 0
+                          }
+                          style={{
+                            backgroundColor: '#8428E2',
+                            border: 'none',
+                            borderRadius: '46px',
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          )}
+        </Modal.Body>
+      </Modal>
+    </Fragment>
   )
 }
 

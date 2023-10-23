@@ -3,21 +3,23 @@
  * Author: Dunusinghe A.V./IT20025526
  */
 
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useReducer, useState } from 'react'
 import StyledTable from '../../components/TMTable'
 import Loader from '../../components/TMLoader'
 import MainLayout from '../../components/Layouts/MainLayout'
 import LayoutHeader from '../../components/Layouts/LayoutHeader'
 import DropdownStyledButton from '../../components/TMDropdownButton'
-import { ROLES, STATUS_LIST } from '../../configs/static-configs'
+import { ROLES, STATUS_LIST, authDetails } from '../../configs/static-configs'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 import { FaPlus, FaSearch } from 'react-icons/fa'
 import { USERS_HEADERS } from '../../configs/dataConfig'
 import UserAPIService from '../../api-layer/users'
 import UserDialog from './UserDialog'
 import ConfirmationDialog from '../../components/TMConfirmationDialog'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function UserList() {
+  const auth = authDetails()
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -120,6 +122,9 @@ export default function UserList() {
       }
       const response = await UserAPIService.updateUserStatus(payload)
       if (response) {
+        await toast.success(
+          response?.successMessage || 'Successfully changed the status',
+        )
         await getAllUsers()
         await setSelectedIds([])
       }
@@ -177,28 +182,38 @@ export default function UserList() {
             }}
           />
         </InputGroup>
-        <Button
-          style={{
-            height: '46px',
-            backgroundColor: '#7E5AE9',
-            border: 'none',
-            borderRadius: '46px',
-            width: '170px',
-          }}
-          onClick={() =>
-            setUserSettings({
-              openDialog: true,
-              action: 'add',
-              parentData: null,
-            })
-          }
-        >
-          <FaPlus /> Add
-        </Button>
+        {auth?.role === 'Travel Agent' && (
+          <Button
+            style={{
+              height: '46px',
+              backgroundColor: '#7E5AE9',
+              border: 'none',
+              borderRadius: '46px',
+              width: '170px',
+            }}
+            onClick={() =>
+              setUserSettings({
+                openDialog: true,
+                action: 'add',
+                parentData: null,
+              })
+            }
+          >
+            <FaPlus /> Add
+          </Button>
+        )}
         {selectedIds?.length > 0 ? (
           <DropdownStyledButton
             dropdownTitle={'Change status'}
-            items={STATUS_LIST.filter((status) => status.showOnChange === true)}
+            items={STATUS_LIST.filter(
+              (status) => status.showOnChange === true,
+            ).map((status) => ({
+              ...status,
+              isDisabledToRole:
+                auth?.role === 'Back Office'
+                  ? status.id === 4
+                  : status.id === 2 || status.id === 3,
+            }))}
             handleChange={handleStatusChange}
             selectedStatus={selectedStatus}
             changeMode={true}
@@ -226,6 +241,7 @@ export default function UserList() {
   console.log(userSettings.openDialog)
   return (
     <MainLayout loading={true} loadingTime={2000}>
+      <ToastContainer />
       <div className="users-container">
         <ConfirmationDialog
           title="Confirm Status Change"
