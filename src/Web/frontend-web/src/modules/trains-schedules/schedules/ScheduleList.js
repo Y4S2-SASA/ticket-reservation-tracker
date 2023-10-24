@@ -28,6 +28,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 export default function ScheduleList({ handleStep, trainData }) {
   const history = useHistory()
+  const [dataLoading, setDataLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -71,6 +72,7 @@ export default function ScheduleList({ handleStep, trainData }) {
 
   const getAllSchedules = async () => {
     try {
+      setDataLoading(true)
       const payload = {
         trainId: trainData?.id,
         departureStationId: selectedAvailability ? selectedAvailability : '',
@@ -95,6 +97,7 @@ export default function ScheduleList({ handleStep, trainData }) {
       }
     } catch (e) {
     } finally {
+      setDataLoading(false)
     }
   }
 
@@ -339,6 +342,8 @@ export default function ScheduleList({ handleStep, trainData }) {
         onDeleteClick={handleDeleteClick}
         handlePageChange={handlePageChange}
         currentPage={currentPage}
+        isLoadingEnabaled={true}
+        isLoading={dataLoading}
       />
 
       <div

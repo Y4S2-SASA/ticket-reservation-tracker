@@ -20,6 +20,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 export default function UserList() {
   const auth = authDetails()
+  const [dataLoading, setDataLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -47,6 +48,7 @@ export default function UserList() {
 
   const getAllUsers = async () => {
     try {
+      setDataLoading(true)
       const payload = {
         searchText: searchText,
         status: filterByStatus,
@@ -70,6 +72,7 @@ export default function UserList() {
       }
     } catch (e) {
     } finally {
+      setDataLoading(false)
     }
   }
   console.log(searchParameters)
@@ -274,6 +277,8 @@ export default function UserList() {
           onDeleteClick={handleDeleteClick}
           handlePageChange={handlePageChange}
           currentPage={currentPage}
+          isLoadingEnabaled={true}
+          isLoading={dataLoading}
         />
         <div>
           {userSettings.openDialog && (
