@@ -362,7 +362,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                             name="dateTime"
                             selected={formDataStartDate}
                             onChange={(date) => setFormDataStartDate(date)}
-                            // minDate={new Date()}
+                            minDate={new Date()}
                             maxDate={new Date().setDate(
                               new Date().getDate() + 30,
                             )}

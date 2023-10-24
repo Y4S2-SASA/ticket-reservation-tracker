@@ -25,6 +25,7 @@ import { useHistory } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 
 export default function TrainList() {
+  const [dataLoading, setDataLoading] = useState(true);
   const history = useHistory()
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -54,6 +55,7 @@ export default function TrainList() {
 
   const getAllTrains = async () => {
     try {
+      setDataLoading(true)
       const payload = {
         searchText: searchText,
         status: filterByStatus,
@@ -78,6 +80,7 @@ export default function TrainList() {
       }
     } catch (e) {
     } finally {
+      setDataLoading(false)
     }
   }
 
@@ -345,6 +348,8 @@ export default function TrainList() {
           onDeleteClick={handleDeleteClick}
           handlePageChange={handlePageChange}
           currentPage={currentPage}
+          isLoadingEnabaled={true}
+          isLoading={dataLoading}
         />
         <div>
           {settings.openDialog && (

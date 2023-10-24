@@ -37,13 +37,13 @@ export default function BookingsList() {
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
 
-  const ableToDeleteEdit = async (id) => {
-    const reservation = await filteredData.filter((data) => data.id === id)
+  const ableToDeleteEdit = (id) => {
+    const reservation = filteredData.filter((data) => data.id === id)
 
     if (reservation) {
-      const reservationDate = await new Date(reservation[0]?.dateTime)
+      const reservationDate = new Date(reservation[0]?.dateTime)
       const today = new Date()
-      const timeDifference = today - reservationDate
+      const timeDifference = reservationDate - today
       const daysDifference = timeDifference / (1000 * 60 * 60 * 24)
       console.log(daysDifference)
       if (daysDifference >= 5) {
