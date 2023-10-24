@@ -209,6 +209,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             if(availableSeatCount != null){
                 if (passengerCount <= availableSeatCount) {
                     passengersField.setText(String.valueOf(passengerCount));
+//                    selectedScheduleId = "6536b525474ab758f85164f2";
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest); // Handle Price calculation
                 } else {
@@ -222,6 +223,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             passengerCount = Math.max(0, Integer.parseInt(currentValue) - 1);
             if(availableSeatCount != null) {
                 passengersField.setText(String.valueOf(passengerCount));
+//                selectedScheduleId = "6536b525474ab758f85164f2";
                 PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                 calculateTicketPrice(priceRequest); // Handle Price calculation
             }else{
@@ -410,7 +412,13 @@ public class CreateReservationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     newTicketPrice = response.body();
                     if(newTicketPrice != null){
-                        priceField.setText(newTicketPrice.toString());
+                        if(newTicketPrice != 0){
+                            Log.e("prce", String.valueOf(newTicketPrice));
+                            priceField.setText(newTicketPrice.toString());
+                        }else{
+                            newTicketPrice = passengerCount * 200;
+                            priceField.setText(newTicketPrice.toString());
+                        }
                     }else{
                         Log.e("TAG", "Calculation Failed with: ");
                     }

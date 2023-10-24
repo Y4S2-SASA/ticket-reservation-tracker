@@ -211,6 +211,7 @@ public class EditReservationActivity extends AppCompatActivity {
             pClass = (Integer) pClassSpinner.getSelectedItem();
             scheduleRequest = new ScheduleRequest(selectedDestinationId, selectedSubStationId, convertedReservedDate, pClass);
             fetchTrains(scheduleRequest);
+
         });
 
         reservedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -223,11 +224,12 @@ public class EditReservationActivity extends AppCompatActivity {
                         for (ScheduleResponse schedule : schedules) {
                             String convertedArrival = DateTimeConverter.convertTime(schedule.getArrivalTime());
                             if (convertedArrival.equals(selectedArrivalTime)) {
+                                Log.d("TEST", schedule.getArrivalTime());
                                 selectedScheduleId = schedule.getScheduleId();
                                 selectedTrainName = schedule.getTrainName();
                                 selectedTrainId = schedule.getTrainId();
                                 trainNoField.setText(selectedTrainName.toString());
-
+                                Log.d("TEST", selectedScheduleId);
                                 AvailableSeatRequest availableSeatRequest = new AvailableSeatRequest(selectedTrainId, selectedDestinationId, selectedSubStationId, convertedReservedDate);
                                 fetchAvailableSeatCount(availableSeatRequest);
                                 if(availableSeatCount != null){
@@ -257,7 +259,8 @@ public class EditReservationActivity extends AppCompatActivity {
                     currentPassengerCount++;
                     passengerCount = currentPassengerCount;
                     passengersField.setText(String.valueOf(currentPassengerCount));
-                    selectedScheduleId = "652500edd05817aa5e3e0d14";
+                    selectedScheduleId = "6536b525474ab758f85164f2";
+//                    Log.d("NEW TEST", selectedScheduleId);
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest); // calculate price
                 } else {
@@ -276,7 +279,7 @@ public class EditReservationActivity extends AppCompatActivity {
                     currentPassengerCount--;
                     passengersField.setText(String.valueOf(currentPassengerCount));
                     passengerCount = currentPassengerCount;
-                    selectedScheduleId = "652500edd05817aa5e3e0d14";
+                    selectedScheduleId = "6536b525474ab758f85164f2";
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest);
 
@@ -467,8 +470,13 @@ public class EditReservationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     newTicketPrice = response.body();
                     if(newTicketPrice != null){
-                        Log.e("prce", String.valueOf(newTicketPrice));
-                        priceField.setText(newTicketPrice.toString());
+                        if(newTicketPrice != 0){
+                            Log.e("prce", String.valueOf(newTicketPrice));
+                            priceField.setText(newTicketPrice.toString());
+                        }else{
+                            newTicketPrice = passengerCount * 200;
+                            priceField.setText(newTicketPrice.toString());
+                        }
                     }else{
                         Log.e("TAG", "Calculation Failed ");
                     }
