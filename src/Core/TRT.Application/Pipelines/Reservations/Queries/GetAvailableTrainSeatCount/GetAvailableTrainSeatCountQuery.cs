@@ -50,7 +50,8 @@ namespace TRT.Application.Pipelines.Reservations.Queries.GetAvailableTrainSeatCo
 
             var listOfReservationList = (await _reservationQueryRepository.Query(x=>x.TrainId == request.TrainId &&
                                         x.DestinationStationId == request.DestinationStationId && 
-                                        x.ArrivalStationId == request.ArrivalStationId && 
+                                        x.ArrivalStationId == request.ArrivalStationId &&
+                                        x.Status == Domain.Enums.Status.Activated &&
                                         x.DateTime >= startDate && x.DateTime <= endDate))
                                         .ToList();
 

@@ -3,7 +3,7 @@
  * Author: Bartholomeusz S.V/IT20274702
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import { Formik, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -17,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import MasterDataAPIService from '../../api-layer/master-data'
 import ScheduleAPIService from '../../api-layer/schedules'
 import ReservationsAPIService from '../../api-layer/reservations'
+import { ToastContainer, toast } from 'react-toastify'
 
 const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   const { openDialog, action, parentData } = settings
@@ -56,7 +57,7 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
     try {
       setStationsLoading(true)
       const stationsRes = await MasterDataAPIService.getAllStationMasterData()
-      const _stations = stationsRes.map((station) => ({
+      const _stations = stationsRes?.map((station) => ({
         label: station.name,
         id: station.id,
       }))
@@ -172,7 +173,10 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
 
   const userSchema = Yup.object().shape({
     trainName: Yup.string().required('Name is required'),
-    seatCapacity: Yup.number().required('Capacity is required'),
+    seatCapacity: Yup.number()
+      .min(1, 'Capacity must be at least 1')
+      .max(20, 'Capacity cannot exceed 20')
+      .required('Capacity is required'),
     availableDays: Yup.number().required('Availability is required'),
     passengerClasses: Yup.array()
       .min(1, 'Select at least one class')
@@ -207,11 +211,14 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
       }
       const response = await ReservationsAPIService.saveReservation(payload)
       if (response) {
-        console.log(response)
+        await toast.success(
+          response?.successMessage || 'Schedule Created Successfully',
+        )
         // await callBackData()
         // await onClose()
       } else {
         console.log(response)
+        toast.error(response?.message || 'Error try again')
       }
     } catch (e) {
       console.log(e)
@@ -247,217 +254,123 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
   }
 
   return (
-    <Modal
-      show={openDialog}
-      onHide={onClose}
-      backdrop="static"
-      keyboard={false}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {action === 'edit' ? 'Edit Reservation' : 'Add Reservation'}
-        </Modal.Title>
-      </Modal.Header>
+    <Fragment>
+      <ToastContainer />
+      <Modal
+        show={openDialog}
+        onHide={onClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {action === 'edit' ? 'Edit Reservation' : 'Add Reservation'}
+          </Modal.Title>
+        </Modal.Header>
 
-      <Modal.Body>
-        {action === 'edit' && dataLoading ? (
-          <center>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </center>
-        ) : (
-          <Formik
-            initialValues={
-              action === 'edit'
-                ? { ...initialValues, ...parentData }
-                : initialValues
-            }
-            validationSchema={userSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isValid, handleSubmit, values, setFieldValue }) => (
-              <>
-                <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col sm={6}>
-                      <Form.Group>
-                        <Form.Label>Destination station*</Form.Label>
-                        <Typeahead
-                          clearButton
-                          id="des"
-                          defaultSelected={stations.filter(
-                            (station) =>
-                              station.id === formDataDestination[0]?.id,
-                          )}
-                          name="destinationStationName"
-                          onChange={(destination) =>
-                            setFormDataDestination(destination)
-                          }
-                          isLoading={isStationsLoading}
-                          disabled={isStationsLoading}
-                          options={stations}
-                          placeholder="Choose destination"
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col sm={6}>
-                      <Form.Group>
-                        <Form.Label>Origin station*</Form.Label>
-                        <Typeahead
-                          clearButton
-                          id="ori"
-                          defaultSelected={stations.filter(
-                            (station) => station.id === formDataOrigin[0]?.id,
-                          )}
-                          name="arrivalStationName"
-                          onChange={(_origin) => setFormDataOrigin(_origin)}
-                          isLoading={isStationsLoading}
-                          disabled={isStationsLoading}
-                          options={stations}
-                          placeholder="Choose origin station"
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row style={{ marginTop: '10px' }}>
-                    <Col sm={6}>
-                      <Form.Group style={{}}>
-                        <Form.Label>Passenger class*</Form.Label>
-                        <Field
-                          onChange={(e) =>
-                            setFormDataSelectedPclass(e.target.value)
-                          }
-                          value={formDataselectedPClass}
-                          name="passengerClass"
-                          as="select"
-                          style={{
-                            width: '100%',
-                            height: '37px',
-                            border: '1px solid #dee2e6',
-                            borderRadius: '0.375rem',
-                          }}
-                        >
-                          {TRAIN_PASSENGER_CLASSES.map((item, index) => (
-                            <option key={index} value={item.id}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </Field>
-                      </Form.Group>
-                    </Col>
-                    <Col sm={6}>
-                      <Form.Group style={{}}>
-                        <Form.Label>Booking date*</Form.Label>
-                        <DatePicker
-                          name="dateTime"
-                          selected={formDataStartDate}
-                          onChange={(date) => setFormDataStartDate(date)}
-                          // minDate={new Date()}
-                          maxDate={new Date().setDate(
-                            new Date().getDate() + 30,
-                          )}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Col>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginTop: '20px',
-                      }}
-                    >
-                      <Row>
-                        <Col sm={12}>
-                          <Button
-                            variant="secondary"
-                            onClick={checkTrainAvailability}
+        <Modal.Body>
+          {action === 'edit' && dataLoading ? (
+            <center>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </center>
+          ) : (
+            <Formik
+              initialValues={
+                action === 'edit'
+                  ? { ...initialValues, ...parentData }
+                  : initialValues
+              }
+              validationSchema={userSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isValid, handleSubmit, values, setFieldValue }) => (
+                <>
+                  <Form onSubmit={handleSubmit}>
+                    <Row>
+                      <Col sm={6}>
+                        <Form.Group>
+                          <Form.Label>Destination station*</Form.Label>
+                          <Typeahead
+                            clearButton
+                            id="des"
+                            defaultSelected={stations.filter(
+                              (station) =>
+                                station.id === formDataDestination[0]?.id,
+                            )}
+                            name="destinationStationName"
+                            onChange={(destination) =>
+                              setFormDataDestination(destination)
+                            }
+                            isLoading={isStationsLoading}
+                            disabled={isStationsLoading}
+                            options={stations}
+                            placeholder="Choose destination"
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={6}>
+                        <Form.Group>
+                          <Form.Label>Origin station*</Form.Label>
+                          <Typeahead
+                            clearButton
+                            id="ori"
+                            defaultSelected={stations.filter(
+                              (station) => station.id === formDataOrigin[0]?.id,
+                            )}
+                            name="arrivalStationName"
+                            onChange={(_origin) => setFormDataOrigin(_origin)}
+                            isLoading={isStationsLoading}
+                            disabled={isStationsLoading}
+                            options={stations}
+                            placeholder="Choose origin station"
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row style={{ marginTop: '10px' }}>
+                      <Col sm={6}>
+                        <Form.Group style={{}}>
+                          <Form.Label>Passenger class*</Form.Label>
+                          <Field
+                            onChange={(e) =>
+                              setFormDataSelectedPclass(e.target.value)
+                            }
+                            value={formDataselectedPClass}
+                            name="passengerClass"
+                            as="select"
                             style={{
-                              border: 'none',
-                              borderRadius: '46px',
-                              marginLeft: '10px',
+                              width: '100%',
+                              height: '37px',
+                              border: '1px solid #dee2e6',
+                              borderRadius: '0.375rem',
                             }}
                           >
-                            {isSchedulesLoading ? (
-                              <Spinner />
-                            ) : (
-                              'Check Availability'
+                            {TRAIN_PASSENGER_CLASSES?.map((item, index) => (
+                              <option key={index} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </Field>
+                        </Form.Group>
+                      </Col>
+                      <Col sm={6}>
+                        <Form.Group style={{}}>
+                          <Form.Label>Booking date*</Form.Label>
+                          <DatePicker
+                            name="dateTime"
+                            selected={formDataStartDate}
+                            onChange={(date) => setFormDataStartDate(date)}
+                            minDate={new Date()}
+                            maxDate={new Date().setDate(
+                              new Date().getDate() + 30,
                             )}
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Col>
-                  {isScheduleAvailable && !isSchedulesLoading && (
-                    <>
-                      <Row style={{ marginTop: '10px' }}>
-                        <Col sm={6}>
-                          <Form.Group style={{}}>
-                            <Form.Label>Time*</Form.Label>
-                            <Field
-                              onChange={(e) => handleSelectTime(e)}
-                              value={selectedTrain.arrivalTime}
-                              name="time"
-                              as="select"
-                              style={{
-                                width: '100%',
-                                height: '37px',
-                                border: '1px solid #dee2e6',
-                                borderRadius: '0.375rem',
-                              }}
-                            >
-                              {schedules.map((train, index) => (
-                                <option
-                                  key={index}
-                                  value={JSON.stringify(train)}
-                                >
-                                  {new Date(
-                                    train.arrivalTime,
-                                  ).toLocaleTimeString([], {
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit',
-                                  })}
-                                </option>
-                              ))}
-                            </Field>
-                          </Form.Group>
-                        </Col>
-                        <Col sm={6}>
-                          <Form.Group style={{}}>
-                            <Form.Label>Train</Form.Label>
-                            <Form.Control
-                              name="trainName"
-                              value={getTrainObj('trainName')}
-                            />
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row style={{ marginTop: '10px' }}>
-                        <Col sm={12}>
-                          <Form.Group>
-                            <Form.Label>Passenger count*</Form.Label>
-                            <Field name="seatCapacity">
-                              {({ field }) => (
-                                <Form.Control
-                                  {...field}
-                                  onChange={(e) => {
-                                    setPassengerCount(e.target.value)
-                                    field.onChange(e)
-                                  }}
-                                />
-                              )}
-                            </Field>
-                            <ErrorMessage
-                              name="seatCapacity"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Col>
                       <div
                         style={{
                           display: 'flex',
@@ -469,78 +382,175 @@ const BookingDialog = ({ settings, onClose, onSave, callBackData }) => {
                           <Col sm={12}>
                             <Button
                               variant="secondary"
-                              onClick={checkPrice}
+                              onClick={checkTrainAvailability}
                               style={{
                                 border: 'none',
                                 borderRadius: '46px',
                                 marginLeft: '10px',
                               }}
                             >
-                              {isPriceLoading ? <Spinner /> : 'Check Price'}
+                              {isSchedulesLoading ? (
+                                <Spinner />
+                              ) : (
+                                'Check Availability'
+                              )}
                             </Button>
                           </Col>
                         </Row>
                       </div>
-                      {readyToSubmit && (
-                        <Row>
-                          <Col sm={12}>
+                    </Col>
+                    {isScheduleAvailable && !isSchedulesLoading && (
+                      <>
+                        <Row style={{ marginTop: '10px' }}>
+                          <Col sm={6}>
                             <Form.Group style={{}}>
-                              <Form.Label>Price</Form.Label>
-
-                              <Form.Control name="price" value={price} />
+                              <Form.Label>Time*</Form.Label>
+                              <Field
+                                onChange={(e) => handleSelectTime(e)}
+                                value={selectedTrain.arrivalTime}
+                                name="time"
+                                as="select"
+                                style={{
+                                  width: '100%',
+                                  height: '37px',
+                                  border: '1px solid #dee2e6',
+                                  borderRadius: '0.375rem',
+                                }}
+                              >
+                                {schedules?.map((train, index) => (
+                                  <option
+                                    key={index}
+                                    value={JSON.stringify(train)}
+                                  >
+                                    {new Date(
+                                      train.arrivalTime,
+                                    ).toLocaleTimeString([], {
+                                      hour: '2-digit',
+                                      minute: '2-digit',
+                                      second: '2-digit',
+                                    })}
+                                  </option>
+                                ))}
+                              </Field>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={6}>
+                            <Form.Group style={{}}>
+                              <Form.Label>Train</Form.Label>
+                              <Form.Control
+                                name="trainName"
+                                value={getTrainObj('trainName')}
+                              />
                             </Form.Group>
                           </Col>
                         </Row>
-                      )}
-                    </>
-                  )}
-                  {readyToSubmit && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginTop: '20px',
-                      }}
-                    >
-                      <Row>
-                        <Col sm={6}>
-                          <Button
-                            variant="secondary"
-                            onClick={onClose}
-                            style={{
-                              border: 'none',
-                              borderRadius: '46px',
-                              marginLeft: '10px',
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </Col>
-                        <Col sm={6}>
-                          <Button
-                            variant="secondary"
-                            //type="submit"
-                            onClick={() => _handleSubmit()}
-                            //disabled={!isValid}
-                            style={{
-                              backgroundColor: '#8428E2',
-                              border: 'none',
-                              borderRadius: '46px',
-                            }}
-                          >
-                            Save
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-                </Form>
-              </>
-            )}
-          </Formik>
-        )}
-      </Modal.Body>
-    </Modal>
+                        <Row style={{ marginTop: '10px' }}>
+                          <Col sm={12}>
+                            <Form.Group>
+                              <Form.Label>Passenger count*</Form.Label>
+                              <Field name="seatCapacity">
+                                {({ field }) => (
+                                  <Form.Control
+                                    {...field}
+                                    onChange={(e) => {
+                                      setPassengerCount(e.target.value)
+                                      field.onChange(e)
+                                    }}
+                                  />
+                                )}
+                              </Field>
+                              <ErrorMessage
+                                name="seatCapacity"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '20px',
+                          }}
+                        >
+                          <Row>
+                            <Col sm={12}>
+                              <Button
+                                variant="secondary"
+                                onClick={checkPrice}
+                                style={{
+                                  border: 'none',
+                                  borderRadius: '46px',
+                                  marginLeft: '10px',
+                                }}
+                              >
+                                {isPriceLoading ? <Spinner /> : 'Check Price'}
+                              </Button>
+                            </Col>
+                          </Row>
+                        </div>
+                        {readyToSubmit && (
+                          <Row>
+                            <Col sm={12}>
+                              <Form.Group style={{}}>
+                                <Form.Label>Price</Form.Label>
+
+                                <Form.Control name="price" value={price} />
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                        )}
+                      </>
+                    )}
+                    {readyToSubmit && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          marginTop: '20px',
+                        }}
+                      >
+                        <Row>
+                          <Col sm={6}>
+                            <Button
+                              variant="secondary"
+                              onClick={onClose}
+                              style={{
+                                border: 'none',
+                                borderRadius: '46px',
+                                marginLeft: '10px',
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </Col>
+                          <Col sm={6}>
+                            <Button
+                              variant="secondary"
+                              //type="submit"
+                              onClick={() => _handleSubmit()}
+                              //disabled={!isValid}
+                              style={{
+                                backgroundColor: '#8428E2',
+                                border: 'none',
+                                borderRadius: '46px',
+                              }}
+                            >
+                              Save
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
+                    )}
+                  </Form>
+                </>
+              )}
+            </Formik>
+          )}
+        </Modal.Body>
+      </Modal>
+    </Fragment>
   )
 }
 

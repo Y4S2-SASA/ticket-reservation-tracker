@@ -76,6 +76,15 @@ public class ReservationSummaryActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.reservationConfirmationCheckBox);
         confirmBtn.setEnabled(false);
 
+        destinationField.setEnabled(false);
+        subStationField.setEnabled(false);
+        reservedDateField.setEnabled(false);
+        passengerClassField.setEnabled(false);
+        trainNameField.setEnabled(false);
+        reservedTimeField.setEnabled(false);
+        priceField.setEnabled(false);
+        passengerCountField.setEnabled(false);
+
         // Acquire the extras from the Intent
         Intent intent = getIntent();
         ViewSummaryRequest viewSummaryRequest = (ViewSummaryRequest) intent.getSerializableExtra("viewSummaryRequest");

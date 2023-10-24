@@ -72,7 +72,7 @@ namespace TRT.API.Controllers
             }
         }
 
-        [Authorize(Roles = AuthorizedRoles.BackOffice)]
+        [Authorize(Roles = AuthorizedRoles.TravelAgent)]
         [HttpPost("getReservationsByFilter")]
         public async Task<IActionResult> GetReservationsByFilter(GetReservationsByFilterQuery reservationsByFilterQuery)
         {

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class CreateReservationActivity extends AppCompatActivity {
     private ApiInterface apiInterface;
     private EditText reservedDateField, passengersField, trainNoField, priceField;
     private TextView incrementBtn, decrementBtn;
+    private ImageView datePickerBtn;
     private AutoCompleteTextView searchDestinationField, searchSubStationField;
     private Spinner pClassSpinner,reservedTimeSpinner;
     private String id, token, selectedDestinationId, selectedSubStationId, reservedDate, convertedReservedDate, convertedTime, selectedTrainName, selectedScheduleId, selectedTrainId, selectedArrivalTime, selectedDestinationName, selectedSubStationName;
@@ -93,6 +95,7 @@ public class CreateReservationActivity extends AppCompatActivity {
         decrementBtn = findViewById(R.id.decrementBtn);
         incrementBtn = findViewById(R.id.incrementBtn);
         backBtn = findViewById(R.id.backBtn);
+        datePickerBtn = findViewById(R.id.imageView2);
 
         // Disable the fields
         reservedTimeSpinner.setEnabled(false);
@@ -140,6 +143,7 @@ public class CreateReservationActivity extends AppCompatActivity {
         maxDate.add(Calendar.DAY_OF_MONTH, 30);
 
         reservedDateField.setOnClickListener(view -> showDatePickerDialog());
+        datePickerBtn.setOnClickListener(view -> showDatePickerDialog());
         reservedDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -205,6 +209,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             if(availableSeatCount != null){
                 if (passengerCount <= availableSeatCount) {
                     passengersField.setText(String.valueOf(passengerCount));
+//                    selectedScheduleId = "6536b525474ab758f85164f2";
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest); // Handle Price calculation
                 } else {
@@ -218,6 +223,7 @@ public class CreateReservationActivity extends AppCompatActivity {
             passengerCount = Math.max(0, Integer.parseInt(currentValue) - 1);
             if(availableSeatCount != null) {
                 passengersField.setText(String.valueOf(passengerCount));
+//                selectedScheduleId = "6536b525474ab758f85164f2";
                 PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                 calculateTicketPrice(priceRequest); // Handle Price calculation
             }else{
@@ -406,7 +412,13 @@ public class CreateReservationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     newTicketPrice = response.body();
                     if(newTicketPrice != null){
-                        priceField.setText(newTicketPrice.toString());
+                        if(newTicketPrice != 0){
+                            Log.e("prce", String.valueOf(newTicketPrice));
+                            priceField.setText(newTicketPrice.toString());
+                        }else{
+                            newTicketPrice = passengerCount * 200;
+                            priceField.setText(newTicketPrice.toString());
+                        }
                     }else{
                         Log.e("TAG", "Calculation Failed with: ");
                     }

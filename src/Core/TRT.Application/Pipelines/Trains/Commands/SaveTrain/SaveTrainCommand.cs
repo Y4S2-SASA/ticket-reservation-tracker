@@ -48,6 +48,8 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                 if(string.IsNullOrEmpty(request.TrainDTO.Id))
                 {
                     var train = new Domain.Entities.Train();
+
+                    //map object
                     train = request.TrainDTO.ToEntity();
                     train.Status = TRT.Domain.Enums.Status.Pending;
                     var newTrain = await _trainCommandRepository.AddAsync(train, cancellationToken);
@@ -59,8 +61,10 @@ namespace TRT.Application.Pipelines.Trains.Commands.SaveTrain
                 {
                     var train = await _trainQueryRepository.GetById(request.TrainDTO.Id, cancellationToken);
 
+                    //map object
                     train = request.TrainDTO.ToEntity(train);
                     
+                    //handle passenger classes 
                     var existingPassengerClasses = train.PassengerClasses.ToList();
                     var selectedPassengerClasses = request.TrainDTO.PassengerClasses.ToList();
 

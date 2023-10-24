@@ -22,8 +22,10 @@ import {
 import { TRAIN_HEADERS } from '../../../configs/dataConfig'
 import ConfirmationDialog from '../../../components/TMConfirmationDialog'
 import { useHistory } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function TrainList() {
+  const [dataLoading, setDataLoading] = useState(true);
   const history = useHistory()
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
@@ -53,6 +55,7 @@ export default function TrainList() {
 
   const getAllTrains = async () => {
     try {
+      setDataLoading(true)
       const payload = {
         searchText: searchText,
         status: filterByStatus,
@@ -77,6 +80,7 @@ export default function TrainList() {
       }
     } catch (e) {
     } finally {
+      setDataLoading(false)
     }
   }
 
@@ -134,9 +138,18 @@ export default function TrainList() {
         status: selectedStatus,
       }
       const response = await TrainsAPIService.updateTrainStatus(payload)
-      if (response) {
+      console.log(response?.succeeded)
+      if (response?.succeeded) {
+        await toast.success(
+          response?.successMessage || 'Successfully changed the status',
+        )
         await getAllTrains()
         await setSelectedIds([])
+      } else {
+        await toast.error(
+          response?.errors[0] ||
+            'Try again. Cannot cancel trains with existing reservation/s.',
+        )
       }
       console.log(response)
     })
@@ -302,6 +315,7 @@ export default function TrainList() {
 
   return (
     <MainLayout loading={true} loadingTime={2000}>
+      <ToastContainer />
       <div className="trains-container">
         <ConfirmationDialog
           title="Confirm Status Change"
@@ -334,6 +348,8 @@ export default function TrainList() {
           onDeleteClick={handleDeleteClick}
           handlePageChange={handlePageChange}
           currentPage={currentPage}
+          isLoadingEnabaled={true}
+          isLoading={dataLoading}
         />
         <div>
           {settings.openDialog && (

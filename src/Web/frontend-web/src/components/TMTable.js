@@ -129,7 +129,9 @@ const StyledTable = ({
             {headers.map((header) => (
               <th key={header.key}>{header.label}</th>
             ))}
-            <th>Actions</th>
+            <th style={editEnabled && deleteEnabled ? { width: '150px' } : {}}>
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>{renderRows()}</tbody>

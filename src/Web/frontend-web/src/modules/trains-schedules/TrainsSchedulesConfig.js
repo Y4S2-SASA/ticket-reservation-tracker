@@ -16,6 +16,7 @@ import {
 } from '../../configs/static-configs'
 import { useParams } from 'react-router-dom'
 import ScheduleList from './schedules/ScheduleList'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function TrainsSchedulesConfig({
   settings,
@@ -66,7 +67,9 @@ export default function TrainsSchedulesConfig({
 
   const userSchema = Yup.object().shape({
     trainName: Yup.string().required('Name is required'),
-    seatCapacity: Yup.number().required('Capacity is required'),
+    seatCapacity: Yup.number()
+      .min(1, 'Select at least one seat')
+      .required('Capacity is required'),
     availableDays: Yup.number().required('Availability is required'),
     passengerClasses: Yup.array()
       .min(1, 'Select at least one class')
@@ -102,20 +105,25 @@ export default function TrainsSchedulesConfig({
 
       const response = await TrainsAPIService.createTrain(payload)
       if (response) {
-        console.log(response)
+        await toast.success(
+          response?.successMessage || 'Train Created Successfully',
+        )
         await setTrainData(response)
         // await callBackData()
         await setStep('schedule')
       } else {
+        toast.error(response?.message || 'Error try Again')
         console.log(response)
       }
     } catch (e) {
       console.log(e)
+      toast.error(e?.message || 'Error try Again')
     }
   }
 
   return (
     <MainLayout>
+      <ToastContainer />
       <center>
         <StepWizard
           currentActive={step === 'train' ? 1 : 2}

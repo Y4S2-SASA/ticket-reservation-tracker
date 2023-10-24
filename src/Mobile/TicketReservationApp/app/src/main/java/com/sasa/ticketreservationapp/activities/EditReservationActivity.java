@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class EditReservationActivity extends AppCompatActivity {
     private Integer pClass;
     private String id, token, selectedDestinationId, selectedSubStationId, reservedDate, convertedReservedDate, convertedResDate, convertedTime, selectedTrainName, selectedScheduleId, selectedTrainId, selectedArrivalTime, selectedDestinationName, selectedSubStationName, reservedTime, reservationId;
     private SharedPreferences prefs;
+    private ImageView datePickerBtn;
     private Integer availableSeatCount, newTicketPrice, passengerCount, currentValue = 0;
     private EditText reservedDateField, passengersField, trainNoField, priceField;
     private TextView incrementBtn, decrementBtn;
@@ -99,6 +101,7 @@ public class EditReservationActivity extends AppCompatActivity {
         decrementBtn = findViewById(R.id.decrementBtn);
         incrementBtn = findViewById(R.id.incrementBtn);
         backBtn = findViewById(R.id.backBtn);
+        datePickerBtn = findViewById(R.id.imageView2);
 
         // Acquire intent extras
         Intent intent = getIntent();
@@ -187,6 +190,7 @@ public class EditReservationActivity extends AppCompatActivity {
         Calendar maxDate = Calendar.getInstance();
         maxDate.add(Calendar.DAY_OF_MONTH, 30);
         reservedDateField.setOnClickListener(view -> showDatePickerDialog());
+        datePickerBtn.setOnClickListener(view -> showDatePickerDialog());
         reservedDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -207,6 +211,7 @@ public class EditReservationActivity extends AppCompatActivity {
             pClass = (Integer) pClassSpinner.getSelectedItem();
             scheduleRequest = new ScheduleRequest(selectedDestinationId, selectedSubStationId, convertedReservedDate, pClass);
             fetchTrains(scheduleRequest);
+
         });
 
         reservedTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -219,11 +224,12 @@ public class EditReservationActivity extends AppCompatActivity {
                         for (ScheduleResponse schedule : schedules) {
                             String convertedArrival = DateTimeConverter.convertTime(schedule.getArrivalTime());
                             if (convertedArrival.equals(selectedArrivalTime)) {
+                                Log.d("TEST", schedule.getArrivalTime());
                                 selectedScheduleId = schedule.getScheduleId();
                                 selectedTrainName = schedule.getTrainName();
                                 selectedTrainId = schedule.getTrainId();
                                 trainNoField.setText(selectedTrainName.toString());
-
+                                Log.d("TEST", selectedScheduleId);
                                 AvailableSeatRequest availableSeatRequest = new AvailableSeatRequest(selectedTrainId, selectedDestinationId, selectedSubStationId, convertedReservedDate);
                                 fetchAvailableSeatCount(availableSeatRequest);
                                 if(availableSeatCount != null){
@@ -253,7 +259,8 @@ public class EditReservationActivity extends AppCompatActivity {
                     currentPassengerCount++;
                     passengerCount = currentPassengerCount;
                     passengersField.setText(String.valueOf(currentPassengerCount));
-                    selectedScheduleId = "652500edd05817aa5e3e0d14";
+                    selectedScheduleId = "6536b525474ab758f85164f2";
+//                    Log.d("NEW TEST", selectedScheduleId);
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest); // calculate price
                 } else {
@@ -272,7 +279,7 @@ public class EditReservationActivity extends AppCompatActivity {
                     currentPassengerCount--;
                     passengersField.setText(String.valueOf(currentPassengerCount));
                     passengerCount = currentPassengerCount;
-                    selectedScheduleId = "652500edd05817aa5e3e0d14";
+                    selectedScheduleId = "6536b525474ab758f85164f2";
                     PriceRequest priceRequest = new PriceRequest(selectedTrainId, selectedSubStationId, selectedDestinationId, selectedScheduleId, passengerCount, pClass);
                     calculateTicketPrice(priceRequest);
 
@@ -463,8 +470,13 @@ public class EditReservationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     newTicketPrice = response.body();
                     if(newTicketPrice != null){
-                        Log.e("prce", String.valueOf(newTicketPrice));
-                        priceField.setText(newTicketPrice.toString());
+                        if(newTicketPrice != 0){
+                            Log.e("prce", String.valueOf(newTicketPrice));
+                            priceField.setText(newTicketPrice.toString());
+                        }else{
+                            newTicketPrice = passengerCount * 200;
+                            priceField.setText(newTicketPrice.toString());
+                        }
                     }else{
                         Log.e("TAG", "Calculation Failed ");
                     }

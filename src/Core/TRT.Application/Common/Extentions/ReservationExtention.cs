@@ -7,7 +7,7 @@ namespace TRT.Application.Common.Extentions
     {
         public static Reservation ToEntity(this ReservationDTO reservationDTO, Reservation? reservation = null)
         {
-            if(reservation is null) reservation = new Reservation();
+            if(reservation is null) reservation = new Reservation();  
 
             reservation.PassengerClass = reservationDTO.PassengerClass;
             reservation.DestinationStationId = reservationDTO.DestinationStationId;
