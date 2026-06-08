@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Text;
 using TRT.API.Services;
 using TRT.Application.Common.Interfaces;
@@ -24,39 +24,79 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
             //SwaggerGen DI Container
-            services.AddSwaggerGen(options =>
+            services.AddOpenApi(options =>
             {
-
-                options.SwaggerDoc("v1", new OpenApiInfo
+                options.AddDocumentTransformer((document, context, cancellationToken) =>
                 {
-                    Title = "TRT (EAD Assignment 1). - Web API Documentation",
-                    Version = "v1",
-                    Description = "23-Y4S2 SASA Development Team",
-                    TermsOfService = new Uri("https://example.com/terms")
-                });
-
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+                    var scheme = new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] { }
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "Enter your valid token in the text input below."
+                    };
+
+                    document.Components ??= new OpenApiComponents();
+
+                    if (document.Components.SecuritySchemes == null)
+                    {
+
+                        document.Components.SecuritySchemes = new Dictionary<string, IOpenApiSecurityScheme>();
                     }
+                    document.Components.SecuritySchemes["Bearer"] = scheme;
+
+                    var requirement = new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecuritySchemeReference("Bearer", document),
+                            new List<string>()
+                        }
+                    };
+
+                    document.Security ??= new List<OpenApiSecurityRequirement>();
+                    document.Security.Add(requirement);
+
+                    return Task.CompletedTask;
                 });
             });
+
+
+
+            //services.AddSwaggerGen(options =>
+            //{
+
+            //    options.SwaggerDoc("v1", new OpenApiInfo
+            //    {
+            //        Title = "TRT (EAD Assignment 1). - Web API Documentation",
+            //        Version = "v1",
+            //        Description = "23-Y4S2 SASA Development Team",
+            //        TermsOfService = new Uri("https://example.com/terms")
+            //    });
+
+            //    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            //    {
+            //        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+            //        Name = "Authorization",
+            //        In = ParameterLocation.Header,
+            //        Type = SecuritySchemeType.ApiKey,
+            //    });
+
+            //    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        {
+            //            new OpenApiSecurityScheme
+            //            {
+            //                Reference = new OpenApiReference {
+            //                Type = ReferenceType.SecurityScheme,
+            //                Id = "Bearer"
+            //            }
+            //        },
+            //        new string[] { }
+            //        }
+            //    });
+            //});
 
             //AddAuthentication DI Container
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
