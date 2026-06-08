@@ -1,0 +1,6 @@
+services:
+  trt.api:
+    image: ${DOCKER_REGISTRY-}trtapi
+    build:
+      context: .
+      dockerfile: Web/TRT.API/Dockerfile
