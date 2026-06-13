@@ -1,6 +1,20 @@
+version: "3.4"
+
 services:
+  trtdb:
+    image: mongo
+
   trt.api:
     image: ${DOCKER_REGISTRY-}trtapi
     build:
       context: .
       dockerfile: Web/TRT.API/Dockerfile
+
+  frontend-web:
+    image: ${DOCKER_REGISTRY-}frontend-web
+    build:
+      context: Web/frontend-web
+      dockerfile: Dockerfile
+
+volumes:
+  mongo_data:

@@ -1,35 +1,32 @@
-# Stage 1: Build the React application
-FROM node:18-alpine AS build
+# Stage 1 - Build React App
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
+
+RUN echo "=== Files copied ===" && ls -la && \
+    echo "=== Checking for lock file ===" && \
+    ls package-lock.json || echo "LOCK FILE MISSING!"
 
 # Install dependencies
 RUN npm ci
 
-# Copy the entire application
+# Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Stage 2: Serve with Nginx
+# Stage 2 - Serve with Nginx
 FROM nginx:alpine
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy built application from build stage
+# Copy React build files
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 80
+# Expose port
 EXPOSE 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
-
-# Start nginx
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
