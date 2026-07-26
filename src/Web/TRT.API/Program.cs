@@ -40,7 +40,10 @@ using (var scope = app.Services.CreateScope())
     await initialiser.SeedAsync();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

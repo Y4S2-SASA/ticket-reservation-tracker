@@ -12,11 +12,12 @@ services:
   trt.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=mongodb://trtdb:27017"
+      - "DatabaseSettings:DefaultConnection=mongodb://trtdb:27017"
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
     ports:
-      - "8000:80"
+      - "8000:8080"
+      - "8001:8081"
     depends_on:
       - trtdb
     volumes:
