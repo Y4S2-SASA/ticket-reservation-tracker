@@ -1,0 +1,22 @@
+version: "3.4"
+
+services:
+  trtdb:
+    image: mongo
+
+  trt.api:
+    image: ${DOCKER_REGISTRY-}trtapi
+    build:
+      context: .
+      dockerfile: Web/TRT.API/Dockerfile
+
+  frontend-web:
+    image: ${DOCKER_REGISTRY-}frontend-web
+    build:
+      context: Web/frontend-web
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_SERVER_URL=${REACT_APP_SERVER_URL-http://localhost:8000}
+
+volumes:
+  mongo_data:

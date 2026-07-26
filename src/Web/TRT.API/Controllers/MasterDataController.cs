@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRT.Application.Pipelines.Stations.Queries.GetAllStationMasterData;
 using TRT.Application.Pipelines.Stations.Queries.GetStationsMasterData;
@@ -15,7 +14,7 @@ namespace TRT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class MasterDataController : ControllerBase
     {
         private readonly ILogger<MasterDataController> _logger;
@@ -53,7 +52,7 @@ namespace TRT.API.Controllers
             GetStationsMasterDataQuery getStationsMasterDataQuery
         )
         {
-           
+
             try
             {
                 var response = await _mediator.Send(getStationsMasterDataQuery);
